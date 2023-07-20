@@ -1,0 +1,209 @@
+.feedButton {
+  width: 40%;
+}
+
+.defaultButton {
+  background-color: #023246;
+  border-color: #023246;
+  margin: 10px;
+  max-width: 800px;
+}
+
+#postButton {
+  width: 90%;
+}
+
+.defaultButton:hover {
+  background-color: #04587c;
+}
+
+.buttonContainer {
+  text-align: center;
+}
+
+.invisibleBtn {
+  background: transparent;
+  border: none !important;
+  font-size: 0;
+  margin-right: 1%;
+  margin-left: -10px;
+  border-radius: 20%;
+}
+
+.invisibleBtn:hover {
+  background-color: #b5e7fd;
+}
+
+.subtitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.vr {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.myCard {
+  max-width: 800px;
+  margin: auto;
+  margin-top: 10px;
+  background-color: #f6f6f6;
+}
+
+#join {
+  max-width: 800px;
+  width: 100%;
+  margin: auto;
+  margin-top: 10px;
+  background-color: #023246;
+  border-color: #023246;
+}
+#join:hover {
+  background-color: #04587c;
+}
+
+#priceBtn {
+  /* border-radius: 0; */
+  max-width: 150px;
+}
+
+#returnBtn {
+  border-radius: 0;
+}
+
+.centerAllign {
+  text-align: center;
+}
+
+#horizontalDivider {
+  max-width: 20%;
+  margin-bottom: 10px;
+  border: none;
+  height: 20px;
+  width: 90%;
+  height: 50px;
+  margin-top: 0;
+  border-bottom: 1px solid #023246;
+  box-shadow: 0 20px 20px -20px #023246;
+  margin: -50px auto 10px;
+}
+
+.loginCard {
+  max-width: 600px;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #f6f6f6;
+}
+
+#create {
+  padding: 20px;
+  padding-top: 5px;
+}
+
+hr {
+  margin-top: -5px;
+}
+
+.rightButtonDiv {
+  text-align: right;
+}
+
+#addButton {
+  border: 1px solid black;
+  border-color: #023246;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+#addButton:hover {
+  background-color: #04587c;
+}
+
+.numberInput {
+  max-width: 80px;
+}
+
+#about {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-family: URW Chancery L, cursive;
+}
+
+#subtitle {
+  background-color: #f6f6f6;
+  font-weight: bold;
+  color: #022331;
+  font-size: 18px;
+}
+
+#homePic {
+  width: 100%;
+  height: auto;
+  opacity: 80%;
+  border-radius: 5%;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+#ingredients {
+  color: #022331;
+  font-weight: bold;
+}
+
+.text-muted {
+  text-align: center;
+}
+
+.price {
+  margin: auto;
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#portionOrder {
+  margin: auto;
+  margin-bottom: 20px;
+  margin-top: 5px;
+}
+
+.order {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #022331;
+}
+
+#placeOrder {
+  padding: 5%;
+  padding-top: 10%;
+}
+
+.inLine {
+  display: flex;
+  flex-direction: column;
+  min-width: 50%;
+  margin: 2px;
+}
+
+.inLineContainer {
+  display: flex;
+  width: 100%;
+}
