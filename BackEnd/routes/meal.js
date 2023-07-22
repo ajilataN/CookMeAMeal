@@ -1,11 +1,12 @@
 const express= require("express")
-const feed = express.Router();
+const meal = express.Router();
 const DB=require('../db/conn.js')
+const { conn, dataPool } = require('../db/conn.js')
 
 //Gets all the news in the DB 
-feed.get('/', async (req,res, next)=>{
+meal.get('/', async (req,res, next)=>{
     try{
-        var queryResult=await DB.allFeed();
+        var queryResult=await dataPool.allMeal();
         res.json(queryResult)
     }
     catch(err){
@@ -15,9 +16,9 @@ feed.get('/', async (req,res, next)=>{
 })
 
 //Gets one new based on the id 
- feed.get('/:id', async (req,res, next)=>{
+ meal.get('/:id', async (req,res, next)=>{
     try{
-        var queryResult=await DB.oneMeal(req.params.id)
+        var queryResult=await dataPool.oneMeal(req.params.id)
         res.json(queryResult)
     }
     catch(err){
@@ -27,8 +28,7 @@ feed.get('/', async (req,res, next)=>{
 }) 
 
 //Inserts one new to the database
-feed.post('/', async (req,res, next)=>{
-    
+meal.post('/', async (req,res, next)=>{
     
   let name = req.body.name
   let number_of_portions = req.body.number_of_portions
@@ -40,7 +40,7 @@ feed.post('/', async (req,res, next)=>{
     if (isAcompleteMealPost)
     {
         try{
-            var queryResult=await DB.createMeal(title,slug,text)
+            var queryResult=await dataPool.createMeal(title,slug,text)
             if (queryResult.affectedRows) {
                 console.log("New meal added!!")
               }
@@ -58,4 +58,5 @@ feed.post('/', async (req,res, next)=>{
 
   
 }) 
-module.exports=feed
+
+module.exports=meal

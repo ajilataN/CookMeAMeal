@@ -16,10 +16,28 @@ const  conn = mysql.createConnection({
     })
 
     let dataPool={}
-  
-dataPool.allFeed=()=>{
+
+dataPool.allUsers=()=>{
   return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT * FROM Feed`, (err,res)=>{
+    conn.query(`SELECT * FROM User JOIN Location on User.id_location = Location.id;`, (err,res)=>{
+      if(err){return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+
+dataPool.allLocations=()=>{
+  return new Promise ((resolve, reject)=>{
+    conn.query(`SELECT * FROM Location`, (err,res)=>{
+      if(err){return reject(err)}
+      return resolve(res)
+    })
+  })
+}
+  
+dataPool.allMeal=()=>{
+  return new Promise ((resolve, reject)=>{
+    conn.query(`SELECT * FROM Meal`, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
     })
@@ -28,7 +46,7 @@ dataPool.allFeed=()=>{
 
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT * FROM Feed WHERE id = ?`, id, (err,res)=>{
+    conn.query(`SELECT * FROM Meal WHERE id = ?`, id, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
     })
@@ -64,7 +82,34 @@ dataPool.AddUser=(name, surname, email, telephone, password, id_location)=>{
   })
 }
 
+dataPool.getLocationIdByInput = (street, street_number, city, postal_code) => {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT id FROM Location WHERE (street, street_number, city, postal_code) = (?,?,?,?) LIMIT 1`;
 
+    conn.query(query, [street, street_number, city, postal_code], (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(res);
+    });
+  });
+};
+
+dataPool.createLocation = (street, street_number, city, postal_code) => {
+  return new Promise((resolve, reject) => {
+    const query = `INSERT INTO Location (street, street_number, city, postal_code) VALUES (?,?,?,?)`;
+
+    conn.query(query, [street, street_number, city, postal_code], (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(res);
+    });
+  });
+};
 
   
-module.exports = conn
+module.exports = {
+  conn,
+  dataPool
+};
