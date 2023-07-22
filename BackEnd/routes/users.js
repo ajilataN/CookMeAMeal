@@ -5,14 +5,15 @@ const session = require("express-session")
 
 users.use(express.json());
 
-users.use(session({
-  secret: "somesecret",
-  resave: false,
-  saveUninitialized: false,
-  cookie:{
-      expires: 60*2
-  }
-}));
+// users.use(session({
+//   secret: "somesecret",
+//   resave: false,
+//   saveUninitialized: false,
+//   cookies:{
+//       expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
+      
+//   }
+// }));
 
 users.get('/', async (req, res) => {
     try {
@@ -33,6 +34,19 @@ users.get('/', async (req, res) => {
       res.sendStatus(500);
     }
   });
+
+// Check if the user is logged-in
+function isLogged(req, res, next) {
+  if (req.session.user) {
+    // User logged and has a session started
+    console.log(req.session.user)
+    next();
+  } else {
+    // User is not logged
+    console.log("Not authenticated!");
+    res.sendStatus(401);
+  }
+}
   
 //Checks if user submited both fields, if user exist and if the combiation of user and password matches
 users.post('/login', async (req, res) => {
@@ -48,7 +62,7 @@ users.post('/login', async (req, res) => {
                       console.log(req.session.user)
                       console.log(queryResult)
                       console.log("SESSION VALID");
-                      res.redirect('/');
+                      //res.redirect('/');
                     }
                     else {
                       console.log("INCORRECT PASSWORD");
@@ -132,4 +146,6 @@ async function createLocation(street, street_number, city, postal_code) {
   }
 }
 
+// Protected routes: Add the middleware to check if the user is authenticated
+users.use(isLogged);
 module.exports=users
