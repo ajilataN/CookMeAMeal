@@ -2,7 +2,9 @@ const express= require("express")
 const users = express.Router()
 const { conn, dataPool } = require('../db/conn.js')
 const session = require("express-session")
-const emailValidator = require('deep-email-validator');
+const emailValidator = require('deep-email-validator')
+const passwordValidator = require('password-validator')
+var pattern = new passwordValidator()
 
 users.use(express.json())
 
@@ -94,11 +96,19 @@ users.post('/register', async (req, res) => {
     let postal_code = req.body.postal_code
 
   const {valid, reason, validators} = await isEmailValid(email)
+  const validPw = await isStrongPassword(password)
+
     if (!valid){
       return res.status(400).send({
         message: "Please provide a valid email address.",
         reason: validators[reason].reason
       })
+    }
+
+    if(!validPw){
+      return res.status(400).send({
+        message: "Password too weak!"
+    })
     }
 
     var isCompleteForm = name && password && email && surname && telephone && street && street_number && city && postal_code
@@ -157,6 +167,21 @@ async function createLocation(street, street_number, city, postal_code) {
 // Relevantness of the email
 async function isEmailValid(email) {
   return emailValidator.validate(email)
+}
+
+// Add properties for a strong password to the pattern
+pattern
+.is().min(8)
+.is().max(100)
+.has().uppercase()
+.has().lowercase()
+.has().digits(2)
+.has().not().spaces()
+.is().not().oneOf(['Passw0rd', 'Password123']); 
+
+// Ensure strong password
+async function isStrongPassword(password){
+  return pattern.validate (password)
 }
 
 
