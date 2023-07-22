@@ -2,8 +2,8 @@
 const express = require('express')
 const session = require('express-session');
 const cors=require("cors")
-//const cookieParser = require("cookie-parser")
-//const path = require("path")
+const cookieParser = require("cookie-parser")
+const path = require("path")
 
 const dotenv = require("dotenv")
 dotenv.config()
@@ -17,21 +17,11 @@ const users = require("./routes/users")
 const db = require("./db/conn")
 
 
-
 //Some configurations
 app.use(express.json())
-//app.use(cookieParser("somesecret"))
-app.use(express.urlencoded({extended : true}));
+app.use(express.urlencoded({extended : true}))
+app.use(cookieParser("somesecret"))
 
-app.use(session({
-  secret: "somesecret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: true, // Set to true if using HTTPS
-    maxAge: 60 * 60 * 24 * 7 * 1000, // 1 week in milliseconds
-  },
-}));
 
 app.use(cors({
   origin:["http://88.200.63.148:3018"],

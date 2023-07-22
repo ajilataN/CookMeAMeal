@@ -2,73 +2,66 @@ const express= require("express")
 const users = express.Router()
 const { conn, dataPool } = require('../db/conn.js')
 const session = require("express-session")
+const emailValidator = require('deep-email-validator');
 
-users.use(express.json());
+users.use(express.json())
 
-// users.use(session({
-//   secret: "somesecret",
-//   resave: false,
-//   saveUninitialized: false,
-//   cookies:{
-//       expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
+users.use(session({
+  secret: "somesecret",
+  resave: false,
+  saveUninitialized: false,
+  cookies:{
+      expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
       
-//   }
-// }));
+  }
+})) 
 
 users.get('/', async (req, res) => {
     try {
-      let users = await dataPool.allUsers();
-      res.json(users);
+      let users = await dataPool.allUsers() 
+      res.json(users) 
     } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
+      console.log(err) 
+      res.sendStatus(500) 
     }
-  });
+  }) 
 
+  // Testing endpoint not needed later 
   users.get('/location', async (req, res) => {
     try {
-      let users = await dataPool.allLocations();
-      res.json(users);
+      let users = await dataPool.allLocations() 
+      res.json(users) 
     } catch (err) {
-      console.log(err);
-      res.sendStatus(500);
+      console.log(err) 
+      res.sendStatus(500) 
     }
-  });
+  }) 
 
-// Check if the user is logged-in
-function isLogged(req, res, next) {
-  if (req.session.user) {
-    // User logged and has a session started
-    console.log(req.session.user)
-    next();
-  } else {
-    // User is not logged
-    console.log("Not authenticated!");
-    res.sendStatus(401);
-  }
-}
   
 //Checks if user submited both fields, if user exist and if the combiation of user and password matches
 users.post('/login', async (req, res) => {
-    var email = req.body.email;
-	  var password = req.body.password;
+    var email = req.body.email 
+	  var password = req.body.password 
 
-    if (email && password) {
+    var isRegisteredUser = email && password
+    if (isRegisteredUser) {
         try {
-         let queryResult=await dataPool.AuthUser(email);
+         let queryResult=await dataPool.AuthUser(email) 
                 if(queryResult.length>0) {
-                    if(password===queryResult[0].password) {
-                      req.session.user=queryResult;
+                  const loggedUser = queryResult[0]
+                    if(password===loggedUser.password) {
+                      req.session.user=queryResult 
                       console.log(req.session.user)
                       console.log(queryResult)
-                      console.log("SESSION VALID");
-                      //res.redirect('/');
+                      console.log("SESSION VALID") 
+                      res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
+                      //res.redirect('/') 
                     }
                     else {
-                      console.log("INCORRECT PASSWORD");
+                      console.log("INCORRECT PASSWORD") 
                     }
                 } else {
-                 console.log("USER NOT REGISTRED");   
+                 console.log("USER NOT REGISTRED")    
                 }
         }
         catch(err){
@@ -79,10 +72,16 @@ users.post('/login', async (req, res) => {
     else {
         console.log("Please enter Email and Password!")
     }
-    res.end();
-});
+    res.end() 
+}) 
 
-//Inserts a new user into the database
+// Clears the cookies of a logged-out user
+users.post('/logout', async (req, res) => {
+  res.cookie('id_user', '', {httpOnly:true, expires: new Date(0)})
+  res.redirect('/')
+})
+
+// Inserts a new user into the database
 users.post('/register', async (req, res) => {
     let name = req.body.name
     let surname = req.body.surname
@@ -94,8 +93,16 @@ users.post('/register', async (req, res) => {
     let city = req.body.city
     let postal_code = req.body.postal_code
 
-    
-    if (name && password && email && surname && telephone && street && street_number && city && postal_code) {
+  const {valid, reason, validators} = await isEmailValid(email)
+    if (!valid){
+      return res.status(400).send({
+        message: "Please provide a valid email address.",
+        reason: validators[reason].reason
+      })
+    }
+
+    var isCompleteForm = name && password && email && surname && telephone && street && street_number && city && postal_code
+    if (isCompleteForm) {
       try{
         // Check if the location already exists
         let id_location = await getLocationId(street, street_number, city, postal_code)
@@ -106,7 +113,7 @@ users.post('/register', async (req, res) => {
         }
 
         // Create the user with the corresponding id_location
-        let queryResult=await dataPool.AddUser(name, surname, email, telephone, password, id_location);
+        let queryResult=await dataPool.AddUser(name, surname, email, telephone, password, id_location) 
         if (queryResult.affectedRows) {
            console.log("New user added!!")
         }
@@ -116,36 +123,41 @@ users.post('/register', async (req, res) => {
             res.sendStatus(500)
         }    
     }
-    else
-    {
+    else {
         console.log("A field is missing!")
     }
-    res.end();
-});
+    res.end() 
+}) 
 
+
+// #####################  Custom functions  #################################
 // Retreive the id of the location if exists
 async function getLocationId(street, street_number, city, postal_code) {
   try {
-    const locationQuery = await dataPool.getLocationIdByInput(street, street_number, city, postal_code);
+    const locationQuery = await dataPool.getLocationIdByInput(street, street_number, city, postal_code)
     if (locationQuery.length > 0) {
-      return locationQuery[0].id;
+      return locationQuery[0].id
     }
-    return null;
+    return null 
   } catch (err) {
-    throw err;
+    throw err 
   }
 }
 
 // Create a new location if needed
 async function createLocation(street, street_number, city, postal_code) {
   try {
-    const locationQuery = await dataPool.createLocation(street, street_number, city, postal_code);
-    return locationQuery.insertId;
+    const locationQuery = await dataPool.createLocation(street, street_number, city, postal_code) 
+    return locationQuery.insertId 
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
-// Protected routes: Add the middleware to check if the user is authenticated
-users.use(isLogged);
+// Relevantness of the email
+async function isEmailValid(email) {
+  return emailValidator.validate(email)
+}
+
+
 module.exports=users
