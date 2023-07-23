@@ -6,14 +6,14 @@ import LoginView from "./Custom_Components/LoginView";
 import FeedView from "./Custom_Components/FeedView";
 import SignupView from "./Custom_Components/SignupView";
 import SingleMealView from "./Custom_Components/SingleMealView";
-/*import axios from "axios";*/
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: "home"
-      //novica: 0,
+      currentPage: "home",
+      meal: 1,
       //userStatus: { logged: false }
     };
   }
@@ -24,8 +24,8 @@ class App extends Component {
 
   QSetView = (obj) => {
     this.setState({
-      currentPage: obj.page
-      // novica: obj.id || 0
+      currentPage: obj.page,
+      meal: obj.id || 0,
     });
   };
 
@@ -64,7 +64,7 @@ class App extends Component {
         return (
           <SingleMealView
             QIDFromChild={this.QSetView}
-            // data={this.state.novica}
+            data={this.state.meal}
           />
         );
 

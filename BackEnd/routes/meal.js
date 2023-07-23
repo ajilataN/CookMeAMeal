@@ -35,14 +35,15 @@ meal.get('/', async (req,res, next)=>{
 meal.post('/', async (req,res, next)=>{
   let name = req.body.name
   let number_of_portions = req.body.number_of_portions
+  let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
   let id_user = req.cookies.id_user
 
-    var isAcompleteMealPost=name && number_of_portions && time_ready && price && id_user
+    var isAcompleteMealPost=name && number_of_portions && date && time_ready && price && id_user
     if (isAcompleteMealPost) {
         try {
-            var queryResult=await dataPool.createMeal(name, number_of_portions, time_ready, price, id_user)
+            var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, id_user)
             if (queryResult.affectedRows) {
                 console.log("New meal added!!")
               }
