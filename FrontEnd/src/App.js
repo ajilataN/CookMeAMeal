@@ -29,6 +29,13 @@ class App extends Component {
     });
   };
 
+  QSetUser=(obj)=>{
+    this.setState({
+      userStatus:{logged:true,user:[obj]}
+    })
+   }
+   
+
   QGetView = (state) => {
     let page = state.currentPage;
     switch (page) {
@@ -55,8 +62,8 @@ class App extends Component {
       case "login":
         return (
           <LoginView
+            QUserFromChild={this.QSetUser}
             QIDFromChild={this.QSetView}
-            QUserFromChild={this.QHandleUserLog}
           />
         );
 
@@ -76,17 +83,13 @@ class App extends Component {
     }
   };
 
-  /*QSetUser = (obj) => {
-    this.setState({
-      userStatus: { logged: true, user: obj };
-    });
-  };*/
 
-  /*componentDidMount() {
-    axios.get("http://88.200.63.148:5018/users/login").then((res) => {
+  componentDidMount() {
+    axios.get("http://88.200.63.148:5020/users/login").then((res) => {
+      this.setState({userStatus:res.data})
       console.log(res);
     });
-  }*/
+  }
 
   render() {
     return (

@@ -2,7 +2,7 @@ const express= require("express")
 const meal = express.Router();
 const DB=require('../db/conn.js')
 const { conn, dataPool } = require('../db/conn.js')
-const session = require("express-session")
+// const session = require("express-session")
 
 meal.use(express.json())
 
@@ -38,9 +38,10 @@ meal.post('/', async (req,res, next)=>{
   let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
-  let id_user = req.cookies.id_user
+//   let id_user = req.cookies.id_user
+    let id_user = 1
 
-    var isAcompleteMealPost=name && number_of_portions && date && time_ready && price && id_user
+    var isAcompleteMealPost=name && number_of_portions && date && time_ready && price
     if (isAcompleteMealPost) {
         try {
             var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, id_user)

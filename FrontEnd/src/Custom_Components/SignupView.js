@@ -1,4 +1,4 @@
-//import axios from "axios";
+import axios from "axios";
 import { Component } from "react";
 import Helmet from "react-helmet";
 
@@ -26,18 +26,24 @@ class SignupView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  /* QPostSignUp = ()=> {
+  QPostSignUp = ()=> {
     let user = this.state.user 
     axios.post("/users/register",{
-      username: user.username,
+      name: user.name,
+      surname: user.surname,
       email: user.email,
+      telephone: user.telephone,
+      street: user.street,
+      street_number: user.street_number,
+      city: user.city,
+      postal_code: user.postal_code,
       password: user.password
     }).then(res =>{
       console.log("Sent to server...")
     }).catch(err =>{
       console.log(err)
     })
-  }*/
+  }
 
   render() {
     return (
@@ -104,7 +110,7 @@ class SignupView extends Component {
                 <label className="form-label">Street Number</label>
                 <input
                   onChange={(e) => this.QGetTextFromField(e)}
-                  name="streetNumber"
+                  name="street_number"
                   type="number"
                   className="form-control"
                   id="streetNumber"
@@ -126,7 +132,7 @@ class SignupView extends Component {
                 <label className="form-label">Postal Code</label>
                 <input
                   onChange={(e) => this.QGetTextFromField(e)}
-                  name="postalCode"
+                  name="postal_code"
                   type="number"
                   className="form-control"
                   id="postalCode"
@@ -158,7 +164,7 @@ class SignupView extends Component {
         {/* <div className="buttonContainer"> */}
         <button
           onClick={() => {
-            //this.QSentUserToParent();
+            this.QPostSignUp();
             this.QSetViewInParent({ page: "login" });
           }}
           className="btn btn-primary bt defaultButton"

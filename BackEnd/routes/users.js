@@ -39,8 +39,23 @@ users.get('/', async (req, res) => {
     }
   }) 
 
+  // Get the logged person
+  users.get('/login',(req,res)=>{
+    if(req.session.user) 
+    {
+    res.send({
+         logged:true,
+         user:req.session.user
+     })
   
-//Checks if user submited both fields, if user exist and if the combiation of user and password matches
+    }
+    else
+    {
+        res.send({logged:false})
+    }
+  })
+  
+// Checks if user submited both fields, if user exist and if the combiation of user and password matches
 users.post('/login', async (req, res) => {
     var email = req.body.email 
 	  var password = req.body.password 

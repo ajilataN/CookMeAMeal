@@ -46,10 +46,11 @@ class AddMealView extends Component {
   QPostMeal =() =>{
     
     axios.post("http://88.200.63.148:5020/meal", {
+
       name: this.state.meal.name,
       number_of_portions: this.state.meal.number_of_portions,
-      date: this.state.meal.date,
-      time_ready: this.state.meal.time_ready,
+      date: "2023-07-29",
+      time_ready: "16:57:00",
       price: this.state.meal.price
 
 
@@ -135,7 +136,6 @@ class AddMealView extends Component {
             <input type="time" name="time_ready" className="form-control" />
             </div>
             </div>
-            
           </div>
           <div style={{ margin: "5px" }}>
             <img
@@ -216,7 +216,7 @@ class AddMealView extends Component {
         <div className="buttonContainer">
           <button
             id="postButton"
-            onClick={() => {this.QPostMeal(); this.QSetViewInParent({ page: "feed" });}}
+            onClick={() => {this.QPostMeal(); this.QSetViewInParent({page: "feed"})}}
             className="btn btn-primary bt defaultButton"
           >
             Post
