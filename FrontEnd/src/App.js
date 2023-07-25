@@ -55,7 +55,7 @@ class App extends Component {
         return (
           <SignupView
             QIDFromChild={this.QSetView}
-            QUserFromChild={this.QHandleUserLog}
+            // QUserFromChild={this.QHandleUserLog}
           />
         );
 
@@ -71,7 +71,7 @@ class App extends Component {
         return (
           <SingleMealView
             QIDFromChild={this.QSetView}
-            data={this.state.meal}
+            data={state.meal}
           />
         );
 

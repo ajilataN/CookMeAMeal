@@ -67,12 +67,12 @@ users.post('/login', async (req, res) => {
                 if(queryResult.length>0) {
                   const loggedUser = queryResult[0]
                     if(password===loggedUser.password) {
-                      req.session.user=queryResult 
+                      req.session.user=queryResult
                       console.log(req.session.user)
                       console.log(queryResult)
                       console.log("SESSION VALID") 
-                      res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
-                      //res.redirect('/') 
+                      // res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
+                      res.redirect('/') 
                     }
                     else {
                       console.log("INCORRECT PASSWORD") 

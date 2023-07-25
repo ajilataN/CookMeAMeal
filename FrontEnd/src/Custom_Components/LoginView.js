@@ -28,7 +28,7 @@ class LoginView extends Component {
 
   QPostLogin = () =>{
     let user = this.state.user
-    axios.post("/users/login", {
+    axios.post("http://88.200.63.148:5020/users/login", {
         email: user.email,
         password: user.password
     },{withCredentials: true})
@@ -67,8 +67,9 @@ class LoginView extends Component {
           </div>
         </form>
         <button
-          onClick={() => this.QSetViewInParent({ page: "feed" })}
-          //onClick={() => this.QSentUserToParent()}
+          onClick={() => {this.QPostLogin(); 
+            this.QSetViewInParent({ page: "feed" })
+          }}
           className="btn btn-primary bt defaultButton log"
         >
           Login
