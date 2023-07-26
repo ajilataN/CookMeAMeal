@@ -7,7 +7,7 @@ class AddMealView extends Component {
     super(props);
     this.state = {
       meal: {},
-      fields: [{value: ""}],
+      // fields: [{value: ""}],
 
     };
   }
@@ -22,25 +22,25 @@ class AddMealView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  handleAddField() {
-    const { fields } = this.state;
-    this.setState({ fields: [...fields, { value: "" }] });
-  }
+  // handleAddField() {
+  //   const { fields } = this.state;
+  //   this.setState({ fields: [...fields, { value: "" }] });
+  // }
 
-  handleFieldChange(index, event) {
-    const { fields } = this.state;
-    fields[index].value = event.target.value;
-    this.setState({ fields });
-  }
+  // handleFieldChange(index, event) {
+  //   const { fields } = this.state;
+  //   fields[index].value = event.target.value;
+  //   this.setState({ fields });
+  // }
 
-  handleSubmit(event) {
-    event.preventDefault();
-    console.log("Fields:", this.state.fields);
-    const ingredients = this.state.fields.map((field) => ({ name: field.value }));
+  // handleSubmit(event) {
+  //   event.preventDefault();
+  //   console.log("Fields:", this.state.fields);
+  //   const ingredients = this.state.fields.map((field) => ({ name: field.value }));
 
-    // Set the ingredients list in the state
-    this.setState({ ingredientsList: ingredients });
-  }
+  //   // Set the ingredients list in the state
+  //   this.setState({ ingredientsList: ingredients });
+  // }
 
 
   QPostMeal =() =>{
@@ -49,8 +49,8 @@ class AddMealView extends Component {
 
       name: this.state.meal.name,
       number_of_portions: this.state.meal.number_of_portions,
-      date: "2023-07-29",
-      time_ready: "16:57:00",
+      date: this.state.meal.date,
+      time_ready: this.state.meal.time_ready,
       price: this.state.meal.price
 
 
@@ -146,7 +146,7 @@ class AddMealView extends Component {
             />
             {"    "}
             <label className="form-label">Ingredients</label>
-            <form onSubmit={this.handleSubmit}>
+            {/* <form onSubmit={this.handleSubmit}>
               {fields.map((field, index) => (
                 <input
                   style={{ margin: "2px" }}
@@ -181,7 +181,7 @@ class AddMealView extends Component {
                 </button>
                 <button type="submit">Submit</button>
               </div>
-            </form>
+            </form> */}
           </div>
 
           <div className="mb-3" style={{ margin: "5px" }}>

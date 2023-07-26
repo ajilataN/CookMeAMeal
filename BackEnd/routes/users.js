@@ -1,14 +1,14 @@
 const express= require("express")
 const users = express.Router()
 const { conn, dataPool } = require('../db/conn.js')
-const session = require("express-session")
+//const session = require("express-session")
 const emailValidator = require('deep-email-validator')
 const passwordValidator = require('password-validator')
 var pattern = new passwordValidator()
 
 users.use(express.json())
 
-users.use(session({
+/*users.use(session({
   secret: "somesecret",
   resave: false,
   saveUninitialized: false,
@@ -16,7 +16,7 @@ users.use(session({
       expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
       
   }
-})) 
+})) */
 
 users.get('/', async (req, res) => {
     try {
@@ -67,12 +67,13 @@ users.post('/login', async (req, res) => {
                 if(queryResult.length>0) {
                   const loggedUser = queryResult[0]
                     if(password===loggedUser.password) {
+                      console.log(queryResult[0].id)
                       req.session.user=queryResult
                       console.log(req.session.user)
                       console.log(queryResult)
                       console.log("SESSION VALID") 
                       // res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
-                      res.redirect('/') 
+                      //res.redirect('/') 
                     }
                     else {
                       console.log("INCORRECT PASSWORD") 

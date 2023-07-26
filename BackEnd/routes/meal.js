@@ -2,9 +2,9 @@ const express= require("express")
 const meal = express.Router();
 const DB=require('../db/conn.js')
 const { conn, dataPool } = require('../db/conn.js')
-// const session = require("express-session")
+//const session = require("express-session")
 
-meal.use(express.json())
+//meal.use(express.json())
 
 
 // Gets everything from the feed in the DB 
@@ -38,8 +38,14 @@ meal.post('/', async (req,res, next)=>{
   let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
-//   let id_user = req.cookies.id_user
-    let id_user = 1
+  console.log(req.session.user[0].id)
+
+  if(!req.session || !req.session.user){
+    return res.status(401).json({error:"User not logged in"});
+  }
+
+  let id_user = req.session.user[0].id
+ 
 
     var isAcompleteMealPost=name && number_of_portions && date && time_ready && price
     if (isAcompleteMealPost) {
