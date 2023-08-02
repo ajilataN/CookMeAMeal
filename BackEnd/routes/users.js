@@ -72,14 +72,17 @@ users.post('/login', async (req, res) => {
                       console.log(req.session.user)
                       console.log(queryResult)
                       console.log("SESSION VALID") 
+                      res.json(queryResult)
                       // res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
                       //res.redirect('/') 
                     }
                     else {
-                      console.log("INCORRECT PASSWORD") 
+                      console.log("INCORRECT PASSWORD")
+                      res.send("INCORRECT PASSWORD") 
                     }
                 } else {
-                 console.log("USER NOT REGISTRED")    
+                 console.log("USER NOT REGISTRED")
+                 res.send("USER NOT REGISTRED")    
                 }
         }
         catch(err){

@@ -7,8 +7,7 @@ class AddMealView extends Component {
     super(props);
     this.state = {
       meal: {},
-      // fields: [{value: ""}],
-
+      fields: [{value: ""}],
     };
   }
 
@@ -22,25 +21,25 @@ class AddMealView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  // handleAddField() {
-  //   const { fields } = this.state;
-  //   this.setState({ fields: [...fields, { value: "" }] });
-  // }
+  handleAddField= () => {
+    const { fields } = this.state;
+    this.setState({ fields: [...fields, { value: "" }] });
+  }
 
-  // handleFieldChange(index, event) {
-  //   const { fields } = this.state;
-  //   fields[index].value = event.target.value;
-  //   this.setState({ fields });
-  // }
+  handleFieldChange = (index, event) =>{
+    const { fields } = this.state;
+    fields[index].value = event.target.value;
+    this.setState({ fields });
+  }
 
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   console.log("Fields:", this.state.fields);
-  //   const ingredients = this.state.fields.map((field) => ({ name: field.value }));
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Fields:", this.state.fields);
+    const ingredients = this.state.fields.map((field) => ({ name: field.value }));
 
-  //   // Set the ingredients list in the state
-  //   this.setState({ ingredientsList: ingredients });
-  // }
+    // Set the ingredients list in the state
+    this.setState({ ingredientsList: ingredients });
+  }
 
 
   QPostMeal =() =>{
@@ -52,15 +51,16 @@ class AddMealView extends Component {
       date: this.state.meal.date,
       time_ready: this.state.meal.time_ready,
       price: this.state.meal.price
-
-
-      }).then((res) =>{
+      },
+      {withCredentials: true}).then((res) =>{
+        console.log(res.data);
         console.log(this.state.meal.name)
         console.log(this.state.meal.number_of_portions)
         console.log(this.state.meal.price)
         console.log(this.state.meal.date)
         console.log(this.state.meal.time_ready)
         console.log("Sent to server...")
+        
       })
         .catch(err => {
           console.log(err)
@@ -69,6 +69,7 @@ class AddMealView extends Component {
 
   render() {
     const { fields } = this.state;
+    console.log(this.state.fields)
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
@@ -127,13 +128,14 @@ class AddMealView extends Component {
             >
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
             </svg>{" "}
+
             <label className="form-label">Ready in: </label>
             <div className="inLineContainer">
               <div className="inLine">
-              <input type="date" name="date" className="form-control" />
+              <input type="date" name="date" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
               </div>
             <div className="inLine">
-            <input type="time" name="time_ready" className="form-control" />
+            <input type="time" name="time_ready" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
             </div>
             </div>
           </div>
@@ -146,7 +148,7 @@ class AddMealView extends Component {
             />
             {"    "}
             <label className="form-label">Ingredients</label>
-            {/* <form onSubmit={this.handleSubmit}>
+           <form onSubmit={this.handleSubmit}>
               {fields.map((field, index) => (
                 <input
                   style={{ margin: "2px" }}
@@ -181,7 +183,7 @@ class AddMealView extends Component {
                 </button>
                 <button type="submit">Submit</button>
               </div>
-            </form> */}
+            </form>
           </div>
 
           <div className="mb-3" style={{ margin: "5px" }}>

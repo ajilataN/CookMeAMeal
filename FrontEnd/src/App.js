@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       currentPage: "home",
       meal: 1,
-      //userStatus: { logged: false }
+      userStatus: { logged: false }
     };
   }
 
@@ -25,7 +25,7 @@ class App extends Component {
   QSetView = (obj) => {
     this.setState({
       currentPage: obj.page,
-      meal: obj.id || 0,
+      meal: obj.id || 1,
     });
   };
 
@@ -46,7 +46,7 @@ class App extends Component {
         return <FeedView QIDFromChild={this.QSetView} />;
 
       case "addmeal":
-        return <AddMealView QIDFromChild={this.QSetView} />;
+        return state.userStatus.logged ? <AddMealView QIDFromChild={this.QSetView} /> : <h3 style={{backgroundColor: "red"}}>Bratce ne si logiran</h3>;;
       //) : (
       // ""
       //);
@@ -71,7 +71,7 @@ class App extends Component {
         return (
           <SingleMealView
             QIDFromChild={this.QSetView}
-            data={state.meal}
+            data={this.state.meal}
           />
         );
 
@@ -92,6 +92,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.state.userStatus)
     return (
       <div id="APP" className="container">
         <div id="menu" className="row">

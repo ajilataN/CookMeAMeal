@@ -2,10 +2,9 @@ const express= require("express")
 const meal = express.Router();
 const DB=require('../db/conn.js')
 const { conn, dataPool } = require('../db/conn.js')
+
+meal.use(express.json());
 //const session = require("express-session")
-
-//meal.use(express.json())
-
 
 // Gets everything from the feed in the DB 
 meal.get('/', async (req,res, next)=>{
@@ -38,6 +37,7 @@ meal.post('/', async (req,res, next)=>{
   let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
+
   console.log(req.session.user[0].id)
 
   if(!req.session || !req.session.user){
@@ -46,13 +46,14 @@ meal.post('/', async (req,res, next)=>{
 
   let id_user = req.session.user[0].id
  
-
-    var isAcompleteMealPost=name && number_of_portions && date && time_ready && price
+  var isAcompleteMealPost = name && number_of_portions && date && time_ready && price
+   
     if (isAcompleteMealPost) {
         try {
             var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, id_user)
             if (queryResult.affectedRows) {
                 console.log("New meal added!!")
+                res.json(queryResult)
               }
         }
         catch(err){

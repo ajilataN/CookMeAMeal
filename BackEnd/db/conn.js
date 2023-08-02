@@ -72,26 +72,26 @@ dataPool.getMealPoster = (id)=>{
 }
 
 
-// Insert a new meal in the db
-dataPool.createMeal=(name,number_of_portions,date,time_ready,price,id_user)=>{
-  return new Promise ((resolve, reject)=>{
-    conn.query(`INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?,?,?,?,?,?)`, [name, number_of_portions, date, time_ready, price, id_user], (err,res)=>{
-      if(err){return reject(err)}
-      return resolve(res)
-    })
-  })
-}
+// // Insert a new meal in the db
+// dataPool.createMeal=(name,number_of_portions,date,time_ready,price,id_user)=>{
+//   return new Promise ((resolve, reject)=>{
+//     conn.query(`INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?,?,?,?,?,?)`, [name, number_of_portions, date, time_ready, price, id_user], (err,res)=>{
+//       if(err){return reject(err)}
+//       return resolve(res)
+//     })
+//   })
+// }
 
-/*
-dataPool.createMeal = (name, number_of_portions, time_ready, price, id_user, ingredients) => {
+
+dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_user, ingredients) => {
   return new Promise((resolve, reject) => {
     conn.beginTransaction((err) => {
       if (err) { return reject(err); }
 
       // Insert the new meal
       conn.query(
-        `INSERT INTO Meal (name, number_of_portions, time_ready, price, id_user) VALUES (?, ?, ?, ?, ?)`,
-        [name, number_of_portions, time_ready, price, id_user],
+        `INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?, ?, ?, ?, ?, ?)`,
+        [name, number_of_portions, date, time_ready, price, id_user],
         (err, mealResult) => {
           if (err) {
             conn.rollback(() => {
@@ -99,13 +99,14 @@ dataPool.createMeal = (name, number_of_portions, time_ready, price, id_user, ing
             });
           } else {
             const mealId = mealResult.insertId;
-
+            console.log(mealId)
+            console.log(ingredients)
             // Insert ingredients for the meal
-            if (ingredients || ingredients.length > 0) {
-              const ingredientValues = ingredients.map((ingredient) => [ingredient.name, mealId]);
-
+            if (ingredients && ingredients.length > 0) {
+              const ingredientValues = ingredients.map((ingredient) => [ingredient.name, mealId]).flat();
+              console.log(ingredientValues)
               conn.query(
-                `INSERT INTO Ingredient (name, id_meal) VALUES (?, ?)`,
+                `INSERT INTO Ingredient (name, id_meal) VALUES ?`,
                 [ingredientValues],
                 (err, ingredientResult) => {
                   if (err) {
@@ -142,8 +143,6 @@ dataPool.createMeal = (name, number_of_portions, time_ready, price, id_user, ing
     });
   });
 };
-
-*/
 
 
 // Authenticate the user email, check if exists

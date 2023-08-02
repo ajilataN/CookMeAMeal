@@ -33,8 +33,16 @@ class LoginView extends Component {
         password: user.password
     },{withCredentials: true})
     .then(res=>{
+      if(res.data === "INCORRECT PASSWORD"){
+        alert("INCORRECT PASSWORD")
+      }
+      else if(res.data === "USER NOT REGISTRED"){
+        alert("USER NOT REGISTRED")
+      }
+      else{
       console.log("Sent to the server...")
       this.QSendUser2Parent(res.data)
+      }
     }).catch(err=>{
       console.log(err)
     })

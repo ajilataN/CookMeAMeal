@@ -21,6 +21,8 @@ class FeedView extends Component {
       this.setState({
        meals:res.data
       })
+
+      console.log(res.data)
     })
    }
 
