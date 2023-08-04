@@ -1,14 +1,14 @@
 const express= require("express")
 const users = express.Router()
 const { conn, dataPool } = require('../db/conn.js')
-const session = require("express-session")
+//const session = require("express-session")
 const emailValidator = require('deep-email-validator')
 const passwordValidator = require('password-validator')
 var pattern = new passwordValidator()
 
 users.use(express.json())
 
-users.use(session({
+/*users.use(session({
   secret: "somesecret",
   resave: false,
   saveUninitialized: false,
@@ -16,7 +16,7 @@ users.use(session({
       expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
       
   }
-})) 
+})) */
 
 users.get('/', async (req, res) => {
     try {
@@ -39,8 +39,23 @@ users.get('/', async (req, res) => {
     }
   }) 
 
+  // Get the logged person
+  users.get('/login',(req,res)=>{
+    if(req.session.user) 
+    {
+    res.send({
+         logged:true,
+         user:req.session.user
+     })
   
-//Checks if user submited both fields, if user exist and if the combiation of user and password matches
+    }
+    else
+    {
+        res.send({logged:false})
+    }
+  })
+  
+// Checks if user submited both fields, if user exist and if the combiation of user and password matches
 users.post('/login', async (req, res) => {
     var email = req.body.email 
 	  var password = req.body.password 
@@ -52,18 +67,22 @@ users.post('/login', async (req, res) => {
                 if(queryResult.length>0) {
                   const loggedUser = queryResult[0]
                     if(password===loggedUser.password) {
-                      req.session.user=queryResult 
+                      console.log(queryResult[0].id)
+                      req.session.user=queryResult
                       console.log(req.session.user)
                       console.log(queryResult)
                       console.log("SESSION VALID") 
-                      res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
+                      res.json(queryResult)
+                      // res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
                       //res.redirect('/') 
                     }
                     else {
-                      console.log("INCORRECT PASSWORD") 
+                      console.log("INCORRECT PASSWORD")
+                      res.send("INCORRECT PASSWORD") 
                     }
                 } else {
-                 console.log("USER NOT REGISTRED")    
+                 console.log("USER NOT REGISTRED")
+                 res.send("USER NOT REGISTRED")    
                 }
         }
         catch(err){

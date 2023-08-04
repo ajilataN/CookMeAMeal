@@ -1,35 +1,40 @@
 import { Component } from "react";
 import Helmet from "react-helmet";
 import Ingredients from "./Ingredients.js";
-// import axios from "axios";
+import axios from "axios";
 
 class SingleMealView extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     novica: []
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      meal: []
+    };
+  }
 
   QSetViewInParent = (obj) => {
     this.props.QIDFromChild(obj);
   };
 
-  /* componentDidMount(){
-    axios.get("/novice/"+this.props.data)
+  componentDidMount(){
+    console.log(this.props.data)
+    axios.get("http://88.200.63.148:5020/meal/" + this.props.data)
     .then(res=>{
+      console.log(res.data)
       this.setState({
-        novica:res.data
+        meal:res.data
       })
+      //console.log(meal)
     })
-  }*/
+  }
 
   render() {
-    // let novica = this.state.novica;
-
+    let meal = this.state.meal;
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
+        {
+          meal.length>0 ?
+        
         <div className="card myCard">
           <h5 className="card-header">
             <button
@@ -56,7 +61,7 @@ class SingleMealView extends Component {
               src="https://img.icons8.com/ios-filled/50/international-food.png"
               alt="international-food"
             />{" "}
-            Lasagne alla ferrarese
+              {meal[0].name}
           </h5>
 
           <div className="card-body">
@@ -70,7 +75,7 @@ class SingleMealView extends Component {
             >
               <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
             </svg>
-            <span className="subtitle"> Natalija Tashkova</span>
+            <span className="subtitle"> {meal[0].u_name} {meal[0].surname}</span>
             <br></br>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +87,9 @@ class SingleMealView extends Component {
             >
               <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
             </svg>
-            <span> Kraljeva Ulica 11, 6000 Koper, Slovenija</span>
+            <span>
+              {meal[0].street} {meal[0].street_number}, {meal[0].postal_code} {meal[0].city}, Slovenija
+               </span>
             <div className="vr"></div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +101,9 @@ class SingleMealView extends Component {
             >
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
             </svg>{" "}
-            <span>15:00</span>
+            <span>
+            {meal[0].date} {meal[0].time_ready}
+            </span>
             <div className="vr"></div>
             <img
               width="16"
@@ -102,7 +111,9 @@ class SingleMealView extends Component {
               src="https://img.icons8.com/ios-filled/50/soup-plate.png"
               alt="soup-plate"
             />{" "}
-            <span>4</span>
+            <span>
+            {meal[0].number_of_portions}
+            </span>
             <br></br>
             <Ingredients />
             <br></br>
@@ -123,7 +134,9 @@ class SingleMealView extends Component {
                 <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />
                 <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
               </svg>
-              <span className="price">5€</span>
+              <span className="price">
+              {meal[0].price}  
+              </span>
               <a
                 id="priceBtn"
                 onClick={() => this.QSetViewInParent({ page: "order" })}
@@ -135,29 +148,11 @@ class SingleMealView extends Component {
             </div>
           </div>
         </div>
+        : "Loading.."
+  }
       </div>
     );
   }
 }
 
 export default SingleMealView;
-
-// <div className="card" style={{ margin: "10px" }}>
-//   {novica.length > 0 ? (
-//     <div>
-//       <h5 className="card-header">{novica[0].title}</h5>
-//       <div className="card-body">
-//         <h5 className="card-title">{novica[0].slug}</h5>
-//         <p className="card-text">{novica[0].text}</p>
-//         <button
-//           onClick={() => this.QSetViewInParent({ page: "novice" })}
-//           className="btn btn-primary"
-//         >
-//           Return news
-//         </button>
-//       </div>
-//     </div>
-//   ) : (
-//     "Loading..."
-//   )}
-// </div>

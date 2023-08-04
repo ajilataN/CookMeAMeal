@@ -1,17 +1,19 @@
 import { Component } from "react";
 import Helmet from "react-helmet";
-//import axios from "axios";
+import axios from "axios";
 
 class AddMealView extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     novica: {}
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      meal: {},
+      fields: [{value: ""}],
+    };
+  }
+
   QGetTextFromField = (e) => {
     this.setState((prevState) => ({
-      novica: { ...prevState.novica, [e.target.name]: e.target.value }
+      meal: { ...prevState.meal, [e.target.name]: e.target.value }
     }));
   };
 
@@ -19,50 +21,55 @@ class AddMealView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      fields: [{ value: "" }]
-    };
-
-    this.handleAddField = this.handleAddField.bind(this);
-    this.handleFieldChange = this.handleFieldChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleAddField() {
+  handleAddField= () => {
     const { fields } = this.state;
     this.setState({ fields: [...fields, { value: "" }] });
   }
 
-  handleFieldChange(index, event) {
+  handleFieldChange = (index, event) =>{
     const { fields } = this.state;
     fields[index].value = event.target.value;
     this.setState({ fields });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     console.log("Fields:", this.state.fields);
+    const ingredients = this.state.fields.map((field) => ({ name: field.value }));
+
+    // Set the ingredients list in the state
+    this.setState({ ingredientsList: ingredients });
   }
 
-  //QPostNovica = () =>{
-  // axios.post("/novice", {
-  // title: this.state.novica.title,
-  //slug: this.state.novica.slug,
-  // text: this.state.novica.text
-  // }).then(res =>{
-  // console.log("Sent to server...")
-  // }).catch(err => {
-  // console.log(err)
-  //})
 
-  //this.props.QViewFromChild({page: "novice"})
-  //}
+  QPostMeal =() =>{
+    
+    axios.post("http://88.200.63.148:5020/meal", {
+
+      name: this.state.meal.name,
+      number_of_portions: this.state.meal.number_of_portions,
+      date: this.state.meal.date,
+      time_ready: this.state.meal.time_ready,
+      price: this.state.meal.price
+      },
+      {withCredentials: true}).then((res) =>{
+        console.log(res.data);
+        console.log(this.state.meal.name)
+        console.log(this.state.meal.number_of_portions)
+        console.log(this.state.meal.price)
+        console.log(this.state.meal.date)
+        console.log(this.state.meal.time_ready)
+        console.log("Sent to server...")
+        
+      })
+        .catch(err => {
+          console.log(err)
+        })
+  }
 
   render() {
     const { fields } = this.state;
+    console.log(this.state.fields)
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
@@ -97,12 +104,12 @@ class AddMealView extends Component {
               alt="soup-plate"
             />
             {"    "}
-            <label className="form-label" for="portions">
+            <label className="form-label" htmlFor="portions">
               Number of portions
             </label>{" "}
             {"   "}
             <input
-              name="portions"
+              name="number_of_portions"
               placeholder="2"
               onChange={(e) => this.QGetTextFromField(e)}
               type="number"
@@ -121,8 +128,16 @@ class AddMealView extends Component {
             >
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
             </svg>{" "}
+
             <label className="form-label">Ready in: </label>
-            <input type="time" className="form-control" />
+            <div className="inLineContainer">
+              <div className="inLine">
+              <input type="date" name="date" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
+              </div>
+            <div className="inLine">
+            <input type="time" name="time_ready" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
+            </div>
+            </div>
           </div>
           <div style={{ margin: "5px" }}>
             <img
@@ -133,7 +148,7 @@ class AddMealView extends Component {
             />
             {"    "}
             <label className="form-label">Ingredients</label>
-            <form onSubmit={this.handleSubmit}>
+           <form onSubmit={this.handleSubmit}>
               {fields.map((field, index) => (
                 <input
                   style={{ margin: "2px" }}
@@ -161,11 +176,12 @@ class AddMealView extends Component {
                     viewBox="0 0 16 16"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
                     />
                   </svg>
                 </button>
+                <button type="submit">Submit</button>
               </div>
             </form>
           </div>
@@ -180,7 +196,7 @@ class AddMealView extends Component {
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"
               />
               <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z" />
@@ -190,11 +206,10 @@ class AddMealView extends Component {
             {"   "}
             <label className="form-label">Price</label>
             <input
-              name="portions"
+              name="price"
               onChange={(e) => this.QGetTextFromField(e)}
               type="number"
               min="1"
-              step=".1"
               className="form-control numberInput"
               placeholder="€"
             />
@@ -203,8 +218,7 @@ class AddMealView extends Component {
         <div className="buttonContainer">
           <button
             id="postButton"
-            // onClick={() => this.QPostNovica()}
-            onClick={() => this.QSetViewInParent({ page: "feed" })}
+            onClick={() => {this.QPostMeal(); this.QSetViewInParent({page: "feed"})}}
             className="btn btn-primary bt defaultButton"
           >
             Post

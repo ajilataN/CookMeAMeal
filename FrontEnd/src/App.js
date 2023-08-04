@@ -6,15 +6,15 @@ import LoginView from "./Custom_Components/LoginView";
 import FeedView from "./Custom_Components/FeedView";
 import SignupView from "./Custom_Components/SignupView";
 import SingleMealView from "./Custom_Components/SingleMealView";
-/*import axios from "axios";*/
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: "home"
-      //novica: 0,
-      //userStatus: { logged: false }
+      currentPage: "home",
+      meal: 1,
+      userStatus: { logged: false }
     };
   }
 
@@ -24,10 +24,17 @@ class App extends Component {
 
   QSetView = (obj) => {
     this.setState({
-      currentPage: obj.page
-      // novica: obj.id || 0
+      currentPage: obj.page,
+      meal: obj.id || 1,
     });
   };
+
+  QSetUser=(obj)=>{
+    this.setState({
+      userStatus:{logged:true,user:[obj]}
+    })
+   }
+   
 
   QGetView = (state) => {
     let page = state.currentPage;
@@ -39,7 +46,7 @@ class App extends Component {
         return <FeedView QIDFromChild={this.QSetView} />;
 
       case "addmeal":
-        return <AddMealView QIDFromChild={this.QSetView} />;
+        return state.userStatus.logged ? <AddMealView QIDFromChild={this.QSetView} /> : <h3 style={{backgroundColor: "red"}}>Bratce ne si logiran</h3>;;
       //) : (
       // ""
       //);
@@ -48,15 +55,15 @@ class App extends Component {
         return (
           <SignupView
             QIDFromChild={this.QSetView}
-            QUserFromChild={this.QHandleUserLog}
+            // QUserFromChild={this.QHandleUserLog}
           />
         );
 
       case "login":
         return (
           <LoginView
+            QUserFromChild={this.QSetUser}
             QIDFromChild={this.QSetView}
-            QUserFromChild={this.QHandleUserLog}
           />
         );
 
@@ -64,7 +71,7 @@ class App extends Component {
         return (
           <SingleMealView
             QIDFromChild={this.QSetView}
-            // data={this.state.novica}
+            data={this.state.meal}
           />
         );
 
@@ -76,19 +83,17 @@ class App extends Component {
     }
   };
 
-  /*QSetUser = (obj) => {
-    this.setState({
-      userStatus: { logged: true, user: obj };
-    });
-  };*/
 
-  /*componentDidMount() {
-    axios.get("http://88.200.63.148:5018/users/login").then((res) => {
+  componentDidMount() {
+    axios.get("http://88.200.63.148:5020/users/login").then((res) => {
+      this.setState({userStatus:res.data})
       console.log(res);
     });
-  }*/
+  }
 
   render() {
+    console.log(this.state.userStatus)
+    console.log ("This is the meal id:"+this.state.meal)
     return (
       <div id="APP" className="container">
         <div id="menu" className="row">

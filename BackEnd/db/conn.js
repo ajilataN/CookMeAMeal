@@ -41,7 +41,10 @@ dataPool.allLocations=()=>{
 // Retreive all meals from the db, (feed of the app)
 dataPool.allMeal=()=>{
   return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT * FROM Meal`, (err,res)=>{
+    const query = 'SELECT m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, u.name AS u_name, u.surname, l.id as locationId, l.street, l.street_number, l.city, l.postal_code FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;'
+
+    
+    conn.query(query, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
     })
@@ -51,7 +54,33 @@ dataPool.allMeal=()=>{
 // Get the meal with a specific id
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT * FROM Meal WHERE id = ?`, id, (err,res)=>{
+    // const query=`SELECT 
+    //     m.id as mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+    //     u.name as u_name, u.surname, 
+    //     l.id as locationId, l.street, l.street_number, l.city, l.postal_code, 
+    //     i.name as i_name, i.id_meal 
+    //     FROM Meal AS m JOIN User AS u ON m.id_user = u.id 
+    //     JOIN Location AS l ON u.id_location = l.id 
+    //     JOIN Ingredient AS i ON m.id = i.id_meal 
+    //     WHERE m.id = ?
+    //   `
+
+    const query = `SELECT 
+    m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+    u.name AS u_name, u.surname, 
+    l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
+    i.i_names
+FROM Meal AS m 
+JOIN User AS u ON m.id_user = u.id 
+JOIN Location AS l ON u.id_location = l.id 
+JOIN (
+    SELECT id_meal, GROUP_CONCAT(name) AS i_names 
+    FROM Ingredient 
+    GROUP BY id_meal
+) AS i ON m.id = i.id_meal
+WHERE m.id = ?;
+`
+    conn.query(query, id, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
     })
@@ -68,15 +97,79 @@ dataPool.getMealPoster = (id)=>{
   })
 }
 
-// Insert a new meal in the db
-dataPool.createMeal=(name,number_of_portions,time_ready,price,id_user)=>{
-  return new Promise ((resolve, reject)=>{
-    conn.query(`INSERT INTO Meal (name,number_of_portions,time_ready,price,id_user) VALUES (?,?,?,?,?)`, [name, number_of_portions, time_ready, price, id_user], (err,res)=>{
-      if(err){return reject(err)}
-      return resolve(res)
-    })
-  })
-}
+
+// // Insert a new meal in the db
+// dataPool.createMeal=(name,number_of_portions,date,time_ready,price,id_user)=>{
+//   return new Promise ((resolve, reject)=>{
+//     conn.query(`INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?,?,?,?,?,?)`, [name, number_of_portions, date, time_ready, price, id_user], (err,res)=>{
+//       if(err){return reject(err)}
+//       return resolve(res)
+//     })
+//   })
+// }
+
+
+dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_user, ingredients) => {
+  return new Promise((resolve, reject) => {
+    conn.beginTransaction((err) => {
+      if (err) { return reject(err); }
+
+      // Insert the new meal
+      conn.query(
+        `INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?, ?, ?, ?, ?, ?)`,
+        [name, number_of_portions, date, time_ready, price, id_user],
+        (err, mealResult) => {
+          if (err) {
+            conn.rollback(() => {
+              reject(err);
+            });
+          } else {
+            const mealId = mealResult.insertId;
+            console.log(mealId)
+            console.log(ingredients)
+            // Insert ingredients for the meal
+            if (ingredients && ingredients.length > 0) {
+              const ingredientValues = ingredients.map((ingredient) => [ingredient.name, mealId]).flat();
+              console.log(ingredientValues)
+              conn.query(
+                `INSERT INTO Ingredient (name, id_meal) VALUES ?`,
+                [ingredientValues],
+                (err, ingredientResult) => {
+                  if (err) {
+                    conn.rollback(() => {
+                      reject(err);
+                    });
+                  } else {
+                    conn.commit((err) => {
+                      if (err) {
+                        conn.rollback(() => {
+                          reject(err);
+                        });
+                      } else {
+                        resolve({ mealId, ingredientResult });
+                      }
+                    });
+                  }
+                }
+              );
+            } else {
+              conn.commit((err) => {
+                if (err) {
+                  conn.rollback(() => {
+                    reject(err);
+                  });
+                } else {
+                  resolve({ mealId });
+                }
+              });
+            }
+          }
+        }
+      );
+    });
+  });
+};
+
 
 // Authenticate the user email, check if exists
 dataPool.AuthUser=(email)=> {

@@ -2,10 +2,9 @@ const express= require("express")
 const meal = express.Router();
 const DB=require('../db/conn.js')
 const { conn, dataPool } = require('../db/conn.js')
-const session = require("express-session")
 
-meal.use(express.json())
-
+meal.use(express.json());
+//const session = require("express-session")
 
 // Gets everything from the feed in the DB 
 meal.get('/', async (req,res, next)=>{
@@ -35,16 +34,26 @@ meal.get('/', async (req,res, next)=>{
 meal.post('/', async (req,res, next)=>{
   let name = req.body.name
   let number_of_portions = req.body.number_of_portions
+  let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
-  let id_user = req.cookies.id_user
 
-    var isAcompleteMealPost=name && number_of_portions && time_ready && price && id_user
+  console.log(req.session.user[0].id)
+
+  if(!req.session || !req.session.user){
+    return res.status(401).json({error:"User not logged in"});
+  }
+
+  let id_user = req.session.user[0].id
+ 
+  var isAcompleteMealPost = name && number_of_portions && date && time_ready && price
+   
     if (isAcompleteMealPost) {
         try {
-            var queryResult=await dataPool.createMeal(name, number_of_portions, time_ready, price, id_user)
+            var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, id_user)
             if (queryResult.affectedRows) {
                 console.log("New meal added!!")
+                res.json(queryResult)
               }
         }
         catch(err){

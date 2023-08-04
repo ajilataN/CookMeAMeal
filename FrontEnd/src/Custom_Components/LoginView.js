@@ -1,6 +1,6 @@
 import { Component } from "react";
 import Helmet from "react-helmet";
-//import axios from "axios";
+import axios from "axios";
 
 class LoginView extends Component {
   constructor(props) {
@@ -17,27 +17,36 @@ class LoginView extends Component {
     }));
   };
 
-  QSentUserToParent = () => {
-    this.props.QUserFromChild(this.state.user);
-  };
-
   QSetViewInParent = (obj) => {
     this.props.QIDFromChild(obj);
   };
 
-  // QPostLogin = () =>{
-  //   let user = this.state.user
-  //   axios.post("/users/login", {
-  //       username: user.username,
-  //       password: user.password
-  //   },{withCredentials: true})
-  //   .then(res=>{
-  //     console.log("Sent to the server...")
-  //     this.QSendUser2Parent(res.data)
-  //   }).catch(err=>{
-  //     console.log(err)
-  //   })
-  // }
+  QSendUser2Parent = (obj) => {
+    this.props.QUserFromChild(obj);
+  };
+
+
+  QPostLogin = () =>{
+    let user = this.state.user
+    axios.post("http://88.200.63.148:5020/users/login", {
+        email: user.email,
+        password: user.password
+    },{withCredentials: true})
+    .then(res=>{
+      if(res.data === "INCORRECT PASSWORD"){
+        alert("INCORRECT PASSWORD")
+      }
+      else if(res.data === "USER NOT REGISTRED"){
+        alert("USER NOT REGISTRED")
+      }
+      else{
+      console.log("Sent to the server...")
+      this.QSendUser2Parent(res.data)
+      }
+    }).catch(err=>{
+      console.log(err)
+    })
+  }
 
   render() {
     return (
@@ -48,10 +57,10 @@ class LoginView extends Component {
             <label className="form-label">E-mail</label>
             <input
               onChange={(e) => this.QGetTextFromField(e)}
-              name="username"
+              name="email"
               type="text"
               className="form-control"
-              id="username"
+              id="email"
             />
           </div>
           <div className="mb-3">
@@ -61,13 +70,14 @@ class LoginView extends Component {
               name="password"
               type="password"
               className="form-control"
-              id="password1"
+              id="password"
             />
           </div>
         </form>
         <button
-          onClick={() => this.QSetViewInParent({ page: "feed" })}
-          //onClick={() => this.QSentUserToParent()}
+          onClick={() => {this.QPostLogin(); 
+            this.QSetViewInParent({ page: "feed" })
+          }}
           className="btn btn-primary bt defaultButton log"
         >
           Login
