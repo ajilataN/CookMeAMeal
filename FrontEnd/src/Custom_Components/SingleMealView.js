@@ -19,15 +19,16 @@ class SingleMealView extends Component {
     console.log(this.props.data)
     axios.get("http://88.200.63.148:5020/meal/" + this.props.data)
     .then(res=>{
+      console.log(res.data)
       this.setState({
         meal:res.data
       })
+      //console.log(meal)
     })
   }
 
   render() {
     let meal = this.state.meal;
-
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />

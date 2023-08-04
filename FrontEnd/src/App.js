@@ -93,6 +93,7 @@ class App extends Component {
 
   render() {
     console.log(this.state.userStatus)
+    console.log ("This is the meal id:"+this.state.meal)
     return (
       <div id="APP" className="container">
         <div id="menu" className="row">

@@ -28,6 +28,7 @@ class FeedView extends Component {
 
   render() {
     let data = this.state.meals
+    console.log(data);
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
@@ -139,7 +140,7 @@ class FeedView extends Component {
             <br></br>
             <div className="buttonContainer">
               <a
-                onClick={() => this.QSetViewInParent({ page: "meal", id: d.id })}
+                onClick={() => this.QSetViewInParent({ page: "meal", id: d.mealId })}
                 href="#"
                 className="btn btn-primary feedButton defaultButton"
               >

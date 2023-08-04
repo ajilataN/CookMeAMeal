@@ -41,8 +41,9 @@ dataPool.allLocations=()=>{
 // Retreive all meals from the db, (feed of the app)
 dataPool.allMeal=()=>{
   return new Promise ((resolve, reject)=>{
-    const query = 'SELECT m.*, u.name AS u_name, u.surname, l.* FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;'
+    const query = 'SELECT m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, u.name AS u_name, u.surname, l.id as locationId, l.street, l.street_number, l.city, l.postal_code FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;'
 
+    
     conn.query(query, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
@@ -53,7 +54,32 @@ dataPool.allMeal=()=>{
 // Get the meal with a specific id
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
-    const query=`SELECT Meal.*, User.name as u_name, User.surname, Location.*, Ingredient.* FROM Meal JOIN User ON Meal.id_user = User.id JOIN Location ON User.id_location = Location.id JOIN Ingredient ON Meal.id = Ingredient.id_meal WHERE Meal.id = ?`
+    // const query=`SELECT 
+    //     m.id as mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+    //     u.name as u_name, u.surname, 
+    //     l.id as locationId, l.street, l.street_number, l.city, l.postal_code, 
+    //     i.name as i_name, i.id_meal 
+    //     FROM Meal AS m JOIN User AS u ON m.id_user = u.id 
+    //     JOIN Location AS l ON u.id_location = l.id 
+    //     JOIN Ingredient AS i ON m.id = i.id_meal 
+    //     WHERE m.id = ?
+    //   `
+
+    const query = `SELECT 
+    m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+    u.name AS u_name, u.surname, 
+    l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
+    i.i_names
+FROM Meal AS m 
+JOIN User AS u ON m.id_user = u.id 
+JOIN Location AS l ON u.id_location = l.id 
+JOIN (
+    SELECT id_meal, GROUP_CONCAT(name) AS i_names 
+    FROM Ingredient 
+    GROUP BY id_meal
+) AS i ON m.id = i.id_meal
+WHERE m.id = ?;
+`
     conn.query(query, id, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
