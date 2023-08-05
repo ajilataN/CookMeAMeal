@@ -41,6 +41,7 @@ class SingleMealView extends Component {
               className="invisibleBtn"
               onClick={() => this.QSetViewInParent({ page: "feed" })}
             >
+              {/* this is icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -54,6 +55,8 @@ class SingleMealView extends Component {
                   d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
                 />
               </svg>
+              {/* end of icon */}
+
             </button>
             <img
               width="35"
@@ -114,8 +117,26 @@ class SingleMealView extends Component {
             <span>
             {meal[0].number_of_portions}
             </span>
-            <br></br>
-            <Ingredients />
+            <br></br><br></br>
+
+            {/* Ingredients */}
+            <div>
+              <img
+              width="20"
+              height="20"
+              src="https://img.icons8.com/ios-filled/50/ingredients-for-cooking.png"
+              alt="ingredients-for-cooking"
+            />
+            <span id="ingredients">Ingredients</span>
+            
+            <ul>
+              {meal[0].i_names.split(',').map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
+              ))}
+            </ul>
+            </div>
+
+
             <br></br>
             <div className="rightButtonDiv">
               <svg
