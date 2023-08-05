@@ -15,7 +15,7 @@ class FeedView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  componentDidMount(){
+ componentDidMount(){
      axios.get("http://88.200.63.148:5020/meal")
     .then(res =>{
       this.setState({
@@ -33,7 +33,7 @@ class FeedView extends Component {
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         {data.length > 0 ? 
-          data.map(d => {
+          data.map((d) => {
             const time = d.time_ready
             const [hrs, mins] = time.split(":")
             const formattedTime = `${hrs.padStart(2, "0")}:${mins.padStart(2, "0")}`
@@ -148,7 +148,7 @@ class FeedView extends Component {
               </a>
               <a
                 href="#"
-                onClick={() => this.QSetViewInParent({ page: "order" })}
+                onClick={() => this.QSetViewInParent({ page: "order", id: d.mealId })}
                 className="btn btn-primary feedButton defaultButton"
               >
                 Order

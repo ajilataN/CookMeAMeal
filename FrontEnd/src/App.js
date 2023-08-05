@@ -40,7 +40,9 @@ class App extends Component {
     let page = state.currentPage;
     switch (page) {
       case "order":
-        return <OrderView QIDFromChild={this.QSetView} />;
+        return <OrderView 
+                  QIDFromChild={this.QSetView} 
+                  data={this.state.meal} />;
 
       case "feed":
         return <FeedView QIDFromChild={this.QSetView} />;

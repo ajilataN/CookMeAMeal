@@ -41,9 +41,11 @@ dataPool.allLocations=()=>{
 // Retreive all meals from the db, (feed of the app)
 dataPool.allMeal=()=>{
   return new Promise ((resolve, reject)=>{
-    const query = 'SELECT m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, u.name AS u_name, u.surname, l.id as locationId, l.street, l.street_number, l.city, l.postal_code FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;'
-
-    
+    const query = `SELECT 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      u.name AS u_name, u.surname, 
+      l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
+      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;`
     conn.query(query, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
@@ -54,33 +56,21 @@ dataPool.allMeal=()=>{
 // Get the meal with a specific id
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
-    // const query=`SELECT 
-    //     m.id as mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
-    //     u.name as u_name, u.surname, 
-    //     l.id as locationId, l.street, l.street_number, l.city, l.postal_code, 
-    //     i.name as i_name, i.id_meal 
-    //     FROM Meal AS m JOIN User AS u ON m.id_user = u.id 
-    //     JOIN Location AS l ON u.id_location = l.id 
-    //     JOIN Ingredient AS i ON m.id = i.id_meal 
-    //     WHERE m.id = ?
-    //   `
-
     const query = `SELECT 
-    m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
-    u.name AS u_name, u.surname, 
-    l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
-    i.i_names
-    FROM Meal AS m 
-    JOIN User AS u ON m.id_user = u.id 
-    JOIN Location AS l ON u.id_location = l.id 
-    JOIN (
-          SELECT id_meal, GROUP_CONCAT(name) AS i_names 
-          FROM Ingredient 
-          GROUP BY id_meal
-      ) 
-    AS i ON m.id = i.id_meal
-    WHERE m.id = ?;
-`
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+      u.name AS u_name, u.surname, 
+      l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
+      i.i_names
+      FROM Meal AS m 
+      JOIN User AS u ON m.id_user = u.id 
+      JOIN Location AS l ON u.id_location = l.id 
+      JOIN (
+            SELECT id_meal, GROUP_CONCAT(name) AS i_names 
+            FROM Ingredient 
+            GROUP BY id_meal
+        ) 
+      AS i ON m.id = i.id_meal
+      WHERE m.id = ?;`
     conn.query(query, id, (err,res)=>{
       if(err){return reject(err)}
       return resolve(res)
@@ -99,26 +89,17 @@ dataPool.getMealPoster = (id)=>{
 }
 
 
-// // Insert a new meal in the db
-// dataPool.createMeal=(name,number_of_portions,date,time_ready,price,id_user)=>{
-//   return new Promise ((resolve, reject)=>{
-//     conn.query(`INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?,?,?,?,?,?)`, [name, number_of_portions, date, time_ready, price, id_user], (err,res)=>{
-//       if(err){return reject(err)}
-//       return resolve(res)
-//     })
-//   })
-// }
-
-
+// Insert a new meal and its ingredients in the db
 dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_user, ingredients) => {
   return new Promise((resolve, reject) => {
+    const isoDate = new Date(date);
     conn.beginTransaction((err) => {
       if (err) { return reject(err); }
 
       // Insert the new meal
       conn.query(
         `INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?, ?, ?, ?, ?, ?)`,
-        [name, number_of_portions, date, time_ready, price, id_user],
+        [name, number_of_portions, isoDate, time_ready, price, id_user],
         (err, mealResult) => {
           if (err) {
             conn.rollback(() => {
@@ -130,13 +111,14 @@ dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_us
             console.log(ingredients)
             // Insert ingredients for the meal
             if (ingredients && ingredients.length > 0) {
-              const ingredientValues = ingredients.map((ingredient) => [ingredient.name, mealId]).flat();
+              const ingredientValues = ingredients.map((ingredient) => [ingredient.name, mealId]);
               console.log(ingredientValues)
               conn.query(
                 `INSERT INTO Ingredient (name, id_meal) VALUES ?`,
                 [ingredientValues],
                 (err, ingredientResult) => {
                   if (err) {
+                    console.log("Error inserting meal:", err);
                     conn.rollback(() => {
                       reject(err);
                     });
@@ -218,6 +200,36 @@ dataPool.createLocation = (street, street_number, city, postal_code) => {
       return resolve(res);
     });
   });
+}
+
+// Add a new order in the db
+dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
+  return new Promise((resolve, reject) => {
+    const query = `INSERT INTO \`Order\` (id_cook, id_customer, id_meal, portions)  values (?, ?, ?, ?)`;
+    conn.query(query, [id_cook, id_customer, id_meal, portions], (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(res);
+    });
+  })
+}
+
+// Get all orders for a user based on id
+dataPool.getOrderForUser = (id) =>{
+  return new Promise ((resolve, reject)=>{
+    const query = `SELECT
+      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, 
+      u.id as userId, u.name as userName, u.surname
+      FROM \`Order\` as o
+      JOIN User as u ON o.id_cook = u.id
+      WHERE o.id_cook = ?;`
+
+      conn.query(query, id, (err, res)=>{
+        if(err){return reject(err)}
+        return resolve(res)
+      })
+  })
 }
 
 

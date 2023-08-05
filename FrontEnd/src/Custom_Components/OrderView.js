@@ -1,16 +1,46 @@
 import { Component } from "react";
 import Helmet from "react-helmet";
+import axios from "axios";
+
 
 class OrderView extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      meal: [],
+      portions: 1,
+    };
+  }
+
   QSetViewInParent = (obj) => {
     this.props.QIDFromChild(obj);
   };
 
+  handlePortionsChange = (event) => {
+    this.setState({ portions: parseInt(event.target.value, 10) || 1 });
+  };
+
+  componentDidMount(){
+    console.log(this.props.data)
+    axios.get("http://88.200.63.148:5020/meal/" + this.props.data)
+    .then(res=>{
+      console.log(res.data)
+      this.setState({
+        meal: res.data.length > 0 ? res.data : [],
+      })
+      //console.log(meal)
+    })
+  }
+
   render() {
+    const { meal, portions } = this.state;
+    const totalPrice = meal.length > 0 ? meal[0].price * portions : 0;
     return (
       <div id="placeOrder">
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
-
+        {
+          meal.length>0 ?
         <div class="card myCard">
           <div class="card-body">
             <h5
@@ -19,6 +49,8 @@ class OrderView extends Component {
             >
               Place your order
             </h5>
+            <div>Price per plate: {meal[0].price}€</div>
+            <div>Maximum number of plates: {meal[0].number_of_portions}</div>
             <h6 class="card-subtitle mb-2 text-muted order">
               Choose number of plates!
             </h6>
@@ -31,10 +63,12 @@ class OrderView extends Component {
               />
               <input
                 name="portions"
+                value={portions}
                 placeholder="1"
-                onChange={(e) => this.QGetTextFromField(e)}
+                onChange={this.handlePortionsChange}
                 type="number"
                 min="1"
+                max={meal[0].number_of_portions}
                 id="portionOrder"
                 className="form-control numberInput"
               />
@@ -58,7 +92,9 @@ class OrderView extends Component {
                 <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
               </svg>
             </div>
-            <div className="price">5€</div>
+            <div id="totalPrice" className="price">
+            {totalPrice.toFixed(2)}€
+            </div>
             <hr id="horizontalDivider"></hr>
           </div>
           <div className="buttonContainer">
@@ -70,6 +106,8 @@ class OrderView extends Component {
             </button>
           </div>
         </div>
+        : "Loading..."
+  }
       </div>
     );
   }

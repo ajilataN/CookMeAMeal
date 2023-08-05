@@ -1,6 +1,5 @@
 import { Component } from "react";
 import Helmet from "react-helmet";
-import Ingredients from "./Ingredients.js";
 import axios from "axios";
 
 class SingleMealView extends Component {
@@ -14,6 +13,7 @@ class SingleMealView extends Component {
   QSetViewInParent = (obj) => {
     this.props.QIDFromChild(obj);
   };
+  
 
   componentDidMount(){
     console.log(this.props.data)

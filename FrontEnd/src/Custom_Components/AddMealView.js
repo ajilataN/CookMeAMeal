@@ -21,6 +21,7 @@ class AddMealView extends Component {
     this.props.QIDFromChild(obj);
   };
 
+
   handleAddField= () => {
     const { fields } = this.state;
     this.setState({ fields: [...fields, { value: "" }] });
@@ -42,29 +43,25 @@ class AddMealView extends Component {
   }
 
 
-  QPostMeal =() =>{
-    
-    axios.post("http://88.200.63.148:5020/meal", {
-
-      name: this.state.meal.name,
-      number_of_portions: this.state.meal.number_of_portions,
-      date: this.state.meal.date,
-      time_ready: this.state.meal.time_ready,
-      price: this.state.meal.price
+  QPostMeal = async () =>{
+    try{
+      const res = await axios.post("http://88.200.63.148:5020/meal", {
+        name: this.state.meal.name,
+        number_of_portions: this.state.meal.number_of_portions,
+        date: this.state.meal.date,
+        time_ready: this.state.meal.time_ready,
+        price: this.state.meal.price,
+        ingredients: this.state.ingredientsList
       },
-      {withCredentials: true}).then((res) =>{
-        console.log(res.data);
-        console.log(this.state.meal.name)
-        console.log(this.state.meal.number_of_portions)
-        console.log(this.state.meal.price)
-        console.log(this.state.meal.date)
-        console.log(this.state.meal.time_ready)
-        console.log("Sent to server...")
-        
-      })
-        .catch(err => {
-          console.log(err)
-        })
+      {withCredentials: true}
+      );
+      console.log("Meal:" + res);
+      const newMeal = res.data;
+      this.QSetViewInParent ({page: "feed"});
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
   render() {
