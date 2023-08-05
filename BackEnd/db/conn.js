@@ -70,15 +70,16 @@ dataPool.oneMeal=(id)=>{
     u.name AS u_name, u.surname, 
     l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
     i.i_names
-FROM Meal AS m 
-JOIN User AS u ON m.id_user = u.id 
-JOIN Location AS l ON u.id_location = l.id 
-JOIN (
-    SELECT id_meal, GROUP_CONCAT(name) AS i_names 
-    FROM Ingredient 
-    GROUP BY id_meal
-) AS i ON m.id = i.id_meal
-WHERE m.id = ?;
+    FROM Meal AS m 
+    JOIN User AS u ON m.id_user = u.id 
+    JOIN Location AS l ON u.id_location = l.id 
+    JOIN (
+          SELECT id_meal, GROUP_CONCAT(name) AS i_names 
+          FROM Ingredient 
+          GROUP BY id_meal
+      ) 
+    AS i ON m.id = i.id_meal
+    WHERE m.id = ?;
 `
     conn.query(query, id, (err,res)=>{
       if(err){return reject(err)}
@@ -219,8 +220,6 @@ dataPool.createLocation = (street, street_number, city, postal_code) => {
   });
 }
 
-  
-module.exports = {
-  conn,
-  dataPool
-};
+
+
+module.exports = { conn, dataPool };
