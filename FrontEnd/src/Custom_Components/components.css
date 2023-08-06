@@ -9,6 +9,31 @@
   max-width: 800px;
 }
 
+.nav-item:hover{
+  background-color: #04587c;
+  height: 100%;
+}
+
+.orderButton{
+  background-color: #04587c;
+  border-color: #04587c;
+  border-radius: 0;
+
+}
+
+.orderButton:hover{
+  background-color: #023246;
+  border-color: #023246;
+  border-radius: 0;
+
+}
+
+.orderButton:active{
+  background-color: #023246;
+  border-color: #023246;
+  border-radius: 0;
+}
+
 #postButton {
   width: 90%;
 }

@@ -215,8 +215,8 @@ dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
   })
 }
 
-// Get all orders for a user based on id
-dataPool.getOrderForUser = (id) =>{
+// Get all pending orders for a user based on id
+dataPool.getPendingOrderForUser = (id) =>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT
       o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, 
@@ -232,6 +232,21 @@ dataPool.getOrderForUser = (id) =>{
   })
 }
 
+// Get all orders for a user based on id
+dataPool.getMyOrderForUser = (id) =>{
+  return new Promise ((resolve, reject)=>{
+    const query = `SELECT
+      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, 
+      u.id as userId, u.name as userName, u.surname
+      FROM \`Order\` as o
+      JOIN User as u ON o.id_customer = u.id
+      WHERE o.id_customer = ?;`
 
+      conn.query(query, id, (err, res)=>{
+        if(err){return reject(err)}
+        return resolve(res)
+      })
+  })
+}
 
 module.exports = { conn, dataPool };

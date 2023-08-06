@@ -34,14 +34,14 @@ const port = process.env.PORT || 5020
 //Import our custom modules-controllers
 const meal= require("./routes/meal")
 const users = require("./routes/users")
+const order = require("./routes/order")
 const db = require("./db/conn")
 
 
 //Routes
 app.use('/meal', meal);
-//app.use('/location', users);
 app.use('/users', users);
-
+app.use('/order', order);
 
 
 app.get("/",(req,res)=>{

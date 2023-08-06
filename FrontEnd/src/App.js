@@ -6,6 +6,7 @@ import LoginView from "./Custom_Components/LoginView";
 import FeedView from "./Custom_Components/FeedView";
 import SignupView from "./Custom_Components/SignupView";
 import SingleMealView from "./Custom_Components/SingleMealView";
+import MyOrdersView from "./Custom_Components/MyOrdersView";
 import axios from "axios";
 
 class App extends Component {
@@ -48,10 +49,8 @@ class App extends Component {
         return <FeedView QIDFromChild={this.QSetView} />;
 
       case "addmeal":
-        return state.userStatus.logged ? <AddMealView QIDFromChild={this.QSetView} /> : <h3 style={{backgroundColor: "red"}}>Bratce ne si logiran</h3>;;
-      //) : (
-      // ""
-      //);
+        return state.userStatus.logged ? <AddMealView QIDFromChild={this.QSetView} /> 
+        : <h3 style={{backgroundColor: "red"}}>Bratce ne si logiran</h3>;;
 
       case "signup":
         return (
@@ -79,6 +78,9 @@ class App extends Component {
 
       case "home":
         return <HomeView QIDFromChild={this.QSetView} />;
+      
+      case "orders":
+        return <MyOrdersView/>;
 
       default:
         return <HomeView />;
@@ -134,7 +136,7 @@ class App extends Component {
                     <li className="nav-item">
                       <a
                         onClick={() => this.QSetView({ page: "feed" })}
-                        className="nav-link "
+                        className="nav-link"
                         href="#"
                       >
                         Feed
@@ -150,7 +152,15 @@ class App extends Component {
                         Add meal
                       </a>
                     </li>
-
+                    <li className="nav-item">
+                      <a
+                        onClick={() => this.QSetView({ page: "orders" })}
+                        className="nav-link "
+                        href="#"
+                      >
+                        Orders
+                      </a>
+                    </li>
                     <li className="nav-item">
                       <a
                         onClick={() => this.QSetView({ page: "login" })}
