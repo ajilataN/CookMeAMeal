@@ -80,7 +80,7 @@ class App extends Component {
         return <HomeView QIDFromChild={this.QSetView} />;
       
       case "orders":
-        return <MyOrdersView/>;
+        return <MyOrdersView userStatus={this.state.userStatus}/>;
 
       default:
         return <HomeView />;
