@@ -53,6 +53,21 @@ class MyOrdersView extends Component{
         }
     };
 
+
+    handleConfirmClick = (orderId) => {
+      axios
+        .post(`http://88.200.63.148:5020/order/confirm/${orderId}`, {}, { withCredentials: true })
+        .then((res) => {
+          console.log("Order confirmed:", orderId);
+          // Refresh the orders after confirmation
+          this.fetchOrders(this.state.activeTable);
+        })
+        .catch((error) => {
+          console.error("Error confirming order:", error);
+        });
+    };
+    
+
     render(){
       const { activeTable, orders } = this.state;
       console.log(orders);
@@ -91,10 +106,10 @@ class MyOrdersView extends Component{
               <tbody>
               {orders.map((order, index) => (
                 <tr key={index}>
-                  <td>{order.id_cook}</td>
-                  <td>Meal name</td> {/* Replace with the correct property */}
-                  <td>{order.portions}</td>
-                  <td>{order.confirmed}</td>
+                  <td>{ order.cookName }</td>
+                  <td>{ order.mealName }</td>
+                  <td>{ order.portions }</td>
+                  <td>{ order.confirmed ? <div style={{color:"green"}}>Confirmed!</div>: <div style={{color:"#FFCC00"}}>Pending...</div> }</td>
                 </tr>
       ))}
               </tbody>
@@ -113,16 +128,20 @@ class MyOrdersView extends Component{
               <tbody>
                 { orders.map((order, index)=> (
                   <tr key={index}>
-                    <th scope="row">{order.id_customer}</th>
-                    <td>{order.id_meal}</td>
-                    <td>{order.portions}</td>
+                    <th scope="row">{ order.customerName }</th>
+                    <td>{ order.mealName }</td>
+                    <td>{ order.portions }</td>
                     <td>
+                    {order.confirmed === 0 ? (
                       <button
                         type="button"
                         className="btn"
-                        id="addButton">
+                        id="addButton"
+                        onClick={() => this.handleConfirmClick(order.orderId)}>
                           ✓
                       </button>
+                    ): ("Confirmed"
+                    )}
                     </td>
                   </tr>
                 )) }

@@ -203,26 +203,84 @@ dataPool.createLocation = (street, street_number, city, postal_code) => {
 }
 
 // Add a new order in the db
+// dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
+//   return new Promise((resolve, reject) => {
+//     const query = `INSERT INTO \`Order\` (id_cook, id_customer, id_meal, portions)  values (?, ?, ?, ?)`;
+//     conn.query(query, [id_cook, id_customer, id_meal, portions], (err, res) => {
+//       if (err) {
+//         return reject(err);
+//       }
+//       return resolve(res);
+//     });
+//   })
+// }
+// Add a new order in the db and update Meal table
 dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
   return new Promise((resolve, reject) => {
-    const query = `INSERT INTO \`Order\` (id_cook, id_customer, id_meal, portions)  values (?, ?, ?, ?)`;
-    conn.query(query, [id_cook, id_customer, id_meal, portions], (err, res) => {
+    const createOrderQuery = `INSERT INTO \`Order\` (id_cook, id_customer, id_meal, portions)  values (?, ?, ?, ?)`;
+    const updateMealQuery = `UPDATE Meal SET number_of_portions = number_of_portions - ? WHERE id = ?`;
+
+    conn.beginTransaction((err) => {
+      if (err) {
+        return reject(err);
+      }
+
+      conn.query(
+        createOrderQuery,
+        [id_cook, id_customer, id_meal, portions],
+        (err, orderRes) => {
+          if (err) {
+            conn.rollback(() => reject(err));
+            return;
+          }
+
+          conn.query(updateMealQuery, [portions, id_meal], (err, mealRes) => {
+            if (err) {
+              conn.rollback(() => reject(err));
+              return;
+            }
+
+            conn.commit((err) => {
+              if (err) {
+                conn.rollback(() => reject(err));
+                return;
+              }
+              resolve({ order: orderRes, mealUpdate: mealRes });
+            });
+          });
+        }
+      );
+    });
+  });
+};
+
+// Confirm an order by updating the 'confirmed' column
+dataPool.confirmOrder = (orderId) => {
+  return new Promise((resolve, reject) => {
+    const query = `UPDATE \`Order\` SET confirmed = 1 WHERE id = ?`;
+    conn.query(query, [orderId], (err, res) => {
       if (err) {
         return reject(err);
       }
       return resolve(res);
     });
-  })
+  });
 }
+
+
 
 // Get all pending orders for a user based on id
 dataPool.getPendingOrderForUser = (id) =>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT
       o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, o.confirmed, 
-      u.id as userId, u.name as userName, u.surname
+      u.id as userId, u.name as userName, u.surname,
+      m.name as mealName,
+      cu.name as customerName
       FROM \`Order\` as o
       JOIN User as u ON o.id_cook = u.id
+      JOIN Meal as m ON o.id_meal = m.id
+      JOIN User as cu ON o.id_customer = cu.id
       WHERE o.id_cook = ?;`
 
       conn.query(query, id, (err, res)=>{
@@ -237,9 +295,13 @@ dataPool.getMyOrderForUser = (id) =>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT
       o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, 
-      u.id as userId, u.name as userName, u.surname
+      u.id as userId, u.name as userName, u.surname,
+      m.name as mealName,
+      cu.name as cookName
       FROM \`Order\` as o
       JOIN User as u ON o.id_customer = u.id
+      JOIN Meal as m ON o.id_meal = m.id
+      JOIN User as cu ON o.id_cook = cu.id
       WHERE o.id_customer = ?;`
       conn.query(query, id, (err, res)=>{
         if(err){return reject(err)}

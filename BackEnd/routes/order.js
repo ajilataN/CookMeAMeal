@@ -68,5 +68,21 @@ order.get('/pending', async (req,res, next)=>{
     }
 })
 
+// Confirm an order
+order.post('/confirm/:id', async (req, res, next) => {
+    const orderId = req.params.id;
+  
+    try {
+      const confirmResult = await dataPool.confirmOrder(orderId);
+      if (confirmResult.affectedRows) {
+        res.json({ message: 'Order confirmed successfully' });
+      }
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
+    }
+  })
+  
+
 
 module.exports=order
