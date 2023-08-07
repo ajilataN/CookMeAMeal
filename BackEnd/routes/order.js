@@ -8,9 +8,9 @@ order.use(express.json());
 
 // Inserts a new order to the database
 order.post('/', async (req, res, next) => {
-    let id_cook = req.body.id_cook;
-    let id_meal = req.body.id_meal;
-    let portions = req.body.portions;
+    let id_cook = req.body.id_cook
+    let id_meal = req.body.id_meal
+    let portions = req.body.portions
 
     console.log("Logged in user with id: " + req.session.user[0].id);
 
@@ -43,7 +43,7 @@ order.post('/', async (req, res, next) => {
 });
 
 // Retrieve my orders
-order.get('/my/:id', async (req,res, next)=>{
+order.get('/my', async (req,res, next)=>{
     let id_user = req.session.user[0].id
     try{
         var queryResult=await dataPool.getMyOrderForUser(id_user);
@@ -56,7 +56,7 @@ order.get('/my/:id', async (req,res, next)=>{
 })
 
 // Retrieve pending orders
-order.get('/pending/:id', async (req,res, next)=>{
+order.get('/pending', async (req,res, next)=>{
     let id_user = req.session.user[0].id
     try{
         var queryResult=await dataPool.getPendingOrderForUser(id_user);

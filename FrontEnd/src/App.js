@@ -41,16 +41,19 @@ class App extends Component {
     let page = state.currentPage;
     switch (page) {
       case "order":
-        return <OrderView 
+        return state.userStatus.logged ? <OrderView 
                   QIDFromChild={this.QSetView} 
-                  data={this.state.meal} />;
+                  data={this.state.meal} /> 
+                  : <div><h4>You have to be logged-in to continue!</h4><LoginView QUserFromChild={this.QSetUser}
+                  QIDFromChild={this.QSetView}/></div>;
 
       case "feed":
         return <FeedView QIDFromChild={this.QSetView} />;
 
       case "addmeal":
         return state.userStatus.logged ? <AddMealView QIDFromChild={this.QSetView} /> 
-        : <h3 style={{backgroundColor: "red"}}>Bratce ne si logiran</h3>;;
+        :<div> <h4>You have to be logged-in to continue!</h4> <LoginView QUserFromChild={this.QSetUser}
+        QIDFromChild={this.QSetView}/></div>;
 
       case "signup":
         return (
@@ -80,7 +83,9 @@ class App extends Component {
         return <HomeView QIDFromChild={this.QSetView} />;
       
       case "orders":
-        return <MyOrdersView userStatus={this.state.userStatus}/>;
+        return state.userStatus.logged ? <MyOrdersView userStatus={state.userStatus}/>
+        : <div><h4>You have to be logged-in to continue!</h4><LoginView QUserFromChild={this.QSetUser}
+        QIDFromChild={this.QSetView}/></div>;
 
       default:
         return <HomeView />;

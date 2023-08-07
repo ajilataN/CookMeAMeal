@@ -160,7 +160,7 @@ class SingleMealView extends Component {
               </span>
               <a
                 id="priceBtn"
-                onClick={() => this.QSetViewInParent({ page: "order" })}
+                onClick={() => this.QSetViewInParent({ page: "order", id: meal[0].mealId })}
                 href="#"
                 className="btn btn-primary feedButton defaultButton"
               >

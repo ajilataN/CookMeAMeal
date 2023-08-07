@@ -219,7 +219,7 @@ dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
 dataPool.getPendingOrderForUser = (id) =>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT
-      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, 
+      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, o.confirmed, 
       u.id as userId, u.name as userName, u.surname
       FROM \`Order\` as o
       JOIN User as u ON o.id_cook = u.id
@@ -236,12 +236,11 @@ dataPool.getPendingOrderForUser = (id) =>{
 dataPool.getMyOrderForUser = (id) =>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT
-      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, 
+      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, 
       u.id as userId, u.name as userName, u.surname
       FROM \`Order\` as o
       JOIN User as u ON o.id_customer = u.id
       WHERE o.id_customer = ?;`
-
       conn.query(query, id, (err, res)=>{
         if(err){return reject(err)}
         return resolve(res)

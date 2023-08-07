@@ -33,6 +33,32 @@ class OrderView extends Component {
     })
   }
 
+  postOrder = async () =>{
+    try{
+      const { meal, portions } = this.state;
+      const mealId = meal.length > 0 ? meal[0].mealId : null;
+      const cookId = meal.length > 0 ? meal[0].id_user : null;
+
+      if (!mealId || !cookId) {
+        console.log("Meal data is missing.");
+        return;
+      }
+      const res = await axios.post("http://88.200.63.148:5020/order", {
+        id_meal: mealId,
+        portions: portions,
+        id_cook: cookId
+      },
+      {withCredentials: true}
+      );
+      console.log("Order:" + res);
+      const newOrder = res.data;
+      this.QSetViewInParent ({page: "orders"});
+    }
+    catch(err){
+      console.log(err)
+    }
+  }
+
   render() {
     const { meal, portions } = this.state;
     const totalPrice = meal.length > 0 ? meal[0].price * portions : 0;
@@ -99,7 +125,7 @@ class OrderView extends Component {
           </div>
           <div className="buttonContainer">
             <button
-              onClick={() => this.QSetViewInParent({ page: "feed" })}
+              onClick={() => {this.postOrder(); this.QSetViewInParent({ page: "orders" })}}
               className="btn btn-primary bt feedButton defaultButton"
             >
               Finish
