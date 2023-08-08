@@ -16,7 +16,7 @@ class FeedView extends Component {
   };
 
  componentDidMount(){
-     axios.get("http://88.200.63.148:5020/meal")
+     axios.get("http://88.200.63.148:5020/meal", {withCredentials: true})
     .then(res =>{
       this.setState({
        meals:res.data

@@ -19,6 +19,14 @@ class App extends Component {
     };
   }
 
+  handleLogout = () => {
+    axios.post("http://88.200.63.148:5020/users/logout").then(() => {
+      this.setState({
+        userStatus: { logged: false, user: null },
+      });
+    });
+  };
+
   QHandleUserLog = (obj) => {
     this.QSetView({ page: "feed" });
   };
@@ -182,6 +190,15 @@ class App extends Component {
                         href="#"
                       >
                         Sign up
+                      </a>
+                    </li>
+                    <li className="nav-item">
+                      <a
+                        onClick={()=>{this.QSetView({ page: "login" }); this.handleLogout()}}
+                        className="nav-link "
+                        href="#"
+                      >
+                        Logout
                       </a>
                     </li>
                   </ul>

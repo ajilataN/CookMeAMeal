@@ -8,16 +8,6 @@ var pattern = new passwordValidator()
 
 users.use(express.json())
 
-/*users.use(session({
-  secret: "somesecret",
-  resave: false,
-  saveUninitialized: false,
-  cookies:{
-      expires: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000))
-      
-  }
-})) */
-
 users.get('/', async (req, res) => {
     try {
       let users = await dataPool.allUsers() 
@@ -96,11 +86,11 @@ users.post('/login', async (req, res) => {
     res.end() 
 }) 
 
-// Clears the cookies of a logged-out user
+// Logout request
 users.post('/logout', async (req, res) => {
-  res.cookie('id_user', '', {httpOnly:true, expires: new Date(0)})
-  res.redirect('/')
-})
+  req.session.destroy(); // Clear the session
+  res.status(200).send("Logged out successfully");
+});
 
 // Inserts a new user into the database
 users.post('/register', async (req, res) => {

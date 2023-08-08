@@ -39,16 +39,21 @@ dataPool.allLocations=()=>{
 }
 
 // Retreive all meals from the db, (feed of the app)
-dataPool.allMeal=()=>{
+dataPool.allMeal=(id_user)=>{
   return new Promise ((resolve, reject)=>{
-    const query = `SELECT 
+    var query = `SELECT 
       m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
       u.name AS u_name, u.surname, 
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
-      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id;`
-    conn.query(query, (err,res)=>{
-      if(err){return reject(err)}
-      return resolve(res)
+      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id`
+    
+      if(id_user !== null){
+        query += ` WHERE m.id_user <> ${id_user}`
+      }
+      query += ";"
+      conn.query(query, (err,res)=>{
+        if(err){ return reject(err) }
+        return resolve(res)
     })
   })
 }
@@ -202,18 +207,6 @@ dataPool.createLocation = (street, street_number, city, postal_code) => {
   });
 }
 
-// Add a new order in the db
-// dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
-//   return new Promise((resolve, reject) => {
-//     const query = `INSERT INTO \`Order\` (id_cook, id_customer, id_meal, portions)  values (?, ?, ?, ?)`;
-//     conn.query(query, [id_cook, id_customer, id_meal, portions], (err, res) => {
-//       if (err) {
-//         return reject(err);
-//       }
-//       return resolve(res);
-//     });
-//   })
-// }
 // Add a new order in the db and update Meal table
 dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
   return new Promise((resolve, reject) => {
@@ -266,8 +259,6 @@ dataPool.confirmOrder = (orderId) => {
     });
   });
 }
-
-
 
 // Get all pending orders for a user based on id
 dataPool.getPendingOrderForUser = (id) =>{

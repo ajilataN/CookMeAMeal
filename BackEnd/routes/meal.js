@@ -8,8 +8,10 @@ meal.use(express.json());
 
 // Gets everything from the feed in the DB 
 meal.get('/', async (req,res, next)=>{
+
     try{
-        var queryResult=await dataPool.allMeal();
+        let id_user = req.session.user ? req.session.user[0].id : null
+        var queryResult=await dataPool.allMeal(id_user);
         res.json(queryResult)
     }
     catch(err){
