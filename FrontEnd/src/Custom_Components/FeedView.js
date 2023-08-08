@@ -28,12 +28,31 @@ class FeedView extends Component {
 
   render() {
     let data = this.state.meals
+
+    data.sort((a, b) => {
+      if (a.date === null && b.date === null) {
+        return 0;
+      } else if (a.date === null) {
+        return 1;
+      } else if (b.date === null) {
+        return -1;
+      }
+    
+      const dateComparison = a.date.localeCompare(b.date);
+      if (dateComparison === 0) {
+        const timeA = a.time_ready.split(':').map(Number);
+        const timeB = b.time_ready.split(':').map(Number);
+        return timeA[0] - timeB[0] || timeA[1] - timeB[1];
+      }
+      return dateComparison;
+    });
+
     console.log(data);
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         {data.length > 0 ? 
-          data.map((d) => {
+          data.map((d, index) => {
             const time = d.time_ready
             const [hrs, mins] = time.split(":")
             const formattedTime = `${hrs.padStart(2, "0")}:${mins.padStart(2, "0")}`
@@ -46,7 +65,7 @@ class FeedView extends Component {
             const formattedDate = `${year}-${month}-${day} `;
 
             return(
-              <div className="card myCard" key={d.id}>
+              <div className="card myCard" key={index}>
           <h5 className="card-header">
             <img
               width="35"
