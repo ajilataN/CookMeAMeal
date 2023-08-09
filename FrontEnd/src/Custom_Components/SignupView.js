@@ -26,24 +26,39 @@ class SignupView extends Component {
     this.props.QIDFromChild(obj);
   };
 
-  QPostSignUp = ()=> {
-    let user = this.state.user 
-    axios.post("http://88.200.63.148:5020/users/register",{
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      telephone: user.telephone,
-      street: user.street,
-      street_number: user.street_number,
-      city: user.city,
-      postal_code: user.postal_code,
-      password: user.password
-    }).then(res =>{
-      console.log("Sent to server...")
-    }).catch(err =>{
-      console.log(err)
-    })
-  }
+  QPostSignUp = () => {
+    let user = this.state.user;
+    axios
+      .post("http://88.200.63.148:5020/users/register", {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        telephone: user.telephone,
+        street: user.street,
+        street_number: user.street_number,
+        city: user.city,
+        postal_code: user.postal_code,
+        password: user.password,
+      })
+      .then((res) => {
+          if (res.data === "MISSING FIELD") {
+          alert("Please complete all required fields before proceeding.");
+        } else if (res.status === 200) {
+          // Success, redirect or show a success message
+          this.QSetViewInParent({ page: "login" });
+        } else {
+          // Handle unexpected response here
+          alert("An unexpected error occurred. Please try again later.");
+        }
+      })
+      .catch((err) => {
+        // Handle network or server errors here
+        console.log(err.response.data.message);
+        alert(err.response.data.message)
+        //alert("An error occurred while processing your request. Please try again later.");
+      });
+  };
+  
 
   render() {
     return (
@@ -78,7 +93,7 @@ class SignupView extends Component {
             <input
               onChange={(e) => this.QGetTextFromField(e)}
               name="email"
-              type="emial"
+              type="email"
               className="form-control"
               id="email"
               aria-describedby="emailHelp"
@@ -165,7 +180,6 @@ class SignupView extends Component {
         <button
           onClick={() => {
             this.QPostSignUp();
-            this.QSetViewInParent({ page: "login" });
           }}
           className="btn btn-primary bt defaultButton"
         >

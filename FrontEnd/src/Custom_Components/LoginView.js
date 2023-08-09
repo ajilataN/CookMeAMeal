@@ -31,17 +31,21 @@ class LoginView extends Component {
     axios.post("http://88.200.63.148:5020/users/login", {
         email: user.email,
         password: user.password
-    },{withCredentials: true})
+    },  { withCredentials: true })
     .then(res=>{
       if(res.data === "INCORRECT PASSWORD"){
-        alert("INCORRECT PASSWORD")
+        alert("INCORRECT PASSWORD!")
       }
       else if(res.data === "USER NOT REGISTRED"){
-        alert("USER NOT REGISTRED")
+        alert("USER NOT REGISTRED!")
+      }
+      else if(res.data === "ENTER EMAIL AND PASSWORD"){
+        alert("ENTER EMAIL AND PASSWORD!")
       }
       else{
       console.log("Sent to the server...")
       this.QSendUser2Parent(res.data)
+      this.QSetViewInParent({ page: "feed" })
       }
     }).catch(err=>{
       console.log(err)
@@ -75,8 +79,7 @@ class LoginView extends Component {
           </div>
         </form>
         <button
-          onClick={() => {this.QPostLogin(); 
-            this.QSetViewInParent({ page: "feed" })
+          onClick={() => {this.QPostLogin()
           }}
           className="btn btn-primary bt defaultButton log"
         >

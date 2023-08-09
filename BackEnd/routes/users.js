@@ -1,7 +1,7 @@
 const express= require("express")
 const users = express.Router()
+const bcrypt = require('bcryptjs');
 const { conn, dataPool } = require('../db/conn.js')
-//const session = require("express-session")
 const emailValidator = require('deep-email-validator')
 const passwordValidator = require('password-validator')
 var pattern = new passwordValidator()
@@ -54,26 +54,26 @@ users.post('/login', async (req, res) => {
     if (isRegisteredUser) {
         try {
          let queryResult=await dataPool.AuthUser(email) 
-                if(queryResult.length>0) {
-                  const loggedUser = queryResult[0]
-                    if(password===loggedUser.password) {
-                      console.log(queryResult[0].id)
-                      req.session.user=queryResult
-                      console.log(req.session.user)
-                      console.log(queryResult)
-                      console.log("SESSION VALID") 
-                      res.json(queryResult)
-                      // res.cookie('id_user', loggedUser.id, { maxAge: 86400000, httpOnly: true})
-                      //res.redirect('/') 
-                    }
-                    else {
-                      console.log("INCORRECT PASSWORD")
-                      res.send("INCORRECT PASSWORD") 
-                    }
-                } else {
-                 console.log("USER NOT REGISTRED")
-                 res.send("USER NOT REGISTRED")    
+            if(queryResult.length>0) {
+              const loggedUser = queryResult[0]
+              const passwordMatch = await bcrypt.compare(password, loggedUser.password);
+
+                if(passwordMatch) {
+                  console.log(queryResult[0].id)
+                  req.session.user=queryResult
+                  console.log(req.session.user)
+                  console.log(queryResult)
+                  console.log("SESSION VALID") 
+                  res.json(queryResult)
+              }
+                else {
+                  console.log("INCORRECT PASSWORD")
+                  res.send("INCORRECT PASSWORD") 
                 }
+            } else {
+             console.log("USER NOT REGISTRED")
+             res.send("USER NOT REGISTRED")    
+            }
         }
         catch(err){
             console.log(err)
@@ -81,7 +81,8 @@ users.post('/login', async (req, res) => {
         }    
     }
     else {
-        console.log("Please enter Email and Password!")
+        res.send("ENTER EMAIL AND PASSWORD")
+        console.log("ENTER EMAIL AND PASSWORD")
     }
     res.end() 
 }) 
@@ -119,6 +120,7 @@ users.post('/register', async (req, res) => {
         message: "Password too weak!"
     })
     }
+    
 
     var isCompleteForm = name && password && email && surname && telephone && street && street_number && city && postal_code
     if (isCompleteForm) {
@@ -131,8 +133,11 @@ users.post('/register', async (req, res) => {
           id_location = await createLocation(street, street_number, city, postal_code)
         }
 
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10); // Use 10 rounds of hashing
+
         // Create the user with the corresponding id_location
-        let queryResult=await dataPool.AddUser(name, surname, email, telephone, password, id_location) 
+        let queryResult=await dataPool.AddUser(name, surname, email, telephone, hashedPassword, id_location) 
         if (queryResult.affectedRows) {
            console.log("New user added!!")
         }
@@ -143,6 +148,7 @@ users.post('/register', async (req, res) => {
         }    
     }
     else {
+        res.send("MISSING FIELD")
         console.log("A field is missing!")
     }
     res.end() 
