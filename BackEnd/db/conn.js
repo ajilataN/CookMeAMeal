@@ -41,6 +41,9 @@ dataPool.allLocations=()=>{
 // Retreive all meals from the db, (feed of the app)
 dataPool.allMeal=(id_user)=>{
   return new Promise ((resolve, reject)=>{
+    const currentDate = new Date(); // Get the current date and time
+    const isoCurrentDate = currentDate.toISOString();
+    const isoCurrentTime = isoCurrentDate.substring(11, 19); // Extract time portion (HH:mm:ss)
     var query = `SELECT 
       m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
       u.name AS u_name, u.surname, 
@@ -50,6 +53,8 @@ dataPool.allMeal=(id_user)=>{
       if(id_user !== null){
         query += ` WHERE m.id_user <> ${id_user}`
       }
+      // Add a condition to filter out meals with past date and time_ready
+      query += ` AND (m.date > '${isoCurrentDate}' OR (m.date = '${isoCurrentDate}' AND m.time_ready > '${isoCurrentTime}'))`;
       query += ";"
       conn.query(query, (err,res)=>{
         if(err){ return reject(err) }
@@ -261,29 +266,37 @@ dataPool.confirmOrder = (orderId) => {
 }
 
 // Get all pending orders for a user based on id
-dataPool.getPendingOrderForUser = (id) =>{
-  return new Promise ((resolve, reject)=>{
+dataPool.getPendingOrderForUser = (id) => {
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date() // Get the current date and time
+    const isoCurrentDate = currentDate.toISOString()
     const query = `SELECT
-      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, o.confirmed, 
+      o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, 
       u.id as userId, u.name as userName, u.surname,
       m.name as mealName,
+      m.date as mealDate,
       cu.name as customerName
       FROM \`Order\` as o
       JOIN User as u ON o.id_cook = u.id
       JOIN Meal as m ON o.id_meal = m.id
       JOIN User as cu ON o.id_customer = cu.id
-      WHERE o.id_cook = ?;`
+      WHERE o.id_cook = ? AND m.date > '${isoCurrentDate}';`
 
-      conn.query(query, id, (err, res)=>{
-        if(err){return reject(err)}
-        return resolve(res)
-      })
+    conn.query(query, id, (err, res) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(res)
+    })
   })
-}
+};
+
 
 // Get all orders for a user based on id
-dataPool.getMyOrderForUser = (id) =>{
-  return new Promise ((resolve, reject)=>{
+dataPool.getMyOrderForUser = (id) => {
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date(); // Get the current date and time
+    const isoCurrentDate = currentDate.toISOString();
     const query = `SELECT
       o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, 
       u.id as userId, u.name as userName, u.surname,
@@ -293,12 +306,16 @@ dataPool.getMyOrderForUser = (id) =>{
       JOIN User as u ON o.id_customer = u.id
       JOIN Meal as m ON o.id_meal = m.id
       JOIN User as cu ON o.id_cook = cu.id
-      WHERE o.id_customer = ?;`
-      conn.query(query, id, (err, res)=>{
-        if(err){return reject(err)}
-        return resolve(res)
-      })
-  })
-}
+      WHERE o.id_customer = ? AND m.date > '${isoCurrentDate}';`;
+      
+    conn.query(query, id, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(res);
+    });
+  });
+};
+
 
 module.exports = { conn, dataPool };
