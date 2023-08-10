@@ -9,6 +9,17 @@
   max-width: 800px;
 }
 
+.createNew{
+  background-color: #04587c;
+  border-color: #04587c;
+  margin: 10px;
+  max-width: 800px;
+}
+
+.createNew:hover{
+  background-color: #023246;
+}
+
 .nav-item:hover{
   background-color: #04587c;
   height: 100%;

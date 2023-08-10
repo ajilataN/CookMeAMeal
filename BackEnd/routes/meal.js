@@ -11,7 +11,13 @@ meal.get('/', async (req,res, next)=>{
 
     try{
         let id_user = req.session.user ? req.session.user[0].id : null
-        var queryResult=await dataPool.allMeal(id_user);
+        if(id_user !== null){
+            var queryResult=await dataPool.allMealForUser(id_user);
+        }
+        else{
+            var queryResult=await dataPool.allMeal();
+
+        }
         res.json(queryResult)
     }
     catch(err){

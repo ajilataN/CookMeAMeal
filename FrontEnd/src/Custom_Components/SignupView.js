@@ -8,15 +8,28 @@ class SignupView extends Component {
     this.state = {
       user: {
         type: "signup"
-      }
+      },
+      passwordMatch: true,
     };
   }
 
   QGetTextFromField = (e) => {
-    this.setState((prevState) => ({
-      user: { ...prevState.user, [e.target.name]: e.target.value }
-    }));
-  };
+    const { name, value } = e.target;
+
+    if (name === "password" || name === "password2") {
+      const password = name === "password" ? value : this.state.user.password;
+      const password2 = name === "password2" ? value : this.state.user.password2;
+
+      this.setState({
+        user: { ...this.state.user, [name]: value },
+        passwordMatch: password === password2,
+      });
+    } else {
+      this.setState((prevState) => ({
+        user: { ...prevState.user, [name]: value },
+      }));
+    }
+  }
 
   QSendUserToParent = () => {
     this.props.QUserFromChild(this.state.user);
@@ -169,11 +182,18 @@ class SignupView extends Component {
             <label className="form-label">Confirm password</label>
             <input
               onChange={(e) => this.QGetTextFromField(e)}
-              name="password"
+              name="password2"
               type="password"
-              className="form-control"
+              className={`form-control ${
+                this.state.passwordMatch ? "" : "is-invalid"
+              }`}
               id="password2"
             />
+            {!this.state.passwordMatch && (
+              <div className="invalid-feedback">
+                Passwords do not match.
+              </div>
+            )}
           </div>
         </form>
         {/* <div className="buttonContainer"> */}
@@ -182,6 +202,7 @@ class SignupView extends Component {
             this.QPostSignUp();
           }}
           className="btn btn-primary bt defaultButton"
+          disabled={!this.state.passwordMatch}
         >
           Sign up
         </button>

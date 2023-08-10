@@ -39,8 +39,33 @@ dataPool.allLocations=()=>{
 }
 
 // Retreive all meals from the db, (feed of the app)
-dataPool.allMeal=(id_user)=>{
+dataPool.allMeal=()=>{
   return new Promise ((resolve, reject)=>{
+    const currentDate = new Date();
+    const isoCurrentDate = currentDate.toISOString().split('T')[0];
+    const isoCurrentTime = currentDate.toISOString().split('T')[1].substring(0, 8);
+    var query = `SELECT 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      u.name AS u_name, u.surname, 
+      l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
+      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
+      AND (m.date > ? OR (m.date = ? AND m.time_ready > ?))`;
+
+    const values = [isoCurrentDate, isoCurrentDate, isoCurrentTime];
+
+      conn.query(query, values, (err,res)=>{
+        if(err){ return reject(err) }
+        return resolve(res)
+    })
+  })
+}
+
+dataPool.allMealForUser = (id_user) =>{
+  return new Promise ((resolve, reject)=>{
+    if (id_user === undefined) {
+      return reject(new Error("id_user is undefined"));
+    }
+
     const currentDate = new Date(); // Get the current date and time
     const isoCurrentDate = currentDate.toISOString();
     const isoCurrentTime = isoCurrentDate.substring(11, 19); // Extract time portion (HH:mm:ss)
@@ -48,14 +73,9 @@ dataPool.allMeal=(id_user)=>{
       m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
       u.name AS u_name, u.surname, 
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
-      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id`
-    
-      if(id_user !== null){
-        query += ` WHERE m.id_user <> ${id_user}`
-      }
-      // Add a condition to filter out meals with past date and time_ready
-      query += ` AND (m.date > '${isoCurrentDate}' OR (m.date = '${isoCurrentDate}' AND m.time_ready > '${isoCurrentTime}'))`;
-      query += ";"
+      FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
+      WHERE m.id_user <> ${id_user} 
+      AND (m.date > '${isoCurrentDate}' OR (m.date = '${isoCurrentDate}' AND m.time_ready > '${isoCurrentTime}'));`
       conn.query(query, (err,res)=>{
         if(err){ return reject(err) }
         return resolve(res)

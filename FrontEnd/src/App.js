@@ -23,9 +23,11 @@ class App extends Component {
     axios.post("http://88.200.63.148:5020/users/logout").then(() => {
       this.setState({
         userStatus: { logged: false, user: null },
+        currentPage: "login", // Reset the current page to home after logout
       });
     });
   };
+  
 
   QHandleUserLog = (obj) => {
     this.QSetView({ page: "feed" });
@@ -109,8 +111,86 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.userStatus)
-    console.log ("This is the meal id:"+this.state.meal)
+    const { userStatus } = this.state;
+  
+    const loggedInMenuItems = (
+  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+    <li className="nav-item">
+      <a
+        onClick={() => this.QSetView({ page: "feed" })}
+        className="nav-link"
+        href="#"
+      >
+        Feed
+      </a>
+    </li>
+    {userStatus.logged && (
+      <>
+        <li className="nav-item">
+          <a
+            onClick={() => this.QSetView({ page: "addmeal" })}
+            className="nav-link"
+            href="#"
+          >
+            Add meal
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            onClick={() => this.QSetView({ page: "orders" })}
+            className="nav-link "
+            href="#"
+          >
+            Orders
+          </a>
+        </li>
+        <li className="nav-item">
+          <a
+            onClick={this.handleLogout}
+            className="nav-link "
+            href="#"
+          >
+            Logout
+          </a>
+        </li>
+      </>
+    )}
+  </ul>
+);
+
+const loggedOutMenuItems = (
+  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+    <li className="nav-item">
+      <a
+        onClick={() => this.QSetView({ page: "feed" })}
+        className="nav-link"
+        href="#"
+      >
+        Feed
+      </a>
+    </li>
+    <li className="nav-item">
+      <a
+        onClick={() => this.QSetView({ page: "login" })}
+        className="nav-link "
+        href="#"
+      >
+        Login
+      </a>
+    </li>
+    <li className="nav-item">
+      <a
+        onClick={() => this.QSetView({ page: "signup" })}
+        className="nav-link "
+        href="#"
+      >
+        Sign up
+      </a>
+    </li>
+  </ul>
+);
+
+  
     return (
       <div id="APP" className="container">
         <div id="menu" className="row">
@@ -139,79 +219,25 @@ class App extends Component {
               >
                 <span className="navbar-toggler-icon"></span>
               </button>
-
+  
               <div
                 className="collapse navbar-collapse"
                 id="navbarSupportedContent"
               >
                 <div className="com-sm">
-                  <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="nav-item">
-                      <a
-                        onClick={() => this.QSetView({ page: "feed" })}
-                        className="nav-link"
-                        href="#"
-                      >
-                        Feed
-                      </a>
-                    </li>
-
-                    <li className="nav-item">
-                      <a
-                        onClick={() => this.QSetView({ page: "addmeal" })}
-                        className="nav-link"
-                        href="#"
-                      >
-                        Add meal
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        onClick={() => this.QSetView({ page: "orders" })}
-                        className="nav-link "
-                        href="#"
-                      >
-                        Orders
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        onClick={() => this.QSetView({ page: "login" })}
-                        className="nav-link "
-                        href="#"
-                      >
-                        Login
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        onClick={() => this.QSetView({ page: "signup" })}
-                        className="nav-link "
-                        href="#"
-                      >
-                        Sign up
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        onClick={()=>{this.QSetView({ page: "login" }); this.handleLogout()}}
-                        className="nav-link "
-                        href="#"
-                      >
-                        Logout
-                      </a>
-                    </li>
-                  </ul>
+                  {userStatus.logged ? loggedInMenuItems : loggedOutMenuItems}
                 </div>
               </div>
             </div>
           </nav>
         </div>
-
+  
         <div id="viewer">{this.QGetView(this.state)}</div>
       </div>
     );
   }
+  
+
 }
 
 export default App;

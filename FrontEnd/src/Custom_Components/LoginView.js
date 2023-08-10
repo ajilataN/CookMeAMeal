@@ -85,6 +85,13 @@ class LoginView extends Component {
         >
           Login
         </button>
+        <hr style={{marginTop: "16px"}}></hr>
+        <button
+          onClick={() => this.QSetViewInParent({ page: "signup" })}
+          className="btn btn-primary bt log createNew"
+        >
+          Create new account
+        </button>
       </div>
     );
   }
