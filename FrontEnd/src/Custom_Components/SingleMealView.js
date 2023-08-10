@@ -29,6 +29,20 @@ class SingleMealView extends Component {
 
   render() {
     let meal = this.state.meal;
+
+    if (meal.length === 0) {
+      return <div>Loading...</div>;
+    }
+
+    const time = meal[0].time_ready
+    const [hrs, mins] = time.split(":")
+    const formattedTime = `${hrs.padStart(2, "0")}:${mins.padStart(2, "0")}`
+    const dateInput = meal[0].date
+    const date = new Date(dateInput); // Parse the ISO 8601 date string
+    const day = date.getUTCDate().toString().padStart(2, "0");
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    const year = date.getUTCFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
@@ -105,7 +119,7 @@ class SingleMealView extends Component {
               <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
             </svg>{" "}
             <span>
-            {meal[0].date} {meal[0].time_ready}
+            {formattedDate} {formattedTime}
             </span>
             <div className="vr"></div>
             <img

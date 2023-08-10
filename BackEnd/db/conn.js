@@ -49,7 +49,7 @@ dataPool.allMeal=()=>{
       u.name AS u_name, u.surname, 
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
       FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
-      AND (m.date > ? OR (m.date = ? AND m.time_ready > ?))`;
+      AND (m.date > ? OR (m.date = ? AND m.time_ready > ?)) AND m.number_of_portions > 0;`;
 
     const values = [isoCurrentDate, isoCurrentDate, isoCurrentTime];
 
@@ -75,7 +75,7 @@ dataPool.allMealForUser = (id_user) =>{
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
       FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
       WHERE m.id_user <> ${id_user} 
-      AND (m.date > '${isoCurrentDate}' OR (m.date = '${isoCurrentDate}' AND m.time_ready > '${isoCurrentTime}'));`
+      AND (m.date > '${isoCurrentDate}' OR (m.date = '${isoCurrentDate}' AND m.time_ready > '${isoCurrentTime}'))AND m.number_of_portions > 0;`
       conn.query(query, (err,res)=>{
         if(err){ return reject(err) }
         return resolve(res)
