@@ -12,7 +12,7 @@ class FeedView extends Component {
   }
 
   QSetViewInParent = (obj) => {
-    this.props.QIDFromChild(obj);
+    this.props.IdFromChild(obj);
   };
 
  componentDidMount(){

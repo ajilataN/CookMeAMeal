@@ -32,11 +32,11 @@ class SignupView extends Component {
   }
 
   QSendUserToParent = () => {
-    this.props.QUserFromChild(this.state.user);
+    this.props.userFromChild(this.state.user);
   };
 
   QSetViewInParent = (obj) => {
-    this.props.QIDFromChild(obj);
+    this.props.IdFromChild(obj);
   };
 
   QPostSignUp = () => {

@@ -9,7 +9,7 @@ class HomeView extends Component {
   }
 
   QSetViewInParent = (obj) => {
-    this.props.QIDFromChild(obj);
+    this.props.IdFromChild(obj);
   };
 
   render() {

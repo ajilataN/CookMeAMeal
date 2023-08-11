@@ -18,11 +18,11 @@ class LoginView extends Component {
   };
 
   QSetViewInParent = (obj) => {
-    this.props.QIDFromChild(obj);
+    this.props.IdFromChild(obj);
   };
 
   QSendUser2Parent = (obj) => {
-    this.props.QUserFromChild(obj);
+    this.props.userFromChild(obj);
   };
 
 

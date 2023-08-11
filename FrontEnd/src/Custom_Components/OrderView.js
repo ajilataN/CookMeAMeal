@@ -14,7 +14,7 @@ class OrderView extends Component {
   }
 
   QSetViewInParent = (obj) => {
-    this.props.QIDFromChild(obj);
+    this.props.IdFromChild(obj);
   };
 
   handlePortionsChange = (event) => {

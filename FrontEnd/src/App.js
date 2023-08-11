@@ -30,10 +30,6 @@ class App extends Component {
       })
     })
   }
-  
-  // QHandleUserLog = (obj) => {
-  //   this.setViewPage({ page: "feed" });
-  // };
 
   // Sets the current page
   setViewPage = (obj) => {
@@ -59,51 +55,51 @@ class App extends Component {
     switch (page) {
       case "order":
         return state.userStatus.logged ? <OrderView 
-                  QIDFromChild={ this.setViewPage } 
+                  IdFromChild={ this.setViewPage } 
                   data={ this.state.meal } /> 
                   : <div>
                     <h4>You have to be logged-in to continue!</h4>
-                    <LoginView QUserFromChild={this.setUserStatus} QIDFromChild={ this.setViewPage }/>
+                    <LoginView userFromChild={this.setUserStatus} IdFromChild={ this.setViewPage }/>
                   </div>;
 
       case "feed":
-        return <FeedView QIDFromChild = { this.setViewPage } />;
+        return <FeedView IdFromChild = { this.setViewPage } />;
 
       case "addmeal":
-        return state.userStatus.logged ? <AddMealView QIDFromChild={this.setViewPage} /> 
-        :<div> <h4>You have to be logged-in to continue!</h4> <LoginView QUserFromChild={this.setUserStatus}
-        QIDFromChild={this.setViewPage}/></div>;
+        return state.userStatus.logged ? <AddMealView IdFromChild={this.setViewPage} /> 
+        :<div> <h4>You have to be logged-in to continue!</h4> <LoginView userFromChild={this.setUserStatus}
+        IdFromChild={this.setViewPage}/></div>;
 
       case "signup":
         return (
           <SignupView
-            QIDFromChild={this.setViewPage}
+            IdFromChild={this.setViewPage}
           />
         );
 
       case "login":
         return (
           <LoginView
-            QUserFromChild={this.setUserStatus}
-            QIDFromChild={this.setViewPage}
+            userFromChild={this.setUserStatus}
+            IdFromChild={this.setViewPage}
           />
         );
 
       case "meal":
         return (
           <SingleMealView
-            QIDFromChild={this.setViewPage}
+            IdFromChild={this.setViewPage}
             data={this.state.meal}
           />
         );
 
       case "home":
-        return <HomeView QIDFromChild={this.setViewPage} />;
+        return <HomeView IdFromChild={this.setViewPage} />;
       
       case "orders":
         return state.userStatus.logged ? <MyOrdersView userStatus={state.userStatus}/>
-        : <div><h4>You have to be logged-in to continue!</h4><LoginView QUserFromChild={this.setUserStatus}
-        QIDFromChild={this.setViewPage}/></div>;
+        : <div><h4>You have to be logged-in to continue!</h4><LoginView userFromChild={this.setUserStatus}
+        IdFromChild={this.setViewPage}/></div>;
 
       default:
         return <HomeView />;
