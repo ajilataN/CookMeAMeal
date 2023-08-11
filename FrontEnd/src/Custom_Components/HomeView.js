@@ -1,16 +1,18 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import "./HomeView.css"; // Import the CSS file
+import React, { Component } from "react"
+import Helmet from "react-helmet"
+import "./styles/HomeView.css"
 
 class HomeView extends Component {
+  // Constructor
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
+  // Change page view
   setViewPageInParent = (obj) => {
-    this.props.IdFromChild(obj);
-  };
+    this.props.IdFromChild(obj)
+  }
 
   render() {
     return (
@@ -48,8 +50,8 @@ class HomeView extends Component {
           </button>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default HomeView;
+export default HomeView

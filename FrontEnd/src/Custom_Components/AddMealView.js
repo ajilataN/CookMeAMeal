@@ -1,48 +1,56 @@
-import { Component } from "react";
-import Helmet from "react-helmet";
-import axios from "axios";
+import { Component } from "react"
+import Helmet from "react-helmet"
+import axios from "axios"
+import MealIcon from "./icons/MealIcon"
+import ClockIcon from "./icons/ClockIcon"
+import PlateIcon from "./icons/PlateIcon" 
+import CashIcon from "./icons/CashIcon"
+import IngredientsIcon from "./icons/IngredientsIcon"
+import PlusIcon from "./icons/PlusIcon"
 
 class AddMealView extends Component {
+  // Constructor
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       meal: {},
+      // fields is an array of records that is used to store the dynamic input of the ingredients
       fields: [{value: ""}],
-    };
+    }
   }
 
   // Get the input from the fields 
   getUserInput = (e) => {
     this.setState((prevState) => ({
       meal: { ...prevState.meal, [e.target.name]: e.target.value }
-    }));
-  };
+    }))
+  }
 
   // Change the page view
   setViewPageInParent = (obj) => {
-    this.props.IdFromChild(obj);
-  };
+    this.props.IdFromChild(obj)
+  }
 
   // Add a new field with initial value empty
   addNewInputField= () => {
-    const { fields } = this.state;
-    this.setState({ fields: [...fields, { value: "" }] });
+    const { fields } = this.state
+    this.setState({ fields: [...fields, { value: "" }] })
   }
 
   // Update the value of a field
   saveInputOnChange = (index, event) =>{
-    const { fields } = this.state;
-    fields[index].value = event.target.value;
-    this.setState({ fields });
+    const { fields } = this.state
+    fields[index].value = event.target.value
+    this.setState({ fields })
   }
 
   saveIngredients = (event) => {
-    event.preventDefault();
-    console.log("Fields:", this.state.fields);
-    const ingredients = this.state.fields.map((field) => ({ name: field.value }));
+    event.preventDefault()
+    console.log("Fields:", this.state.fields)
+    const ingredients = this.state.fields.map((field) => ({ name: field.value }))
 
     // Set the ingredients list in the state
-    this.setState({ ingredientsList: ingredients });
+    this.setState({ ingredientsList: ingredients })
   }
 
 
@@ -56,11 +64,10 @@ class AddMealView extends Component {
         price: this.state.meal.price,
         ingredients: this.state.ingredientsList
       },
-      {withCredentials: true}
-      );
-      console.log("Meal:" + res);
-      const newMeal = res.data;
-      this.setViewPageInParent ({page: "feed"});
+      { withCredentials: true }
+      )
+      const newMeal = res.data
+      this.setViewPageInParent ({page: "feed"})
     }
     catch(err){
       console.log(err)
@@ -68,88 +75,58 @@ class AddMealView extends Component {
   }
 
   render() {
-    const { fields } = this.state;
-    console.log(this.state.fields)
+    const { fields } = this.state
     return (
       <div>
         <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
+        {/* Begin card */}
         <div className="card myCard" id="create">
           <h3 style={{ margin: "10px" }}>Create a meal</h3>
           <hr></hr>
-          <div className="mb-3">
-            <img
-              width="20"
-              height="20"
-              src="https://img.icons8.com/ios-filled/50/international-food.png"
-              alt="international-food"
-            />
-            {"  "}
-            <label className="form-label">Name</label>
-            {"  "}
 
+          <div className="mb-3">
+            <MealIcon/> {"  "}
+            <label className="form-label">Name</label> {"  "}
             <input
               name="name"
               onChange={(e) => this.getUserInput(e)}
               type="text"
               className="form-control"
-              placeholder="Name"
-            />
+              placeholder="Name" />
           </div>
 
           <div className="mb-3" style={{ margin: "5px" }}>
-            <img
-              width="16"
-              height="16"
-              src="https://img.icons8.com/ios-filled/50/soup-plate.png"
-              alt="soup-plate"
-            />
-            {"    "}
+            <PlateIcon/>{"    "}
             <label className="form-label" htmlFor="portions">
               Number of portions
-            </label>{" "}
-            {"   "}
+            </label>{"    "}
             <input
               name="number_of_portions"
               placeholder="2"
               onChange={(e) => this.getUserInput(e)}
               type="number"
               min="1"
-              className="form-control numberInput"
-            />
+              className="form-control numberInput"/>
           </div>
-          <div className="mb-3" style={{ margin: "5px" }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-clock-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-            </svg>{" "}
 
+          <div className="mb-3" style={{ margin: "5px" }}>
+            <ClockIcon/>{"    "}
             <label className="form-label">Ready in: </label>
             <div className="inLineContainer">
               <div className="inLine">
-              <input type="date" name="date" className="form-control" onChange={(e) => this.getUserInput(e)}/>
+                <input type="date" name="date" className="form-control" onChange={(e) => this.getUserInput(e)}/>
               </div>
-            <div className="inLine">
-            <input type="time" name="time_ready" className="form-control" onChange={(e) => this.getUserInput(e)}/>
-            </div>
+              <div className="inLine">
+                <input type="time" name="time_ready" className="form-control" onChange={(e) => this.getUserInput(e)}/>
+              </div>
             </div>
           </div>
+
           <div style={{ margin: "5px" }}>
-            <img
-              width="20"
-              height="20"
-              src="https://img.icons8.com/ios-filled/50/ingredients-for-cooking.png"
-              alt="ingredients-for-cooking"
-            />
-            {"    "}
+            <IngredientsIcon/> {"    "}
             <label className="form-label">Ingredients</label>
-           <form onSubmit={this.saveIngredients}>
-              {fields.map((field, index) => (
+            <form onSubmit={this.saveIngredients}>
+              { fields.map((field, index) => (
                 <input
                   style={{ margin: "2px" }}
                   className="form-control"
@@ -160,50 +137,22 @@ class AddMealView extends Component {
                   onChange={(event) => this.saveInputOnChange(index, event)}
                 />
               ))}
-              <div className="rightButtonDiv">
-                <button
-                  type="button"
-                  className="btn"
-                  id="addButton"
-                  onClick={this.addNewInputField}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-plus-lg"
-                    viewBox="0 0 16 16"
+                <div className="rightButtonDiv">
+                  <button
+                    type="button"
+                    className="btn"
+                    id="addButton"
+                    onClick={this.addNewInputField}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
-                    />
-                  </svg>
-                </button>
-                <button type="submit">Submit</button>
-              </div>
-            </form>
+                    <PlusIcon/>
+                  </button>
+                  <button type="submit" className="btn">Done</button>
+                </div>
+              </form>
           </div>
 
           <div className="mb-3" style={{ margin: "5px" }}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              className="bi bi-cash-coin"
-              viewBox="0 0 16 16"
-            >
-              <path
-                fillRule="evenodd"
-                d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"
-              />
-              <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z" />
-              <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />
-              <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
-            </svg>{" "}
-            {"   "}
+            <CashIcon/> {"    "}
             <label className="form-label">Price</label>
             <input
               name="price"
@@ -215,6 +164,8 @@ class AddMealView extends Component {
             />
           </div>
         </div>
+        {/* End of card */}
+
         <div className="buttonContainer">
           <button
             id="postButton"
@@ -225,8 +176,8 @@ class AddMealView extends Component {
           </button>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default AddMealView;
+export default AddMealView

@@ -1,48 +1,52 @@
-import axios from "axios";
-import { Component } from "react";
-import Helmet from "react-helmet";
+import axios from "axios"
+import { Component } from "react"
+import Helmet from "react-helmet"
 
 class SignupView extends Component {
+  // Constructor
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       user: {
         type: "signup"
       },
       passwordMatch: true,
-    };
+    }
   }
 
+  // Get input from fields
   getUserInput = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
 
     if (name === "password" || name === "password2") {
-      const password = name === "password" ? value : this.state.user.password;
-      const password2 = name === "password2" ? value : this.state.user.password2;
+      const password = name === "password" ? value : this.state.user.password
+      const password2 = name === "password2" ? value : this.state.user.password2
 
       this.setState({
         user: { ...this.state.user, [name]: value },
         passwordMatch: password === password2,
-      });
+      })
     } else {
       this.setState((prevState) => ({
         user: { ...prevState.user, [name]: value },
-      }));
+      }))
     }
   }
 
+  // Send user's data to parent
   sendUserToParent = () => {
-    this.props.userFromChild(this.state.user);
-  };
+    this.props.userFromChild(this.state.user)
+  }
 
+  // Change view page
   setViewPageInParent = (obj) => {
-    this.props.IdFromChild(obj);
-  };
+    this.props.IdFromChild(obj)
+  }
 
+  // Post request for sing up
   postSignupData = () => {
-    let user = this.state.user;
-    axios
-      .post("http://88.200.63.148:5020/users/register", {
+    let user = this.state.user
+    axios.post("http://88.200.63.148:5020/users/register", {
         name: user.name,
         surname: user.surname,
         email: user.email,
@@ -55,22 +59,21 @@ class SignupView extends Component {
       })
       .then((res) => {
           if (res.data === "MISSING FIELD") {
-          alert("Please complete all required fields before proceeding.");
+          alert("Please complete all required fields before proceeding.")
         } else if (res.status === 200) {
           // Success, redirect or show a success message
-          this.setViewPageInParent({ page: "login" });
+          this.setViewPageInParent({ page: "login" })
         } else {
           // Handle unexpected response here
-          alert("An unexpected error occurred. Please try again later.");
+          alert("An unexpected error occurred. Please try again later.")
         }
       })
       .catch((err) => {
         // Handle network or server errors here
-        console.log(err.response.data.message);
+        console.log(err.response.data.message)
         alert(err.response.data.message)
-        //alert("An error occurred while processing your request. Please try again later.");
-      });
-  };
+      })
+  }
   
 
   render() {
@@ -90,6 +93,7 @@ class SignupView extends Component {
                 id="name"
               />
             </div>
+
             <div className="mb-3 inLine">
               <label className="form-label">Surname</label>
               <input
@@ -100,7 +104,9 @@ class SignupView extends Component {
                 id="surname"
               />
             </div>
+
           </div>
+
           <div className="mb-3">
             <label className="form-label">E-mail</label>
             <input
@@ -112,6 +118,7 @@ class SignupView extends Component {
               aria-describedby="emailHelp"
             />
           </div>
+
           <div className="mb-3">
             <label className="form-label">Telephone</label>
             <input
@@ -122,6 +129,7 @@ class SignupView extends Component {
               id="telephone"
             />
           </div>
+
           <div className="mb-3">
             <div className="inLineContainer">
               <div className="inLine">
@@ -134,6 +142,7 @@ class SignupView extends Component {
                   id="street"
                 />
               </div>
+
               <div className="inLine">
                 <label className="form-label">Street Number</label>
                 <input
@@ -144,7 +153,9 @@ class SignupView extends Component {
                   id="streetNumber"
                 />
               </div>
+
             </div>
+
             <div className="inLineContainer">
               <div className="inLine">
                 <label className="form-label">City</label>
@@ -156,6 +167,7 @@ class SignupView extends Component {
                   id="city"
                 />
               </div>
+
               <div className="inLine">
                 <label className="form-label">Postal Code</label>
                 <input
@@ -166,8 +178,11 @@ class SignupView extends Component {
                   id="postalCode"
                 />
               </div>
+
             </div>
+
           </div>
+
           <div className="mb-3">
             <label className="form-label">Password</label>
             <input
@@ -178,6 +193,7 @@ class SignupView extends Component {
               id="password1"
             />
           </div>
+
           <div className="mb-3">
             <label className="form-label">Confirm password</label>
             <input
@@ -189,27 +205,26 @@ class SignupView extends Component {
               }`}
               id="password2"
             />
-            {!this.state.passwordMatch && (
+            {! this.state.passwordMatch && (
               <div className="invalid-feedback">
                 Passwords do not match.
               </div>
             )}
           </div>
+
         </form>
-        {/* <div className="buttonContainer"> */}
+
         <button
-          onClick={() => {
-            this.postSignupData();
-          }}
+          onClick={() => this.postSignupData()}
           className="btn btn-primary bt defaultButton"
           disabled={!this.state.passwordMatch}
         >
           Sign up
         </button>
-        {/* </div> */}
+        
       </div>
-    );
+    )
   }
 }
 
-export default SignupView;
+export default SignupView

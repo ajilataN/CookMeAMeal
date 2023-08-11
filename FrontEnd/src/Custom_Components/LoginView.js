@@ -1,31 +1,37 @@
-import { Component } from "react";
-import Helmet from "react-helmet";
-import axios from "axios";
+import { Component } from "react"
+import Helmet from "react-helmet"
+import axios from "axios"
 
 class LoginView extends Component {
+  // Constructor
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
+      // User record to store user's data
       user: {
         type: "login"
       }
-    };
+    }
   }
+
+  // Get the input from the fields
   getUserInput = (e) => {
     this.setState((prevState) => ({
       user: { ...prevState.user, [e.target.name]: e.target.value }
-    }));
-  };
+    }))
+  }
 
+  // Change the page view
   setViewPageInParent = (obj) => {
-    this.props.IdFromChild(obj);
-  };
+    this.props.IdFromChild(obj)
+  }
 
+  // Pass the user's data to the parent
   sendUserDataToParent = (obj) => {
-    this.props.userFromChild(obj);
-  };
+    this.props.userFromChild(obj)
+  }
 
-
+  // Post request for login
   postLoginData = () =>{
     let user = this.state.user
     axios.post("http://88.200.63.148:5020/users/login", {
@@ -43,7 +49,6 @@ class LoginView extends Component {
         alert("ENTER EMAIL AND PASSWORD!")
       }
       else{
-      console.log("Sent to the server...")
       this.sendUserDataToParent(res.data)
       this.setViewPageInParent({ page: "feed" })
       }
@@ -93,8 +98,8 @@ class LoginView extends Component {
           Create new account
         </button>
       </div>
-    );
+    )
   }
 }
 
-export default LoginView;
+export default LoginView
