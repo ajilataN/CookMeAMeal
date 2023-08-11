@@ -11,12 +11,12 @@ class FeedView extends Component {
     };
   }
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
  componentDidMount(){
-     axios.get("http://88.200.63.148:5020/meal", {withCredentials: true})
+     axios.get("http://88.200.63.148:5020/meal", { withCredentials: true })
     .then(res =>{
       this.setState({
        meals:res.data
@@ -159,7 +159,7 @@ class FeedView extends Component {
             <br></br>
             <div className="buttonContainer">
               <a
-                onClick={() => this.QSetViewInParent({ page: "meal", id: d.mealId })}
+                onClick={() => this.setViewPageInParent({ page: "meal", id: d.mealId })}
                 href="#"
                 className="btn btn-primary feedButton defaultButton"
               >
@@ -167,7 +167,7 @@ class FeedView extends Component {
               </a>
               <a
                 href="#"
-                onClick={() => this.QSetViewInParent({ page: "order", id: d.mealId })}
+                onClick={() => this.setViewPageInParent({ page: "order", id: d.mealId })}
                 className="btn btn-primary feedButton defaultButton"
               >
                 Order

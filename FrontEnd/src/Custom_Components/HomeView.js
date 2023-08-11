@@ -8,7 +8,7 @@ class HomeView extends Component {
     this.state = {};
   }
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
@@ -40,7 +40,7 @@ class HomeView extends Component {
         <div className="button-container">
           <button
             type="button"
-            onClick={() => this.QSetViewInParent({ page: "signup" })}
+            onClick={() => this.setViewPageInParent({ page: "signup" })}
             className="join-button btn btn-primary btn-lg btn-block"
             id="join"
           >

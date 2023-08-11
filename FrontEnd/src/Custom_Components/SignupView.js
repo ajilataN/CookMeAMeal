@@ -13,7 +13,7 @@ class SignupView extends Component {
     };
   }
 
-  QGetTextFromField = (e) => {
+  getUserInput = (e) => {
     const { name, value } = e.target;
 
     if (name === "password" || name === "password2") {
@@ -31,15 +31,15 @@ class SignupView extends Component {
     }
   }
 
-  QSendUserToParent = () => {
+  sendUserToParent = () => {
     this.props.userFromChild(this.state.user);
   };
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
-  QPostSignUp = () => {
+  postSignupData = () => {
     let user = this.state.user;
     axios
       .post("http://88.200.63.148:5020/users/register", {
@@ -58,7 +58,7 @@ class SignupView extends Component {
           alert("Please complete all required fields before proceeding.");
         } else if (res.status === 200) {
           // Success, redirect or show a success message
-          this.QSetViewInParent({ page: "login" });
+          this.setViewPageInParent({ page: "login" });
         } else {
           // Handle unexpected response here
           alert("An unexpected error occurred. Please try again later.");
@@ -83,7 +83,7 @@ class SignupView extends Component {
             <div className="mb-3 inLine">
               <label className="form-label">Name</label>
               <input
-                onChange={(e) => this.QGetTextFromField(e)}
+                onChange={(e) => this.getUserInput(e)}
                 name="name"
                 type="text"
                 className="form-control"
@@ -93,7 +93,7 @@ class SignupView extends Component {
             <div className="mb-3 inLine">
               <label className="form-label">Surname</label>
               <input
-                onChange={(e) => this.QGetTextFromField(e)}
+                onChange={(e) => this.getUserInput(e)}
                 name="surname"
                 type="text"
                 className="form-control"
@@ -104,7 +104,7 @@ class SignupView extends Component {
           <div className="mb-3">
             <label className="form-label">E-mail</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="email"
               type="email"
               className="form-control"
@@ -115,7 +115,7 @@ class SignupView extends Component {
           <div className="mb-3">
             <label className="form-label">Telephone</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="telephone"
               type="tel"
               className="form-control"
@@ -127,7 +127,7 @@ class SignupView extends Component {
               <div className="inLine">
                 <label className="form-label">Street</label>
                 <input
-                  onChange={(e) => this.QGetTextFromField(e)}
+                  onChange={(e) => this.getUserInput(e)}
                   name="street"
                   type="text"
                   className="form-control"
@@ -137,7 +137,7 @@ class SignupView extends Component {
               <div className="inLine">
                 <label className="form-label">Street Number</label>
                 <input
-                  onChange={(e) => this.QGetTextFromField(e)}
+                  onChange={(e) => this.getUserInput(e)}
                   name="street_number"
                   type="number"
                   className="form-control"
@@ -149,7 +149,7 @@ class SignupView extends Component {
               <div className="inLine">
                 <label className="form-label">City</label>
                 <input
-                  onChange={(e) => this.QGetTextFromField(e)}
+                  onChange={(e) => this.getUserInput(e)}
                   name="city"
                   type="text"
                   className="form-control"
@@ -159,7 +159,7 @@ class SignupView extends Component {
               <div className="inLine">
                 <label className="form-label">Postal Code</label>
                 <input
-                  onChange={(e) => this.QGetTextFromField(e)}
+                  onChange={(e) => this.getUserInput(e)}
                   name="postal_code"
                   type="number"
                   className="form-control"
@@ -171,7 +171,7 @@ class SignupView extends Component {
           <div className="mb-3">
             <label className="form-label">Password</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="password"
               type="password"
               className="form-control"
@@ -181,7 +181,7 @@ class SignupView extends Component {
           <div className="mb-3">
             <label className="form-label">Confirm password</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="password2"
               type="password"
               className={`form-control ${
@@ -199,7 +199,7 @@ class SignupView extends Component {
         {/* <div className="buttonContainer"> */}
         <button
           onClick={() => {
-            this.QPostSignUp();
+            this.postSignupData();
           }}
           className="btn btn-primary bt defaultButton"
           disabled={!this.state.passwordMatch}

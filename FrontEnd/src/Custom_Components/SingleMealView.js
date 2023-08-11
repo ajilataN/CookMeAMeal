@@ -10,7 +10,7 @@ class SingleMealView extends Component {
     };
   }
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
   
@@ -53,7 +53,7 @@ class SingleMealView extends Component {
           <h5 className="card-header">
             <button
               className="invisibleBtn"
-              onClick={() => this.QSetViewInParent({ page: "feed" })}
+              onClick={() => this.setViewPageInParent({ page: "feed" })}
             >
               {/* this is icon */}
               <svg
@@ -174,7 +174,7 @@ class SingleMealView extends Component {
               </span>
               <a
                 id="priceBtn"
-                onClick={() => this.QSetViewInParent({ page: "order", id: meal[0].mealId })}
+                onClick={() => this.setViewPageInParent({ page: "order", id: meal[0].mealId })}
                 href="#"
                 className="btn btn-primary feedButton defaultButton"
               >

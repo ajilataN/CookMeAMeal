@@ -11,29 +11,32 @@ class AddMealView extends Component {
     };
   }
 
-  QGetTextFromField = (e) => {
+  // Get the input from the fields 
+  getUserInput = (e) => {
     this.setState((prevState) => ({
       meal: { ...prevState.meal, [e.target.name]: e.target.value }
     }));
   };
 
-  QSetViewInParent = (obj) => {
+  // Change the page view
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
-
-  handleAddField= () => {
+  // Add a new field with initial value empty
+  addNewInputField= () => {
     const { fields } = this.state;
     this.setState({ fields: [...fields, { value: "" }] });
   }
 
-  handleFieldChange = (index, event) =>{
+  // Update the value of a field
+  saveInputOnChange = (index, event) =>{
     const { fields } = this.state;
     fields[index].value = event.target.value;
     this.setState({ fields });
   }
 
-  handleSubmit = (event) => {
+  saveIngredients = (event) => {
     event.preventDefault();
     console.log("Fields:", this.state.fields);
     const ingredients = this.state.fields.map((field) => ({ name: field.value }));
@@ -43,7 +46,7 @@ class AddMealView extends Component {
   }
 
 
-  QPostMeal = async () =>{
+  postMealData = async () =>{
     try{
       const res = await axios.post("http://88.200.63.148:5020/meal", {
         name: this.state.meal.name,
@@ -57,7 +60,7 @@ class AddMealView extends Component {
       );
       console.log("Meal:" + res);
       const newMeal = res.data;
-      this.QSetViewInParent ({page: "feed"});
+      this.setViewPageInParent ({page: "feed"});
     }
     catch(err){
       console.log(err)
@@ -86,7 +89,7 @@ class AddMealView extends Component {
 
             <input
               name="name"
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               type="text"
               className="form-control"
               placeholder="Name"
@@ -108,7 +111,7 @@ class AddMealView extends Component {
             <input
               name="number_of_portions"
               placeholder="2"
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               type="number"
               min="1"
               className="form-control numberInput"
@@ -129,10 +132,10 @@ class AddMealView extends Component {
             <label className="form-label">Ready in: </label>
             <div className="inLineContainer">
               <div className="inLine">
-              <input type="date" name="date" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
+              <input type="date" name="date" className="form-control" onChange={(e) => this.getUserInput(e)}/>
               </div>
             <div className="inLine">
-            <input type="time" name="time_ready" className="form-control" onChange={(e) => this.QGetTextFromField(e)}/>
+            <input type="time" name="time_ready" className="form-control" onChange={(e) => this.getUserInput(e)}/>
             </div>
             </div>
           </div>
@@ -145,7 +148,7 @@ class AddMealView extends Component {
             />
             {"    "}
             <label className="form-label">Ingredients</label>
-           <form onSubmit={this.handleSubmit}>
+           <form onSubmit={this.saveIngredients}>
               {fields.map((field, index) => (
                 <input
                   style={{ margin: "2px" }}
@@ -154,7 +157,7 @@ class AddMealView extends Component {
                   key={index}
                   type="text"
                   value={field.value}
-                  onChange={(event) => this.handleFieldChange(index, event)}
+                  onChange={(event) => this.saveInputOnChange(index, event)}
                 />
               ))}
               <div className="rightButtonDiv">
@@ -162,7 +165,7 @@ class AddMealView extends Component {
                   type="button"
                   className="btn"
                   id="addButton"
-                  onClick={this.handleAddField}
+                  onClick={this.addNewInputField}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +207,7 @@ class AddMealView extends Component {
             <label className="form-label">Price</label>
             <input
               name="price"
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               type="number"
               min="1"
               className="form-control numberInput"
@@ -215,7 +218,7 @@ class AddMealView extends Component {
         <div className="buttonContainer">
           <button
             id="postButton"
-            onClick={() => {this.QPostMeal(); this.QSetViewInParent({page: "feed"})}}
+            onClick={() => {this.postMealData(); this.setViewPageInParent({page: "feed"})}}
             className="btn btn-primary bt defaultButton"
           >
             Post

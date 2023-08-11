@@ -11,22 +11,22 @@ class LoginView extends Component {
       }
     };
   }
-  QGetTextFromField = (e) => {
+  getUserInput = (e) => {
     this.setState((prevState) => ({
       user: { ...prevState.user, [e.target.name]: e.target.value }
     }));
   };
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
-  QSendUser2Parent = (obj) => {
+  sendUserDataToParent = (obj) => {
     this.props.userFromChild(obj);
   };
 
 
-  QPostLogin = () =>{
+  postLoginData = () =>{
     let user = this.state.user
     axios.post("http://88.200.63.148:5020/users/login", {
         email: user.email,
@@ -44,8 +44,8 @@ class LoginView extends Component {
       }
       else{
       console.log("Sent to the server...")
-      this.QSendUser2Parent(res.data)
-      this.QSetViewInParent({ page: "feed" })
+      this.sendUserDataToParent(res.data)
+      this.setViewPageInParent({ page: "feed" })
       }
     }).catch(err=>{
       console.log(err)
@@ -60,7 +60,7 @@ class LoginView extends Component {
           <div className="mb-3">
             <label className="form-label">E-mail</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="email"
               type="text"
               className="form-control"
@@ -70,7 +70,7 @@ class LoginView extends Component {
           <div className="mb-3">
             <label className="form-label">Password</label>
             <input
-              onChange={(e) => this.QGetTextFromField(e)}
+              onChange={(e) => this.getUserInput(e)}
               name="password"
               type="password"
               className="form-control"
@@ -79,7 +79,7 @@ class LoginView extends Component {
           </div>
         </form>
         <button
-          onClick={() => {this.QPostLogin()
+          onClick={() => {this.postLoginData()
           }}
           className="btn btn-primary bt defaultButton log"
         >
@@ -87,7 +87,7 @@ class LoginView extends Component {
         </button>
         <hr style={{marginTop: "16px"}}></hr>
         <button
-          onClick={() => this.QSetViewInParent({ page: "signup" })}
+          onClick={() => this.setViewPageInParent({ page: "signup" })}
           className="btn btn-primary bt log createNew"
         >
           Create new account

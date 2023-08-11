@@ -13,7 +13,7 @@ class OrderView extends Component {
     };
   }
 
-  QSetViewInParent = (obj) => {
+  setViewPageInParent = (obj) => {
     this.props.IdFromChild(obj);
   };
 
@@ -52,7 +52,7 @@ class OrderView extends Component {
       );
       console.log("Order:" + res);
       const newOrder = res.data;
-      this.QSetViewInParent ({page: "orders"});
+      this.setViewPageInParent ({page: "orders"});
     }
     catch(err){
       console.log(err)
@@ -125,7 +125,7 @@ class OrderView extends Component {
           </div>
           <div className="buttonContainer">
             <button
-              onClick={() => {this.postOrder(); this.QSetViewInParent({ page: "orders" })}}
+              onClick={() => {this.postOrder(); this.setViewPageInParent({ page: "orders" })}}
               className="btn btn-primary bt feedButton defaultButton"
             >
               Finish
