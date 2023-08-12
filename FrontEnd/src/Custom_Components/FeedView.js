@@ -61,7 +61,6 @@ class FeedView extends Component {
 
     return (
       <div>
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         {data.length > 0 ? 
           data.map((d, index) => {
             // Format the time
@@ -78,11 +77,11 @@ class FeedView extends Component {
 
             return(
               <div className="card myCard" key={index}>
-                <h5 className="card-header">
+                <h5 id="myCardHeader" className="card-header">
                   <MealIcon/>{" "} { d.name }
                 </h5>
 
-                <div className="card-body">
+                <div id="myCardBody" className="card-body">
                   <ProfileIcon/>
                   <span className="subtitle"> { d.u_name }{"  "}{ d.surname } </span>
 

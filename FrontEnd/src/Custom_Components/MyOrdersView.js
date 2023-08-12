@@ -70,17 +70,15 @@ class MyOrdersView extends Component{
         <div className="buttonContainer">
           <div className="btn-group" role="group">
             <button 
-              style={{backgroundColor:"#04587c"}}
               id="myOrdersButton"
-              type="button" className={`btn btn-secondary orderButton 
+              type="button" className={`btn btn-secondary defaultColoredButton 
               ${ activeTable === "myOrders" ? "active" : "" }`}
               onClick={() => this.getMyOrPendingOrders("myOrders")}>
               My Orders
             </button>
             <button
-              style={{backgroundColor:"#04587c"}}
               id="pendingOrdersButton"
-              type="button" className={`btn btn-secondary orderButton 
+              type="button" className={`btn btn-secondary defaultColoredButton 
               ${  activeTable === "pendingOrders" ? "active" : "" }`}
               onClick={() => this.getMyOrPendingOrders("pendingOrders")}>
               Pending Orders

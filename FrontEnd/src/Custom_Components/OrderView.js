@@ -66,9 +66,8 @@ class OrderView extends Component {
     const totalPrice = meal.length > 0 ? meal[0].price * portions : 0
     return (
       <div id="placeOrder">
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         { meal.length>0 ?
-          <div class="card myCard">
+          <div id="borderlessCard" class="card myCard">
             <div class="card-body">
               <h5
                 style={{ fontSize: "20px", fontWeight: "bold" }}
@@ -107,7 +106,7 @@ class OrderView extends Component {
             <div className="buttonContainer">
               <button
                 onClick={() => {this.postOrder(); this.setViewPageInParent({ page: "orders" })}}
-                className="btn btn-primary bt feedButton defaultButton"
+                className="btn btn-primary bt feedButton defaultColoredButton"
               >
                 Finish
               </button>

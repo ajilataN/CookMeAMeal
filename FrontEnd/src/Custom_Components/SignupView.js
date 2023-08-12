@@ -78,150 +78,153 @@ class SignupView extends Component {
 
   render() {
     return (
-      <div className="card loginCard">
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
+      <div>
+        <div id="home-background"></div>
+        <h3 id="newAccHeader">Create new account</h3>
+        <div className="card loginCard">
+          <form style={{ margin: "20px" }}>
+            <div className="inLineContainer">
+              <div className="mb-3 inLine">
+                <label className="form-label">Name</label>
+                <input
+                  onChange={(e) => this.getUserInput(e)}
+                  name="name"
+                  type="text"
+                  className="form-control"
+                  id="name"
+                />
+              </div>
 
-        <form style={{ margin: "20px" }}>
-          <div className="inLineContainer">
-            <div className="mb-3 inLine">
-              <label className="form-label">Name</label>
+              <div className="mb-3 inLine">
+                <label className="form-label">Surname</label>
+                <input
+                  onChange={(e) => this.getUserInput(e)}
+                  name="surname"
+                  type="text"
+                  className="form-control"
+                  id="surname"
+                />
+              </div>
+
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">E-mail</label>
               <input
                 onChange={(e) => this.getUserInput(e)}
-                name="name"
-                type="text"
+                name="email"
+                type="email"
                 className="form-control"
-                id="name"
+                id="email"
+                aria-describedby="emailHelp"
               />
             </div>
 
-            <div className="mb-3 inLine">
-              <label className="form-label">Surname</label>
+            <div className="mb-3">
+              <label className="form-label">Telephone</label>
               <input
                 onChange={(e) => this.getUserInput(e)}
-                name="surname"
-                type="text"
+                name="telephone"
+                type="tel"
                 className="form-control"
-                id="surname"
+                id="telephone"
               />
             </div>
 
-          </div>
+            <div className="mb-3">
+              <div className="inLineContainer">
+                <div className="inLine">
+                  <label className="form-label">Street</label>
+                  <input
+                    onChange={(e) => this.getUserInput(e)}
+                    name="street"
+                    type="text"
+                    className="form-control"
+                    id="street"
+                  />
+                </div>
 
-          <div className="mb-3">
-            <label className="form-label">E-mail</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="email"
-              type="email"
-              className="form-control"
-              id="email"
-              aria-describedby="emailHelp"
-            />
-          </div>
+                <div className="inLine">
+                  <label className="form-label">Street Number</label>
+                  <input
+                    onChange={(e) => this.getUserInput(e)}
+                    name="street_number"
+                    type="number"
+                    className="form-control"
+                    id="streetNumber"
+                  />
+                </div>
 
-          <div className="mb-3">
-            <label className="form-label">Telephone</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="telephone"
-              type="tel"
-              className="form-control"
-              id="telephone"
-            />
-          </div>
-
-          <div className="mb-3">
-            <div className="inLineContainer">
-              <div className="inLine">
-                <label className="form-label">Street</label>
-                <input
-                  onChange={(e) => this.getUserInput(e)}
-                  name="street"
-                  type="text"
-                  className="form-control"
-                  id="street"
-                />
               </div>
 
-              <div className="inLine">
-                <label className="form-label">Street Number</label>
-                <input
-                  onChange={(e) => this.getUserInput(e)}
-                  name="street_number"
-                  type="number"
-                  className="form-control"
-                  id="streetNumber"
-                />
-              </div>
+              <div className="inLineContainer">
+                <div className="inLine">
+                  <label className="form-label">City</label>
+                  <input
+                    onChange={(e) => this.getUserInput(e)}
+                    name="city"
+                    type="text"
+                    className="form-control"
+                    id="city"
+                  />
+                </div>
 
-            </div>
+                <div className="inLine">
+                  <label className="form-label">Postal Code</label>
+                  <input
+                    onChange={(e) => this.getUserInput(e)}
+                    name="postal_code"
+                    type="number"
+                    className="form-control"
+                    id="postalCode"
+                  />
+                </div>
 
-            <div className="inLineContainer">
-              <div className="inLine">
-                <label className="form-label">City</label>
-                <input
-                  onChange={(e) => this.getUserInput(e)}
-                  name="city"
-                  type="text"
-                  className="form-control"
-                  id="city"
-                />
-              </div>
-
-              <div className="inLine">
-                <label className="form-label">Postal Code</label>
-                <input
-                  onChange={(e) => this.getUserInput(e)}
-                  name="postal_code"
-                  type="number"
-                  className="form-control"
-                  id="postalCode"
-                />
               </div>
 
             </div>
 
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input
+                onChange={(e) => this.getUserInput(e)}
+                name="password"
+                type="password"
+                className="form-control"
+                id="password1"
+              />
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="password"
-              type="password"
-              className="form-control"
-              id="password1"
-            />
-          </div>
+            <div className="mb-3">
+              <label className="form-label">Confirm password</label>
+              <input
+                onChange={(e) => this.getUserInput(e)}
+                name="password2"
+                type="password"
+                className={`form-control ${
+                  this.state.passwordMatch ? "" : "is-invalid"
+                }`}
+                id="password2"
+              />
+              {! this.state.passwordMatch && (
+                <div className="invalid-feedback">
+                  Passwords do not match.
+                </div>
+              )}
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Confirm password</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="password2"
-              type="password"
-              className={`form-control ${
-                this.state.passwordMatch ? "" : "is-invalid"
-              }`}
-              id="password2"
-            />
-            {! this.state.passwordMatch && (
-              <div className="invalid-feedback">
-                Passwords do not match.
-              </div>
-            )}
-          </div>
+          </form>
 
-        </form>
+          <button
+            onClick={() => this.postSignupData()}
+            className="btn btn-primary bt defaultColoredButton"
+            disabled={!this.state.passwordMatch}
+          >
+            Sign up
+          </button>
+          
+        </div>
 
-        <button
-          onClick={() => this.postSignupData()}
-          className="btn btn-primary bt defaultButton"
-          disabled={!this.state.passwordMatch}
-        >
-          Sign up
-        </button>
-        
       </div>
     )
   }

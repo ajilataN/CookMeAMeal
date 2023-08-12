@@ -23,12 +23,12 @@ class HomeView extends Component {
           through the power of food.
         </div>
 
-        <div id="home-background"></div> {/* Background Image */}
+        <div id="home-background"></div>
         
         <div className="new-card text-center">   
           <h4 id="mission">
             Our mission
-          </h4>
+          </h4> 
           <div className="card-body">
             <p className="card-text-new">
               To foster a sense of community by sharing a delicious and

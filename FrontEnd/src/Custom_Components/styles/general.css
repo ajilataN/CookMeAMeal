@@ -1,0 +1,18 @@
+/* Header style */
+#mainHeader{
+    background-color: transparent;
+}
+
+/* font-family: "HelveticaNeueLTStd-Roman","Helvetica",sans-serif; */
+.homeBrand{
+    color: #FFFFFF;
+}
+.otherBrand{
+    color: #215732;
+}
+.otherBrand:hover{
+    color: #215732 !important;
+}
+.otherBrand:visited{
+    color: #215732 !important;
+}

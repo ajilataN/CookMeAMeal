@@ -28,9 +28,12 @@
     text-align: center;
     border-radius: 10px;
   }
-  
-  .card-header-new {
-    border: none;
+
+  #mission{
+    float: left;
+    width: 100%;
+    display: block;
+    text-align: left;
   }
   
   .card-text-new {
@@ -43,25 +46,15 @@
     margin-top: 30px;
   }
   
-  .join-button {
-    background-color: #ff8c00;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 18px;
-    padding: 12px 24px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .join-button:hover {
-    background-color: #ff6f00;
-  }
-
-  #mission{
-    float: left;
+  #join {
+    max-width: 800px;
     width: 100%;
-    display: block;
-    text-align: left;
+    margin: auto;
+    margin-top: 10px;
+    background-color: #215732;
+    border-color: #215732;
   }
-  
+  #join:hover {
+    background-color: #245e36;
+    border-color: #245e36;
+  }

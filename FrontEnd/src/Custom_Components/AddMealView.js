@@ -78,7 +78,6 @@ class AddMealView extends Component {
     const { fields } = this.state
     return (
       <div>
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         {/* Begin card */}
         <div className="card myCard" id="create">
           <h3 style={{ margin: "10px" }}>Create a meal</h3>
@@ -126,17 +125,18 @@ class AddMealView extends Component {
             <IngredientsIcon/> {"    "}
             <label className="form-label">Ingredients</label>
             <form onSubmit={this.saveIngredients}>
-              { fields.map((field, index) => (
-                <input
-                  style={{ margin: "2px" }}
-                  className="form-control"
-                  placeholder="Ingredient"
-                  key={index}
-                  type="text"
-                  value={field.value}
-                  onChange={(event) => this.saveInputOnChange(index, event)}
-                />
-              ))}
+              <div className="inLine">
+                { fields.map((field, index) => (
+                  <input
+                    style={{ margin: "2px" }}
+                    className="form-control ingredientField"
+                    placeholder="Ingredient"
+                    key={index}
+                    type="text"
+                    value={field.value}
+                    onChange={(event) => this.saveInputOnChange(index, event)}
+                  />
+                ))}
                 <div className="rightButtonDiv">
                   <button
                     type="button"
@@ -146,8 +146,9 @@ class AddMealView extends Component {
                   >
                     <PlusIcon/>
                   </button>
-                  <button type="submit" className="btn">Done</button>
+                  <button id="doneButton" type="submit" className="btn">Done</button>
                 </div>
+              </div>
               </form>
           </div>
 
@@ -170,7 +171,7 @@ class AddMealView extends Component {
           <button
             id="postButton"
             onClick={() => {this.postMealData(); this.setViewPageInParent({page: "feed"})}}
-            className="btn btn-primary bt defaultButton"
+            className="btn btn-primary bt defaultColoredButton"
           >
             Post
           </button>

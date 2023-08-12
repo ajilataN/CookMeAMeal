@@ -8,7 +8,7 @@ class ClockIcon extends Component {
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
                 height="16"
-                fill="currentColor"
+                fill="#112f1a"
                 className="bi bi-clock-fill"
                 viewBox="0 0 16 16"
               >

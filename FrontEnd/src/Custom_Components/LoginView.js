@@ -59,44 +59,47 @@ class LoginView extends Component {
 
   render() {
     return (
-      <div className="card loginCard">
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
-        <form style={{ margin: "20px" }}>
-          <div className="mb-3">
-            <label className="form-label">E-mail</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="email"
-              type="text"
-              className="form-control"
-              id="email"
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              onChange={(e) => this.getUserInput(e)}
-              name="password"
-              type="password"
-              className="form-control"
-              id="password"
-            />
-          </div>
-        </form>
-        <button
-          onClick={() => {this.postLoginData()
-          }}
-          className="btn btn-primary bt defaultButton log"
-        >
-          Login
-        </button>
-        <hr style={{marginTop: "16px"}}></hr>
-        <button
-          onClick={() => this.setViewPageInParent({ page: "signup" })}
-          className="btn btn-primary bt log createNew"
-        >
-          Create new account
-        </button>
+      <div>
+        <div id="home-background"></div>
+        <h3 id="newAccHeader">Log into Cook Me A Meal</h3>
+        <div className="card loginCard">
+          <form style={{ margin: "20px" }}>
+            <div className="mb-3">
+              <label className="form-label">E-mail</label>
+              <input
+                onChange={(e) => this.getUserInput(e)}
+                name="email"
+                type="text"
+                className="form-control"
+                id="email"
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input
+                onChange={(e) => this.getUserInput(e)}
+                name="password"
+                type="password"
+                className="form-control"
+                id="password"
+              />
+            </div>
+          </form>
+          <button
+            onClick={() => {this.postLoginData()
+            }}
+            className="btn btn-primary bt sign log defaultColoredButton"
+          >
+            Login
+          </button>
+          <hr style={{marginTop: "16px"}}></hr>
+          <button
+            onClick={() => this.setViewPageInParent({ page: "signup" })}
+            className="btn btn-primary bt log defaultButton"
+          >
+            Create new account
+          </button>
+        </div>
       </div>
     )
   }

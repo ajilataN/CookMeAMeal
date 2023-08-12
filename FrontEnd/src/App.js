@@ -8,6 +8,7 @@ import SignupView from "./Custom_Components/SignupView";
 import SingleMealView from "./Custom_Components/SingleMealView";
 import MyOrdersView from "./Custom_Components/MyOrdersView";
 import axios from "axios";
+import "./Custom_Components/styles/general.css"
 
 class App extends Component {
   // Constructor
@@ -125,7 +126,7 @@ class App extends Component {
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
       <li className="nav-item">
         <a onClick={() => this.setViewPage({ page: "feed" })}
-          className="nav-link"
+          className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
           href="#">
           Feed
         </a>
@@ -135,7 +136,7 @@ class App extends Component {
           <li className="nav-item">
             <a
               onClick={() => this.setViewPage({ page: "addmeal" })}
-              className="nav-link"
+              className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
               href="#">
               Add meal
             </a>
@@ -143,7 +144,7 @@ class App extends Component {
           <li className="nav-item">
             <a
               onClick={() => this.setViewPage({ page: "orders" })}
-              className="nav-link "
+              className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
               href="#">
               Orders
             </a>
@@ -151,7 +152,7 @@ class App extends Component {
           <li className="nav-item">
             <a
               onClick={this.postLogout}
-              className="nav-link "
+              className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
               href="#">
               Logout
             </a>
@@ -166,7 +167,7 @@ const nonLoggedUsersHeader = (
     <li className="nav-item">
       <a
         onClick={() => this.setViewPage({ page: "feed" })}
-        className="nav-link"
+        className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
         href="#">
         Feed
       </a>
@@ -174,7 +175,7 @@ const nonLoggedUsersHeader = (
     <li className="nav-item">
       <a
         onClick={() => this.setViewPage({ page: "login" })}
-        className="nav-link "
+        className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
         href="#">
         Login
       </a>
@@ -182,7 +183,7 @@ const nonLoggedUsersHeader = (
     <li className="nav-item">
       <a
         onClick={() => this.setViewPage({ page: "signup" })}
-        className="nav-link "
+        className={`nav-link ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
         href="#">
         Sign up
       </a>
@@ -194,12 +195,12 @@ const nonLoggedUsersHeader = (
       <div id="menu" className="row">
         <nav
           className="navbar navbar-expand-lg navbar-dark"
-          style={{ backgroundColor: "#023246" }} >
+          id="mainHeader" >
           <div className="container-fluid">
             <div className="col-sm">
               <a
                 onClick={() => this.setViewPage({ page: "home" })}
-                className="navbar-brand"
+                className={`navbar-brand ${this.state.currentPage === 'home' ? 'homeBrand' : 'otherBrand'}`}
                 href="#">
                 Cook Me A Meal
               </a>

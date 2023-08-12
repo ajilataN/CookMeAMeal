@@ -57,10 +57,9 @@ class SingleMealView extends Component {
 
     return (
       <div>
-        <Helmet bodyAttributes={{ style: "background-color: #D4D4CE" }} />
         { meal.length>0 ?
           <div className="card myCard">
-            <h5 className="card-header">
+            <h5 id="myCardHeader" className="card-header">
               <button
                 className="invisibleBtn"
                 onClick={() => this.setViewPageInParent({ page: "feed" })}
@@ -70,7 +69,7 @@ class SingleMealView extends Component {
               <MealIcon/>{"    "} { meal[0].name }
             </h5>
 
-            <div className="card-body">
+            <div id="myCardBody" className="card-body">
               <ProfileIcon/>
               <span className="subtitle"> {meal[0].u_name} {meal[0].surname}</span>
               <br></br>
