@@ -1,6 +1,6 @@
 const express= require("express")
 const users = express.Router()
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
 const { conn, dataPool } = require('../db/conn.js')
 const emailValidator = require('deep-email-validator')
 const passwordValidator = require('password-validator')
@@ -56,7 +56,7 @@ users.post('/login', async (req, res) => {
          let queryResult=await dataPool.AuthUser(email) 
             if(queryResult.length>0) {
               const loggedUser = queryResult[0]
-              const passwordMatch = await bcrypt.compare(password, loggedUser.password);
+              const passwordMatch = await bcrypt.compare(password, loggedUser.password)
 
                 if(passwordMatch) {
                   console.log(queryResult[0].id)
@@ -89,9 +89,9 @@ users.post('/login', async (req, res) => {
 
 // Logout request
 users.post('/logout', async (req, res) => {
-  req.session.destroy(); // Clear the session
-  res.status(200).send("Logged out successfully");
-});
+  req.session.destroy() // Clear the session
+  res.status(200).send("Logged out successfully")
+})
 
 // Inserts a new user into the database
 users.post('/register', async (req, res) => {
@@ -134,7 +134,7 @@ users.post('/register', async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10); // Use 10 rounds of hashing
+        const hashedPassword = await bcrypt.hash(password, 10) // Use 10 rounds of hashing
 
         // Create the user with the corresponding id_location
         let queryResult=await dataPool.AddUser(name, surname, email, telephone, hashedPassword, id_location) 
@@ -192,7 +192,7 @@ pattern
 .has().lowercase()
 .has().digits(2)
 .has().not().spaces()
-.is().not().oneOf(['Passw0rd', 'Password123']); 
+.is().not().oneOf(['Passw0rd', 'Password123']) 
 
 // Ensure strong password
 async function isStrongPassword(password){

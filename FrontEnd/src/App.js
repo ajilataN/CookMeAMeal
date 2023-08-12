@@ -10,12 +10,15 @@ import MyOrdersView from "./Custom_Components/MyOrdersView";
 import axios from "axios";
 
 class App extends Component {
+  // Constructor
   constructor(props) {
     super(props);
     this.state = {
       // Default page on refresh
       currentPage: "home",
+      // Meal id before we get any other
       meal: 1,
+      // User not logged initially
       userStatus: { logged: false }
     }
   }
@@ -54,13 +57,12 @@ class App extends Component {
 
     switch (page) {
       case "order":
-        return state.userStatus.logged ? <OrderView 
-                  IdFromChild={ this.setViewPage } 
-                  data={ this.state.meal } /> 
-                  : <div>
-                    <h4>You have to be logged-in to continue!</h4>
-                    <LoginView userFromChild={this.setUserStatus} IdFromChild={ this.setViewPage }/>
-                  </div>;
+        return state.userStatus.logged ? 
+          <OrderView IdFromChild={this.setViewPage} data={this.state.meal}/> 
+          : <div>
+              <h4>You have to be logged-in to continue!</h4>
+              <LoginView userFromChild={this.setUserStatus} IdFromChild={ this.setViewPage }/>
+            </div>;
 
       case "feed":
         return <FeedView IdFromChild = { this.setViewPage } />;
@@ -158,7 +160,7 @@ class App extends Component {
       )}
   </ul>
 )
-
+// Options that only a non logged in user will see
 const nonLoggedUsersHeader = (
   <ul className="navbar-nav me-auto mb-2 mb-lg-0">
     <li className="nav-item">

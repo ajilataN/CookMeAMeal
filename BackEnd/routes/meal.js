@@ -1,23 +1,18 @@
 const express= require("express")
-const meal = express.Router();
-const DB=require('../db/conn.js')
-const { conn, dataPool } = require('../db/conn.js')
+const meal = express.Router()
+const { dataPool } = require('../db/conn.js')
 
-meal.use(express.json());
-//const session = require("express-session")
+meal.use(express.json())
 
 // Gets everything from the feed in the DB 
 meal.get('/', async (req,res, next)=>{
-
     try{
         let id_user = req.session.user ? req.session.user[0].id : null
-        if(id_user !== null){
-            var queryResult=await dataPool.allMealForUser(id_user);
-        }
-        else{
-            var queryResult=await dataPool.allMeal();
-
-        }
+        if(id_user !== null)
+            var queryResult=await dataPool.allMealForUser(id_user)
+        else
+            var queryResult=await dataPool.allMeal()
+            
         res.json(queryResult)
     }
     catch(err){
@@ -50,7 +45,7 @@ meal.post('/', async (req,res, next)=>{
   console.log(req.session.user[0].id)
 
   if(!req.session || !req.session.user){
-    return res.status(401).json({error:"User not logged in"});
+    return res.status(401).json({error:"User not logged in"})
   }
 
   let id_user = req.session.user[0].id
@@ -70,9 +65,9 @@ meal.post('/', async (req,res, next)=>{
             res.sendStatus(500)
         }    
     }  
-    else {
+    else 
      console.log("A field is empty!!")
-    }
+    
     res.end()
 }) 
 
