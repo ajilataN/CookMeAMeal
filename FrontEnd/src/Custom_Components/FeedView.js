@@ -127,7 +127,21 @@ class FeedView extends Component {
                 </div>
               </div>
             )
-          }) : "Ups! Sorry, currently there are not any posts to display."  }
+          }) :   
+          <div>
+          <h5 className="warning">Ups! Sorry, currently there are no posts to display.</h5>
+          <br></br>
+          <div className="button-container">
+            <button
+              type="button"
+              onClick={() => this.setViewPageInParent({ page: "addmeal" })}
+              className="join-button btn btn-primary btn-lg btn-block"
+              id="join"
+            >
+              Post now
+            </button>
+          </div>
+        </div>}
       </div>
     )
   }

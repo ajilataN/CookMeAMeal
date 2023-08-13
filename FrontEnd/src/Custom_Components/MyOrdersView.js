@@ -87,59 +87,71 @@ class MyOrdersView extends Component{
         </div>
 
         { activeTable === "myOrders" && (
-          <table className="table" id="myOrders">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Cook</th>
-                <th scope="col">Meal</th>
-                <th scope="col">Portions</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              { orders.map((order, index) => (
-                <tr key={index}>
-                  <td>{ order.cookName }</td>
-                  <td>{ order.mealName }</td>
-                  <td>{ order.portions }</td>
-                  <td>{ order.confirmed ? <div style={{color:"green"}}>Confirmed!</div>: <div style={{color:"#FFCC00"}}>Pending...</div> }</td>
+          <div> 
+            {orders.length === 0 ? (
+              <p>You haven't ordered anything.</p>
+            ) : (
+            <table className="table" id="myOrders">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">Cook</th>
+                  <th scope="col">Meal</th>
+                  <th scope="col">Portions</th>
+                  <th scope="col">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                { orders.map((order, index) => (
+                  <tr key={index}>
+                    <td>{ order.cookName }</td>
+                    <td>{ order.mealName }</td>
+                    <td>{ order.portions }</td>
+                    <td>{ order.confirmed ? <div style={{color:"green"}}>Confirmed!</div>: <div style={{color:"#FFCC00"}}>Pending...</div> }</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            )}
+          </div>
         )}
         { activeTable === "pendingOrders" && (
-          <table className="table" id="pendingOrders">
-            <thead className="thead-dark">
-              <tr>
-                <th scope="col">Customer</th>
-                <th scope="col">Meal</th>
-                <th scope="col">Portions</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              { orders.map((order, index)=> (
-                <tr key={index}>
-                  <th scope="row">{ order.customerName }</th>
-                  <td>{ order.mealName }</td>
-                  <td>{ order.portions }</td>
-                  <td>
-                    { order.confirmed === 0 ? (
-                      <button
-                        type="button"
-                        className="btn"
-                        id="addButton"
-                        onClick={() => this.confirmOrder(order.orderId)}>
-                          ✓
-                      </button>
-                    ): ("Confirmed"
-                    )}
-                  </td>
+          <div>
+            {orders.length === 0 ? (
+              <p>No orders yet!</p>
+            ) : (
+            <table className="table" id="pendingOrders">
+              <thead className="thead-dark">
+                <tr>
+                  <th scope="col">Customer</th>
+                  <th scope="col">Meal</th>
+                  <th scope="col">Portions</th>
+                  <th scope="col">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                { orders.map((order, index)=> (
+                  <tr key={index}>
+                    <th scope="row">{ order.customerName }</th>
+                    <td>{ order.mealName }</td>
+                    <td>{ order.portions }</td>
+                    <td>
+                      { order.confirmed === 0 ? (
+                        <button
+                          type="button"
+                          className="btn"
+                          id="addButton"
+                          onClick={() => this.confirmOrder(order.orderId)}>
+                            ✓
+                        </button>
+                      ): ("Confirmed"
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            )}
+          </div>
         )}
       </div>  
     )
