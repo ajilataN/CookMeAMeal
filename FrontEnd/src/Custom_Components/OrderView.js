@@ -2,7 +2,7 @@ import { Component } from "react"
 import axios from "axios"
 import PlateIcon from "./icons/PlateIcon"
 import CashIcon from "./icons/CashIcon"
-import BackArrowIcon from "./icons/BackArrowIcon"
+import BackArrowBlackIcon from "./icons/BackArrowBlackIcon"
 
 class OrderView extends Component {
   // Constructor
@@ -68,17 +68,17 @@ class OrderView extends Component {
       <div id="placeOrder">
         { meal.length>0 ?
           <div id="borderlessCard" class="card myCard">
-            <button
-                className="invisibleBtn"
-                onClick={() => this.setViewPageInParent({ page: "feed" })}
-              >
-                <BackArrowIcon/>
-              </button>
             <div class="card-body">
               <h5
                 style={{ fontSize: "20px", fontWeight: "bold" }}
                 class="card-title"
               >
+                <button
+                className="invisibleBtn"
+                onClick={() => this.setViewPageInParent({ page: "feed" })}
+              >
+                <BackArrowBlackIcon/>
+              </button>
                 Place your order
               </h5>
               <div>Price per plate: {meal[0].price}€</div>

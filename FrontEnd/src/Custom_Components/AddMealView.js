@@ -1,5 +1,4 @@
 import { Component } from "react"
-import Helmet from "react-helmet"
 import axios from "axios"
 import MealIcon from "./icons/MealIcon"
 import ClockIcon from "./icons/ClockIcon"
@@ -7,6 +6,7 @@ import PlateIcon from "./icons/PlateIcon"
 import CashIcon from "./icons/CashIcon"
 import IngredientsIcon from "./icons/IngredientsIcon"
 import PlusIcon from "./icons/PlusIcon"
+import BackArrowBlackIcon from "./icons/BackArrowBlackIcon"
 
 class AddMealView extends Component {
   // Constructor
@@ -80,7 +80,14 @@ class AddMealView extends Component {
       <div>
         {/* Begin card */}
         <div className="card myCard" id="create">
-          <h3 style={{ margin: "10px" }}>Create a meal</h3>
+          <h3 style={{ margin: "10px" }}>
+          <button
+                className="invisibleBtn"
+                onClick={() => this.setViewPageInParent({ page: "feed" })}
+              >
+                <BackArrowBlackIcon/>
+              </button>
+            Create a meal</h3>
           <hr></hr>
 
           <div className="mb-3">
