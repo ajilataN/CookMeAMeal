@@ -67,6 +67,7 @@ class LoginView extends Component {
             <div className="mb-3">
               <label className="form-label">E-mail</label>
               <input
+                placeholder="example@example"
                 onChange={(e) => this.getUserInput(e)}
                 name="email"
                 type="text"
@@ -77,6 +78,7 @@ class LoginView extends Component {
             <div className="mb-3">
               <label className="form-label">Password</label>
               <input
+                placeholder="Password"
                 onChange={(e) => this.getUserInput(e)}
                 name="password"
                 type="password"

@@ -1,5 +1,4 @@
 import { Component } from "react"
-import Helmet from "react-helmet"
 import axios from "axios"
 
 class MyOrdersView extends Component{
@@ -136,7 +135,7 @@ class MyOrdersView extends Component{
         { activeTable === "pendingOrders" && (
           <div>
             {orders.length === 0 ? (
-              <p className="warning">You don't have any orders yet!</p>
+              <h5 className="warning">You don't have any orders yet!</h5>
             ) : (
             <table className="table" id="pendingOrders">
               <thead className="thead-dark">

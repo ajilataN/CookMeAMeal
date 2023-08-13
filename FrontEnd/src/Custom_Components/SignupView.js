@@ -87,6 +87,7 @@ class SignupView extends Component {
               <div className="mb-3 inLine">
                 <label className="form-label">Name</label>
                 <input
+                  placeholder="Your name"
                   onChange={(e) => this.getUserInput(e)}
                   name="name"
                   type="text"
@@ -98,6 +99,7 @@ class SignupView extends Component {
               <div className="mb-3 inLine">
                 <label className="form-label">Surname</label>
                 <input
+                  placeholder="Your surname"
                   onChange={(e) => this.getUserInput(e)}
                   name="surname"
                   type="text"
@@ -111,6 +113,7 @@ class SignupView extends Component {
             <div className="mb-3">
               <label className="form-label">E-mail</label>
               <input
+                placeholder="example@example"
                 onChange={(e) => this.getUserInput(e)}
                 name="email"
                 type="email"
@@ -123,6 +126,7 @@ class SignupView extends Component {
             <div className="mb-3">
               <label className="form-label">Telephone</label>
               <input
+                placeholder="+386 xx xxx xxx"
                 onChange={(e) => this.getUserInput(e)}
                 name="telephone"
                 type="tel"
@@ -136,6 +140,7 @@ class SignupView extends Component {
                 <div className="inLine">
                   <label className="form-label">Street</label>
                   <input
+                    placeholder="Name of the street"
                     onChange={(e) => this.getUserInput(e)}
                     name="street"
                     type="text"
@@ -147,6 +152,7 @@ class SignupView extends Component {
                 <div className="inLine">
                   <label className="form-label">Street Number</label>
                   <input
+                    placeholder="Street number"
                     onChange={(e) => this.getUserInput(e)}
                     name="street_number"
                     type="number"
@@ -161,6 +167,7 @@ class SignupView extends Component {
                 <div className="inLine">
                   <label className="form-label">City</label>
                   <input
+                    placeholder="City"
                     onChange={(e) => this.getUserInput(e)}
                     name="city"
                     type="text"
@@ -172,6 +179,7 @@ class SignupView extends Component {
                 <div className="inLine">
                   <label className="form-label">Postal Code</label>
                   <input
+                    placeholder="Postal code"
                     onChange={(e) => this.getUserInput(e)}
                     name="postal_code"
                     type="number"
@@ -187,6 +195,7 @@ class SignupView extends Component {
             <div className="mb-3">
               <label className="form-label">Password</label>
               <input
+                placeholder="Password"
                 onChange={(e) => this.getUserInput(e)}
                 name="password"
                 type="password"
@@ -198,6 +207,7 @@ class SignupView extends Component {
             <div className="mb-3">
               <label className="form-label">Confirm password</label>
               <input
+                placeholder="Repeat password"
                 onChange={(e) => this.getUserInput(e)}
                 name="password2"
                 type="password"
