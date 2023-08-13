@@ -70,7 +70,7 @@ class App extends Component {
         return <FeedView IdFromChild = { this.setViewPage } />;
       
       case "mymeal":
-        return <MyMealView  />
+        return <MyMealView IdFromChild = { this.setViewPage } />
 
       case "addmeal":
         return state.userStatus.logged ? <AddMealView IdFromChild={this.setViewPage} /> 

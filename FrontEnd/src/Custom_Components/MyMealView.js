@@ -157,7 +157,20 @@ class MyMealView extends Component {
                 </div>
               );
             })
-          : "You haven't posted any meals yet. Post now!"}
+          :  <div>
+          <h5 className="warning">You haven't posted any meals yet!</h5>
+          <br></br>
+          <div className="button-container">
+            <button
+              type="button"
+              onClick={() => this.setViewPageInParent({ page: "addmeal" })}
+              className="join-button btn btn-primary btn-lg btn-block"
+              id="join"
+            >
+              Post now
+            </button>
+          </div>
+        </div>}
       </div>
     );
   }

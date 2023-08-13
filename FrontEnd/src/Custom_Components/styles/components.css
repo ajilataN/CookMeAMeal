@@ -245,3 +245,13 @@ a:active {
   border: none !important;
   box-shadow: none !important;
 }
+
+.warning{
+  margin-top: 4%;
+  color: #245e36;
+  text-align: center;
+}
+
+.warning::before{
+  content: "\26A0";
+}
