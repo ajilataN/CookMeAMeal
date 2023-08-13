@@ -222,7 +222,13 @@ class SignupView extends Component {
           >
             Sign up
           </button>
-          
+          <hr style={{marginTop: "16px"}}></hr>
+          <button
+            onClick={() => this.setViewPageInParent({ page: "login" })}
+            className="btn btn-primary bt log defaultButton"
+          >
+            Login now
+          </button>
         </div>
 
       </div>

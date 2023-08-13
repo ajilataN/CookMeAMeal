@@ -1,8 +1,8 @@
 import { Component } from "react"
-import Helmet from "react-helmet"
 import axios from "axios"
 import PlateIcon from "./icons/PlateIcon"
 import CashIcon from "./icons/CashIcon"
+import BackArrowIcon from "./icons/BackArrowIcon"
 
 class OrderView extends Component {
   // Constructor
@@ -68,6 +68,12 @@ class OrderView extends Component {
       <div id="placeOrder">
         { meal.length>0 ?
           <div id="borderlessCard" class="card myCard">
+            <button
+                className="invisibleBtn"
+                onClick={() => this.setViewPageInParent({ page: "feed" })}
+              >
+                <BackArrowIcon/>
+              </button>
             <div class="card-body">
               <h5
                 style={{ fontSize: "20px", fontWeight: "bold" }}

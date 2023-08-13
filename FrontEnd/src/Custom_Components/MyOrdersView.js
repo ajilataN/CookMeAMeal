@@ -89,7 +89,20 @@ class MyOrdersView extends Component{
         { activeTable === "myOrders" && (
           <div> 
             {orders.length === 0 ? (
-              <p>You haven't ordered anything.</p>
+              <div>
+              <h5 className="warning">You haven't ordered any meal yet!</h5>
+              <br></br>
+              <div className="button-container">
+                <button
+                  type="button"
+                  onClick={() => this.setViewPageInParent({ page: "feed" })}
+                  className="join-button btn btn-primary btn-lg btn-block"
+                  id="join"
+                >
+                  Order now
+                </button>
+              </div>
+            </div>
             ) : (
             <table className="table" id="myOrders">
               <thead className="thead-dark">
@@ -117,7 +130,7 @@ class MyOrdersView extends Component{
         { activeTable === "pendingOrders" && (
           <div>
             {orders.length === 0 ? (
-              <p>No orders yet!</p>
+              <p className="warning">You don't have any orders yet!</p>
             ) : (
             <table className="table" id="pendingOrders">
               <thead className="thead-dark">
