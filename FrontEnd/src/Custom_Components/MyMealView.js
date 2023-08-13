@@ -1,6 +1,12 @@
 import { Component } from "react";
 import axios from "axios";
 import "./styles/components.css";
+import ProfileIcon from "./icons/ProfileIcon";
+import PlateIcon from "./icons/PlateIcon";
+import ClockIcon from "./icons/ClockIcon";
+import IngredientsIcon from "./icons/IngredientsIcon";
+import MealIcon from "./icons/MealIcon";
+import CashIcon from "./icons/CashIcon";
 
 class MyMealView extends Component {
   // Constructor
