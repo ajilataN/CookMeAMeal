@@ -1,6 +1,5 @@
 import { Component } from "react"
 import "./styles/components.css"
-import Helmet from "react-helmet"
 import axios from "axios"
 import MealIcon from "./icons/MealIcon"
 import ProfileIcon from "./icons/ProfileIcon"

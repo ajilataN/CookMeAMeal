@@ -143,8 +143,11 @@ users.post('/register', async (req, res) => {
         }
 
       } catch(err){
-            console.log(err)
-            res.sendStatus(500)
+            console.log("Errrror:" ,  err)
+            //res.sendStatus(500)
+            return res.status(400).send({
+              message: "User already registered!"
+          })
         }    
     }
     else {

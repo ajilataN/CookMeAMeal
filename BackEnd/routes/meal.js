@@ -21,10 +21,37 @@ meal.get('/', async (req,res, next)=>{
     }
 })
 
+// Gets the meals posted by user
+meal.get('/my', async (req,res, next)=>{
+    try{
+        let id_user = req.session.user ? req.session.user[0].id : null
+        if(id_user !== null)
+            var queryResult=await dataPool.myMealForUser(id_user)
+            
+        res.json(queryResult)
+    }
+    catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+})
+
 // Gets one meal based on the id 
  meal.get('/:id', async (req,res, next)=>{
     try{
         var queryResult=await dataPool.oneMeal(req.params.id)
+        res.json(queryResult)
+    }
+    catch(err){
+        console.log(err)
+        res.sendStatus(500)
+    }
+}) 
+
+// Deletes a meal based on the id
+meal.delete('/:id', async (req,res, next)=>{
+    try{
+        var queryResult=await dataPool.deleteMealById(req.params.id)
         res.json(queryResult)
     }
     catch(err){

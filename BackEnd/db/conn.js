@@ -19,6 +19,8 @@ conn.connect((err) => {
 // dataPool initially empty
 let dataPool={}
 
+// ################ USERS ################ //
+
 // Query that retrieves all users for testing purposes, not needed later
 dataPool.allUsers=()=>{
   return new Promise ((resolve, reject)=>{
@@ -29,17 +31,30 @@ dataPool.allUsers=()=>{
     })
   })
 }
-
-// Query that retreives all stored locations for testing purposes, not needed later
-dataPool.allLocations=()=>{
+// Authenticate the user email, check if exists
+dataPool.AuthUser=(email)=> {
   return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT * FROM Location`, (err,res)=>{
+    conn.query('SELECT * FROM User WHERE email = ?', email, (err,res, fields)=>{
       if(err)
         return reject(err)
       return resolve(res)
     })
   })
 }
+// Insert a new user in the db
+dataPool.AddUser=(name, surname, email, telephone, password, id_location)=>{
+  return new Promise ((resolve, reject)=>{
+    conn.query(`INSERT INTO User (name, surname, email, telephone, password, id_location) VALUES (?,?,?,?,?,?)`, [name, surname, email, telephone, password, id_location], (err,res)=>{
+      if(err) 
+        return reject(err)
+      return resolve(res)
+    })
+  })
+}
+
+
+
+// ################ MEALS ################ //
 
 // Retreive all meals from the db, (feed of the app)
 dataPool.allMeal=()=>{
@@ -63,7 +78,6 @@ dataPool.allMeal=()=>{
     })
   })
 }
-
 dataPool.allMealForUser = (id_user) =>{
   return new Promise ((resolve, reject)=>{
     if (id_user === undefined) 
@@ -86,6 +100,49 @@ dataPool.allMealForUser = (id_user) =>{
     })
   })
 }
+// Gets the meal that a user has posted
+dataPool.myMealForUser = (id_user) => {
+  return new Promise((resolve, reject) => {
+    if (id_user === undefined)
+      return reject(new Error("id_user is undefined"))
+
+    const currentDate = new Date() // Get the current date and time
+    const isoCurrentDate = currentDate.toISOString()
+    const isoCurrentTime = isoCurrentDate.substring(11, 19) // Extract time portion (HH:mm:ss)
+
+    var query = `SELECT 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      u.name AS u_name, u.surname, 
+      GROUP_CONCAT(i.name SEPARATOR ', ') as ingredientNames
+      FROM Meal AS m 
+      JOIN User AS u ON m.id_user = u.id 
+      LEFT JOIN Ingredient AS i ON m.id = i.id_meal
+      WHERE m.id_user = ? 
+      AND (m.date > ? OR (m.date = ? AND m.time_ready > ?))
+      GROUP BY m.id;`
+
+    const values = [id_user, isoCurrentDate, isoCurrentDate, isoCurrentTime]
+
+    conn.query(query, values, (err, res) => {
+      if (err)
+        return reject(err)
+      return resolve(res)
+    })
+  })
+}
+// Delete a meal by its id
+dataPool.deleteMealById = (mealId) => {
+  return new Promise((resolve, reject) => {
+    const query = `DELETE FROM Meal WHERE id = ?`
+
+    conn.query(query, mealId, (err, res) => {
+      if (err)
+        return reject(err)
+      return resolve(res)
+    })
+  })
+}
+
 
 // Get the meal with a specific id
 dataPool.oneMeal=(id)=>{
@@ -112,18 +169,6 @@ dataPool.oneMeal=(id)=>{
     })
   })
 }
-
-// Get the id of the person who posted the meal
-dataPool.getMealPoster = (id)=>{
-  return new Promise ((resolve, reject)=>{
-    conn.query(`SELECT id_user FROM Meal WHERE id = ?`, id, (err, res)=>{
-      if(err)
-        return reject(err)
-      return resolve(res)
-    })
-  })
-}
-
 
 // Insert a new meal and its ingredients in the db
 dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_user, ingredients) => {
@@ -188,28 +233,19 @@ dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_us
 }
 
 
-// Authenticate the user email, check if exists
-dataPool.AuthUser=(email)=> {
+
+// ################ LOCATION ################ //
+
+// Query that retreives all stored locations for testing purposes, not needed later
+dataPool.allLocations=()=>{
   return new Promise ((resolve, reject)=>{
-    conn.query('SELECT * FROM User WHERE email = ?', email, (err,res, fields)=>{
+    conn.query(`SELECT * FROM Location`, (err,res)=>{
       if(err)
         return reject(err)
       return resolve(res)
     })
   })
 }
-
-// Insert a new user in the db
-dataPool.AddUser=(name, surname, email, telephone, password, id_location)=>{
-  return new Promise ((resolve, reject)=>{
-    conn.query(`INSERT INTO User (name, surname, email, telephone, password, id_location) VALUES (?,?,?,?,?,?)`, [name, surname, email, telephone, password, id_location], (err,res)=>{
-      if(err) 
-        return reject(err)
-      return resolve(res)
-    })
-  })
-}
-
 // Get the id of an existing location
 dataPool.getLocationIdByInput = (street, street_number, city, postal_code) => {
   return new Promise((resolve, reject) => {
@@ -222,7 +258,6 @@ dataPool.getLocationIdByInput = (street, street_number, city, postal_code) => {
     })
   })
 }
-
 // Add a new location in the db
 dataPool.createLocation = (street, street_number, city, postal_code) => {
   return new Promise((resolve, reject) => {
@@ -235,6 +270,9 @@ dataPool.createLocation = (street, street_number, city, postal_code) => {
     })
   })
 }
+
+
+// ################ ORDER ################ //
 
 // Add a new order in the db and update Meal table
 dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
@@ -274,7 +312,6 @@ dataPool.createOrder = (id_cook, id_customer, id_meal, portions) => {
     })
   })
 }
-
 // Confirm an order by updating the 'confirmed' column
 dataPool.confirmOrder = (orderId) => {
   return new Promise((resolve, reject) => {
@@ -286,7 +323,6 @@ dataPool.confirmOrder = (orderId) => {
     })
   })
 }
-
 // Get all pending orders for a user based on id
 dataPool.getPendingOrderForUser = (id) => {
   return new Promise((resolve, reject) => {
@@ -311,7 +347,6 @@ dataPool.getPendingOrderForUser = (id) => {
     })
   })
 }
-
 // Get all orders for a user based on id
 dataPool.getMyOrderForUser = (id) => {
   return new Promise((resolve, reject) => {
