@@ -8,6 +8,7 @@ import SignupView from "./Custom_Components/SignupView";
 import SingleMealView from "./Custom_Components/SingleMealView";
 import MyOrdersView from "./Custom_Components/MyOrdersView";
 import MyMealView from "./Custom_Components/MyMealView";
+import "./Custom_Components/styles/general.css";
 import axios from "axios";
 
 class App extends Component {

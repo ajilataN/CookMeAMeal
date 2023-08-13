@@ -1,4 +1,5 @@
 import { Component } from "react";
+import axios from "axios";
 import "./styles/components.css";
 
 class MyMealView extends Component {
