@@ -11,7 +11,7 @@ dotenv.config()
 
 app.use(cors({
   origin:["http://88.200.63.148:3018"],
-  methods:["GET", "POST"],
+  methods:["GET", "POST", "DELETE"],
   credentials:true
 }))
 

@@ -35,6 +35,24 @@ class MyMealView extends Component {
     this.props.IdFromChild(obj);
   };
 
+  deleteMeal = (id) => {
+    axios.delete("http://88.200.63.148:5020/meal/"+id)
+    .then((response) => {
+      // Handle the successful deletion here if needed
+      console.log("Meal deleted successfully:", response.data);
+      
+      // You may want to update the state to remove the deleted meal
+      // For example, filter out the deleted meal from the meals array
+      this.setState((prevState) => ({
+        meals: prevState.meals.filter((meal) => meal.mealId !== id),
+      }));
+    })
+    .catch((error) => {
+      // Handle the error here
+      console.error("Error deleting meal:", error);
+    });
+  }
+
   render() {
     let data = this.state.meals;
 
@@ -80,13 +98,15 @@ class MyMealView extends Component {
 
               return (
                 <div>
-                  <ProfileIcon />
+                    { index === 0 ? <><ProfileIcon />
                   <span className="subtitle">
                     {" "}
                     {d.u_name}
                     {"  "}
                     {d.surname}{" "}
-                  </span>
+                  </span></>
+                  :""}
+                  
 
                   <div className="card myCard" key={index}>
                     <h5 id="myCardHeader" className="card-header">
@@ -125,6 +145,7 @@ class MyMealView extends Component {
                       <br></br>
                       <div className="buttonContainer">
                         <a
+                          onClick={() => this.deleteMeal(d.mealId)}
                           href="#"
                           className="btn btn-primary feedButton defaultButton"
                         >
@@ -143,3 +164,6 @@ class MyMealView extends Component {
 }
 
 export default MyMealView;
+
+
+
