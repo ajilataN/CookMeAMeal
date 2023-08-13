@@ -67,7 +67,7 @@ class AddMealView extends Component {
       { withCredentials: true }
       )
       const newMeal = res.data
-      this.setViewPageInParent ({page: "feed"})
+      this.setViewPageInParent ({page: "mymeal"})
     }
     catch(err){
       console.log(err)
@@ -170,7 +170,7 @@ class AddMealView extends Component {
         <div className="buttonContainer">
           <button
             id="postButton"
-            onClick={() => {this.postMealData(); this.setViewPageInParent({page: "feed"})}}
+            onClick={() => {this.postMealData()}}
             className="btn btn-primary bt defaultColoredButton"
           >
             Post

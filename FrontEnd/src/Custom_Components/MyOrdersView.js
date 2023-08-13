@@ -24,6 +24,12 @@ class MyOrdersView extends Component{
       })
     })
   }
+
+   // Change view page
+   setViewPageInParent = (obj) => {
+    this.props.IdFromChild(obj)
+  }
+  
   // Fetch corresponding orders from API
   getOrders = (tableId) => {
     const endpoint =

@@ -104,7 +104,7 @@ class App extends Component {
         return <HomeView IdFromChild={this.setViewPage} />;
       
       case "orders":
-        return state.userStatus.logged ? <MyOrdersView userStatus={state.userStatus}/>
+        return state.userStatus.logged ? <MyOrdersView userStatus={state.userStatus} IdFromChild={this.setViewPage}/>
         : <div><h4>You have to be logged-in to continue!</h4><LoginView userFromChild={this.setUserStatus}
         IdFromChild={this.setViewPage}/></div>;
 
