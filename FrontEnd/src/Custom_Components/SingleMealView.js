@@ -68,13 +68,14 @@ class SingleMealView extends Component {
                 <BackArrowIcon/>
               </button>
               <MealIcon/>{"    "} { meal[0].name }
-              {meal[0].vegan === 1 ? <VeganIcon/> : ""}
             </h5>
 
             <div id="myCardBody" className="card-body">
               <ProfileIcon/>
               <span className="subtitle"> {meal[0].u_name} {meal[0].surname}</span>
               <br></br>
+              {meal[0].vegan === 1 ? <VeganIcon/> : ""}
+              
               <LocationIcon/>
               <span>
                 {meal[0].street} {meal[0].street_number}, {meal[0].postal_code} {meal[0].city}, Slovenija

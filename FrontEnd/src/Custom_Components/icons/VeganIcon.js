@@ -7,7 +7,7 @@ class VeganIcon extends Component {
           <img
               width="30"
               height="25"
-              src="https://www.pngitem.com/pimgs/m/160-1609305_vegan-logo-png-vegan-or-vegetarian-symbol-transparent.png"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vegan_friendly_icon.svg/1200px-Vegan_friendly_icon.svg.png"
               alt="ingredients-for-cooking"
             />
         )

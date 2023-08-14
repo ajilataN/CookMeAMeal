@@ -118,10 +118,11 @@ class MyMealView extends Component {
                   <div className="card myCard" key={index}>
                     <h5 id="myCardHeader" className="card-header">
                       <MealIcon /> {d.name}
-                      {d.vegan === 1 ? <VeganIcon/> : ""}
                     </h5>
 
                     <div id="myCardBody" className="card-body">
+                    {d.vegan === 1 ? <VeganIcon/> : ""}
+
                       <ClockIcon />{" "}
                       <span>
                         {" "}
@@ -129,7 +130,6 @@ class MyMealView extends Component {
                       </span>
                       <div className="vr"></div>
                       <PlateIcon /> <span> {d.number_of_portions} </span>
-                      <br></br>
                       <br></br>
                       <div>
                         <IngredientsIcon />
@@ -145,7 +145,6 @@ class MyMealView extends Component {
                           
                         </ul>
                       </div>
-                      <br></br>
                       <br></br>
                       <div className="centerAllign">
                         {" "}

@@ -16,11 +16,27 @@ class FeedView extends Component {
     super(props)
     this.state = {
       // Meals array to populate with get request from API
-      meals: []
+      meals: [],
+      showVegan : false
     }
   }
 
   componentDidMount(){
+    this.getAllMeals()
+ }
+
+  // Change the page view
+  setViewPageInParent = (obj) => {
+    this.props.IdFromChild(obj)
+  }
+
+  getMeals = () => {
+    this.state.showVegan
+      ? this.getVeganMeals()
+      : this.getAllMeals()
+  }
+
+  getAllMeals = () => {
     // API to get every post from the DB
     axios.get("http://88.200.63.148:5020/meal", { withCredentials: true })
    .then(res =>{
@@ -29,12 +45,29 @@ class FeedView extends Component {
       meals: res.data
      })
    })
- }
-
-  // Change the page view
-  setViewPageInParent = (obj) => {
-    this.props.IdFromChild(obj)
   }
+
+  getVeganMeals = () =>{
+    axios.get("http://88.200.63.148:5020/meal/vegan", {withCredentials: true})
+    .then(res =>{
+      this.setState({
+       // Update meals array with posts
+       meals: res.data
+      })
+    })
+  }
+
+  filterVegan = () => {
+    this.setState(
+      (prevState) => ({
+        showVegan: !prevState.showVegan,
+      }),
+      () => {
+        this.getMeals();
+      }
+    );
+  };
+
 
   render() {
     // Local variable that will map the data from every meal
@@ -61,6 +94,13 @@ class FeedView extends Component {
 
     return (
       <div>
+        <label className="myMargin">Vegan</label>
+        <input
+        onChange={this.filterVegan}
+        type="checkbox"
+        checked={this.state.showVegan}
+        ></input>
+      <div>
         {data.length > 0 ? 
           data.map((d, index) => {
             // Format the time
@@ -79,7 +119,6 @@ class FeedView extends Component {
               <div className="card myCard" key={index}>
                 <h5 id="myCardHeader" className="card-header">
                   <MealIcon/>{" "} { d.name }
-                  {d.vegan === 1 ? <VeganIcon/> : ""}
                 </h5>
 
                 <div id="myCardBody" className="card-body">
@@ -87,6 +126,7 @@ class FeedView extends Component {
                   <span className="subtitle"> { d.u_name }{"  "}{ d.surname } </span>
 
                   <br></br>
+                  {d.vegan === 1 ? <VeganIcon/> : ""}
 
                   <LocationIcon/>
                   <span>
@@ -144,6 +184,7 @@ class FeedView extends Component {
             </button>
           </div>
         </div>}
+      </div>
       </div>
     )
   }
