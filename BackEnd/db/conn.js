@@ -78,6 +78,7 @@ dataPool.allMeal=()=>{
     })
   })
 }
+// Retreive all meals but the user's ones
 dataPool.allMealForUser = (id_user) =>{
   return new Promise ((resolve, reject)=>{
     if (id_user === undefined) 
@@ -97,6 +98,43 @@ dataPool.allMealForUser = (id_user) =>{
         if(err) 
           return reject(err) 
         return resolve(res)
+    })
+  })
+}
+// Retrieve all vegan meals
+dataPool.allVeganMeals = (id_user) =>{
+  return new Promise((resolve, reject) => {
+    const currentDate = new Date()
+    const isoCurrentDate = currentDate.toISOString()
+    const isoCurrentTime = isoCurrentDate.substring(11, 19)
+
+    let query = `
+      SELECT 
+        m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+        u.name AS u_name, u.surname, 
+        l.id AS locationId, l.street, l.street_number, l.city, l.postal_code 
+      FROM Meal AS m 
+      JOIN User AS u ON m.id_user = u.id 
+      JOIN Location AS l ON u.id_location = l.id 
+      WHERE m.vegan = 1
+        AND (m.date > ? OR (m.date = ? AND m.time_ready > ?))
+        AND m.number_of_portions > 0`
+      
+      if (id_user !== null) {
+        // If user is logged in, exclude meals created by the logged-in user
+        query += ` AND m.id_user <> ${id_user}`;
+      }
+
+      query+=`;`
+
+    const values = [isoCurrentDate, isoCurrentDate, isoCurrentTime];
+
+    query = conn.format(query, values)
+
+    conn.query(query, (err, res) => {
+      if (err) 
+        return reject(err)
+      return resolve(res)
     })
   })
 }
@@ -142,8 +180,6 @@ dataPool.deleteMealById = (mealId) => {
     })
   })
 }
-
-
 // Get the meal with a specific id
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
@@ -169,9 +205,8 @@ dataPool.oneMeal=(id)=>{
     })
   })
 }
-
 // Insert a new meal and its ingredients in the db
-dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_user, ingredients) => {
+dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, vegan, id_user, ingredients) => {
   return new Promise((resolve, reject) => {
     const isoDate = new Date(date)
     conn.beginTransaction((err) => {
@@ -179,8 +214,8 @@ dataPool.createMeal = (name, number_of_portions, date,  time_ready, price, id_us
         return reject(err)
       // Insert the new meal
       conn.query(
-        `INSERT INTO Meal (name, number_of_portions, date, time_ready, price, id_user) VALUES (?, ?, ?, ?, ?, ?)`,
-        [name, number_of_portions, isoDate, time_ready, price, id_user],
+        `INSERT INTO Meal (name, number_of_portions, date, time_ready, price, vegan, id_user) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [name, number_of_portions, isoDate, time_ready, price, vegan, id_user],
         (err, mealResult) => {
           if (err) {
             conn.rollback(() => {

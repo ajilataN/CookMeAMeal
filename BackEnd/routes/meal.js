@@ -36,6 +36,19 @@ meal.get('/my', async (req,res, next)=>{
     }
 })
 
+// Gets the vegan meals
+meal.get('/vegan', async (req, res, next) => {
+    try {
+        let id_user = req.session.user ? req.session.user[0].id : null;
+        let queryResult = await dataPool.allVeganMeals(id_user);
+
+        res.json(queryResult);
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
+})
+
 // Gets one meal based on the id 
  meal.get('/:id', async (req,res, next)=>{
     try{
@@ -67,6 +80,7 @@ meal.post('/', async (req,res, next)=>{
   let date = req.body.date
   let time_ready = req.body.time_ready
   let price = req.body.price
+  let vegan = req.body.vegan
   const ingredients = req.body.ingredients
 
   console.log(req.session.user[0].id)
@@ -74,14 +88,13 @@ meal.post('/', async (req,res, next)=>{
   if(!req.session || !req.session.user){
     return res.status(401).json({error:"User not logged in"})
   }
-
-  let id_user = req.session.user[0].id
- 
+  
+  const id_user = req.session.user[0].id
   var isAcompleteMealPost = name && number_of_portions && date && time_ready && price
    
     if (isAcompleteMealPost) {
         try {
-            var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, id_user, ingredients)
+            var queryResult=await dataPool.createMeal(name, number_of_portions, date, time_ready, price, vegan, id_user, ingredients)
             if (queryResult.affectedRows) {
                 console.log("New meal added!!")
                 res.json(queryResult)
@@ -98,4 +111,4 @@ meal.post('/', async (req,res, next)=>{
     res.end()
 }) 
 
-module.exports=meal
+module.exports = meal;
