@@ -7,6 +7,7 @@ import CashIcon from "./icons/CashIcon"
 import IngredientsIcon from "./icons/IngredientsIcon"
 import PlusIcon from "./icons/PlusIcon"
 import BackArrowBlackIcon from "./icons/BackArrowBlackIcon"
+import VeganIcon from "./icons/VeganIcon"
 
 class AddMealView extends Component {
   // Constructor
@@ -56,12 +57,16 @@ class AddMealView extends Component {
 
   postMealData = async () =>{
     try{
+      const veganValue = this.state.meal.vegan ? 1 : 0;
+      console.log("This is the vegan checkbox:", veganValue)
       const res = await axios.post("http://88.200.63.148:5020/meal", {
+        
         name: this.state.meal.name,
         number_of_portions: this.state.meal.number_of_portions,
         date: this.state.meal.date,
         time_ready: this.state.meal.time_ready,
         price: this.state.meal.price,
+        vegan: veganValue,
         ingredients: this.state.ingredientsList
       },
       { withCredentials: true }
@@ -171,7 +176,16 @@ class AddMealView extends Component {
               placeholder="€"
             />
           </div>
+          <div className="mb-3" style={{ margin: "5px" }}>
+            <label className="form-label  myMargin"><VeganIcon/> Vegan</label>
+            <input
+              name="vegan"
+              onChange={(e) => this.getUserInput(e)}
+              type="checkbox"
+            />
+          </div>
         </div>
+
         {/* End of card */}
 
         <div className="buttonContainer">

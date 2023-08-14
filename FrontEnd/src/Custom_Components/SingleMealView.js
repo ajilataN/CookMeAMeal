@@ -55,6 +55,7 @@ class SingleMealView extends Component {
     const year = date.getUTCFullYear()
     const formattedDate = `${day}/${month}/${year}`
 
+    console.log(this.state.meal.length)
     return (
       <div>
         { meal.length>0 ?
@@ -88,9 +89,12 @@ class SingleMealView extends Component {
                 <IngredientsIcon/>
                 <span id="ingredients">Ingredients</span>
                 <ul>
-                  { meal[0].i_names.split(',').map((ingredient, index) => (
-                    <li key={index}>{ ingredient }</li>
-                  ))}
+                  {meal[0].i_names === null || meal[0].i_names ==="" ? "No ingredients":
+                    meal[0].i_names.split(',').map((ingredient, index) => (
+                      <li key={index}>{ ingredient }</li>
+                    ))
+                  }
+                  
                 </ul>
               </div>
 

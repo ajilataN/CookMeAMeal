@@ -243,3 +243,7 @@ a:active {
 .warning::before{
   content: "\26A0";
 }
+
+.myMargin{
+  margin-right:1%;
+}

@@ -191,7 +191,7 @@ dataPool.oneMeal=(id)=>{
       FROM Meal AS m 
       JOIN User AS u ON m.id_user = u.id 
       JOIN Location AS l ON u.id_location = l.id 
-      JOIN (
+      LEFT JOIN (
             SELECT id_meal, GROUP_CONCAT(name) AS i_names 
             FROM Ingredient 
             GROUP BY id_meal

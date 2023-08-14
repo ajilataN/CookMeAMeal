@@ -27,6 +27,7 @@ class MyMealView extends Component {
           // Update meals array with posts
           meals: res.data,
         });
+        console.log(this.state.meals)
       });
   }
 
@@ -75,6 +76,8 @@ class MyMealView extends Component {
       return dateComparison;
     });
 
+    console.log("Data", data)
+   // console.log("ING",data[0].ingredientNames)
     return (
       <div>
         {data.length > 0
@@ -82,10 +85,13 @@ class MyMealView extends Component {
               // Format the time
               const time = d.time_ready;
               const [hrs, mins] = time.split(":");
+              console.log("Time1",time)
               const formattedTime = `${hrs.padStart(2, "0")}:${mins.padStart(
                 2,
                 "0"
               )}`;
+
+              console.log("Time2",formattedTime)
               // Format the date
               const dateInput = d.date;
               const date = new Date(dateInput); // Parse the ISO 8601 date string
@@ -95,7 +101,7 @@ class MyMealView extends Component {
                 .padStart(2, "0"); // Months are zero-based
               const year = date.getUTCFullYear();
               const formattedDate = `${day}/${month}/${year}`;
-
+              console.log()
               return (
                 <div>
                     { index === 0 ? <><ProfileIcon />
@@ -127,11 +133,14 @@ class MyMealView extends Component {
                         <IngredientsIcon />
                         <span id="ingredients">Ingredients</span>
                         <ul>
-                          {d.ingredientNames
+                          {d.ingredientNames === null || d.ingredientNames === "" ? "No ingredients" :
+                          d.ingredientNames
                             .split(",")
                             .map((ingredient, index) => (
                               <li key={index}>{ingredient}</li>
-                            ))}
+                            ))
+                          }
+                          
                         </ul>
                       </div>
                       <br></br>
@@ -177,6 +186,3 @@ class MyMealView extends Component {
 }
 
 export default MyMealView;
-
-
-
