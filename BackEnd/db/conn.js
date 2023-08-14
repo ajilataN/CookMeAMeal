@@ -63,7 +63,7 @@ dataPool.allMeal=()=>{
     const isoCurrentDate = currentDate.toISOString().split('T')[0]
     const isoCurrentTime = currentDate.toISOString().split('T')[1].substring(0, 8)
     var query = `SELECT 
-      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.vegan, m.id_user, 
       u.name AS u_name, u.surname, 
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
       FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
@@ -88,7 +88,7 @@ dataPool.allMealForUser = (id_user) =>{
     const isoCurrentDate = currentDate.toISOString()
     const isoCurrentTime = isoCurrentDate.substring(11, 19) // Extract time portion (HH:mm:ss)
     var query = `SELECT 
-      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.vegan, m.id_user, 
       u.name AS u_name, u.surname, 
       l.id as locationId, l.street, l.street_number, l.city, l.postal_code 
       FROM Meal AS m JOIN User AS u ON m.id_user = u.id JOIN Location AS l ON u.id_location = l.id 
@@ -110,7 +110,7 @@ dataPool.allVeganMeals = (id_user) =>{
 
     let query = `
       SELECT 
-        m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+        m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.vegan, m.id_user, 
         u.name AS u_name, u.surname, 
         l.id AS locationId, l.street, l.street_number, l.city, l.postal_code 
       FROM Meal AS m 
@@ -149,7 +149,7 @@ dataPool.myMealForUser = (id_user) => {
     const isoCurrentTime = isoCurrentDate.substring(11, 19) // Extract time portion (HH:mm:ss)
 
     var query = `SELECT 
-      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user, 
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.vegan, m.id_user, 
       u.name AS u_name, u.surname, 
       GROUP_CONCAT(i.name SEPARATOR ', ') as ingredientNames
       FROM Meal AS m 
@@ -184,7 +184,7 @@ dataPool.deleteMealById = (mealId) => {
 dataPool.oneMeal=(id)=>{
   return new Promise ((resolve, reject)=>{
     const query = `SELECT 
-      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.id_user,
+      m.id AS mealId, m.name, m.number_of_portions, m.date, m.time_ready, m.price, m.vegan, m.id_user,
       u.name AS u_name, u.surname, 
       l.id AS locationId, l.street, l.street_number, l.city, l.postal_code,
       i.i_names

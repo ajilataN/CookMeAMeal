@@ -7,6 +7,7 @@ import ClockIcon from "./icons/ClockIcon";
 import IngredientsIcon from "./icons/IngredientsIcon";
 import MealIcon from "./icons/MealIcon";
 import CashIcon from "./icons/CashIcon";
+import VeganIcon from "./icons/VeganIcon"
 
 class MyMealView extends Component {
   // Constructor
@@ -117,6 +118,7 @@ class MyMealView extends Component {
                   <div className="card myCard" key={index}>
                     <h5 id="myCardHeader" className="card-header">
                       <MealIcon /> {d.name}
+                      {d.vegan === 1 ? <VeganIcon/> : ""}
                     </h5>
 
                     <div id="myCardBody" className="card-body">

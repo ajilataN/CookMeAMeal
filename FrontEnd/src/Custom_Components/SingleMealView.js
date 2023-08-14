@@ -1,5 +1,4 @@
 import { Component } from "react"
-import Helmet from "react-helmet"
 import axios from "axios"
 import MealIcon from "./icons/MealIcon"
 import ProfileIcon from "./icons/ProfileIcon"
@@ -9,6 +8,7 @@ import PlateIcon from "./icons/PlateIcon"
 import CashIcon from "./icons/CashIcon"
 import BackArrowIcon from "./icons/BackArrowIcon.js"
 import IngredientsIcon from "./icons/IngredientsIcon"
+import VeganIcon from "./icons/VeganIcon"
 
 class SingleMealView extends Component {
   // Constructor
@@ -68,6 +68,7 @@ class SingleMealView extends Component {
                 <BackArrowIcon/>
               </button>
               <MealIcon/>{"    "} { meal[0].name }
+              {meal[0].vegan === 1 ? <VeganIcon/> : ""}
             </h5>
 
             <div id="myCardBody" className="card-body">

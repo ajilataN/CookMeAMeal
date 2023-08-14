@@ -7,6 +7,7 @@ import LocationIcon from "./icons/LocationIcon"
 import ClockIcon from "./icons/ClockIcon"
 import PlateIcon from "./icons/PlateIcon" 
 import CashIcon from "./icons/CashIcon"
+import VeganIcon from "./icons/VeganIcon"
 
 
 class FeedView extends Component {
@@ -78,6 +79,7 @@ class FeedView extends Component {
               <div className="card myCard" key={index}>
                 <h5 id="myCardHeader" className="card-header">
                   <MealIcon/>{" "} { d.name }
+                  {d.vegan === 1 ? <VeganIcon/> : ""}
                 </h5>
 
                 <div id="myCardBody" className="card-body">
