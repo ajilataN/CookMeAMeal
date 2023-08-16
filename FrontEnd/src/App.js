@@ -226,7 +226,8 @@ const nonLoggedUsersHeader = (
               aria-expanded="false"
               aria-label="Toggle navigation"
             >
-              <span className="navbar-toggler-icon"></span>
+              <span className="navbar-toggler-icon"
+              style={{borderRadius:"20%", backgroundColor:"#215732", opacity:"70%"}}></span>
             </button>
 
             <div
@@ -238,7 +239,9 @@ const nonLoggedUsersHeader = (
               </div>
             </div>
           </div>
-        </nav>
+        </nav> 
+
+
       </div>
       {/* Show page accordingly to the case of the function */}
       <div id="viewer">{ this.getViewPage(this.state) }</div>
