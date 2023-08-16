@@ -5,6 +5,7 @@ class VeganIcon extends Component {
     render(){
         return(
           <img
+                style={{margin: "1%"}}
               width="30"
               height="25"
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vegan_friendly_icon.svg/1200px-Vegan_friendly_icon.svg.png"

@@ -9,7 +9,6 @@ import PlateIcon from "./icons/PlateIcon"
 import CashIcon from "./icons/CashIcon"
 import VeganIcon from "./icons/VeganIcon"
 
-
 class FeedView extends Component {
   // Constructor
   constructor(props) {
@@ -147,7 +146,7 @@ class FeedView extends Component {
                   <br></br>
 
                   <div className="centerAllign"> <CashIcon/> </div>
-                  <div className="price">{ d.price } </div>
+                  <div className="price">{ d.price }€ </div>
                   <hr id="horizontalDivider"></hr>
                   <br></br>
 
@@ -171,7 +170,7 @@ class FeedView extends Component {
             )
           }) :   
           <div>
-          <h5 className="warning">Ups! Sorry, currently there are no posts to display.</h5>
+          <h5 className="warning">Apologies, but at the moment, there are no posts available for presentation.</h5>
           <br></br>
           <div className="button-container">
             <button

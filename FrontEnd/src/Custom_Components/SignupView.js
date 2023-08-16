@@ -224,21 +224,27 @@ class SignupView extends Component {
             </div>
 
           </form>
-
+          <div className="buttonContainer">
           <button
+          style={{width:"95%"}}
             onClick={() => this.postSignupData()}
             className="btn btn-primary bt defaultColoredButton"
             disabled={!this.state.passwordMatch}
           >
             Sign up
           </button>
-          <hr style={{marginTop: "16px"}}></hr>
+          </div>
+          <hr style={{marginTop: "5px", marginBottom:"5px"}}></hr>
+          <div className="buttonContainer">
           <button
+          style={{width:"95%"}}
             onClick={() => this.setViewPageInParent({ page: "login" })}
             className="btn btn-primary bt log defaultButton"
           >
             Login now
           </button>
+          </div>
+          
         </div>
 
       </div>

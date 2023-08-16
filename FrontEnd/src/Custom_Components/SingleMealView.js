@@ -103,8 +103,9 @@ class SingleMealView extends Component {
               <br></br>
               <div className="rightButtonDiv">
                 <CashIcon/>
-                <span className="price"> { meal[0].price } </span>
+                <span className="price"> { meal[0].price } €</span>
                 <a
+                  style={{minWidth: "50px"}}
                   id="priceBtn"
                   onClick={() => this.setViewPageInParent({ page: "order", id: meal[0].mealId })}
                   href="#"

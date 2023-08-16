@@ -368,7 +368,7 @@ dataPool.getPendingOrderForUser = (id) => {
       u.id as userId, u.name as userName, u.surname,
       m.name as mealName,
       m.date as mealDate,
-      cu.name as customerName
+      cu.name as customerName, cu.telephone as customerTel
       FROM \`Order\` as o
       JOIN User as u ON o.id_cook = u.id
       JOIN Meal as m ON o.id_meal = m.id
@@ -391,7 +391,7 @@ dataPool.getMyOrderForUser = (id) => {
       o.id as orderId, o.id_cook, o.id_customer, o.id_meal, o.portions, o.confirmed, 
       u.id as userId, u.name as userName, u.surname,
       m.name as mealName,
-      cu.name as cookName
+      cu.name as cookName, cu.telephone as cookTel
       FROM \`Order\` as o
       JOIN User as u ON o.id_customer = u.id
       JOIN Meal as m ON o.id_meal = m.id

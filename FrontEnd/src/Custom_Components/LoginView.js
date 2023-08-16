@@ -87,20 +87,26 @@ class LoginView extends Component {
               />
             </div>
           </form>
+          <div className="buttonContainer">
           <button
+          style={{width:"95%"}}
             onClick={() => {this.postLoginData()
             }}
             className="btn btn-primary bt sign log defaultColoredButton"
           >
             Login
           </button>
+          </div>
           <hr style={{marginTop: "16px"}}></hr>
+          <div className="buttonContainer">
           <button
+          style={{width:"95%"}}
             onClick={() => this.setViewPageInParent({ page: "signup" })}
             className="btn btn-primary bt log defaultButton"
           >
             Create new account
           </button>
+          </div>
         </div>
       </div>
     )

@@ -116,6 +116,7 @@ class MyOrdersView extends Component{
                   <th scope="col">Meal</th>
                   <th scope="col">Portions</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Contact</th>
                 </tr>
               </thead>
               <tbody>
@@ -125,6 +126,7 @@ class MyOrdersView extends Component{
                     <td>{ order.mealName }</td>
                     <td>{ order.portions }</td>
                     <td>{ order.confirmed ? <div style={{color:"green"}}>Confirmed!</div>: <div style={{color:"#FFCC00"}}>Pending...</div> }</td>
+                    <td>{ order.confirmed ? <div>{ order.cookTel }</div> : "" }</td>
                   </tr>
                 ))}
               </tbody>
@@ -144,6 +146,7 @@ class MyOrdersView extends Component{
                   <th scope="col">Meal</th>
                   <th scope="col">Portions</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Contact</th>
                 </tr>
               </thead>
               <tbody>
@@ -164,6 +167,7 @@ class MyOrdersView extends Component{
                       ): ("Confirmed"
                       )}
                     </td>
+                    <td>{ order.customerTel }</td>
                   </tr>
                 ))}
               </tbody>

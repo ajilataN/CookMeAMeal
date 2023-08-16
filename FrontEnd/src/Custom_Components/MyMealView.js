@@ -145,14 +145,12 @@ class MyMealView extends Component {
                           
                         </ul>
                       </div>
-                      <br></br>
                       <div className="centerAllign">
                         {" "}
                         <CashIcon />{" "}
                       </div>
                       <div className="price">{d.price} </div>
                       <hr id="horizontalDivider"></hr>
-                      <br></br>
                       <div className="buttonContainer">
                         <a
                           onClick={() => this.deleteMeal(d.mealId)}

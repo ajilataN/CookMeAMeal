@@ -17,8 +17,8 @@
 .defaultButton {
   background-color: transparent;
   border-color: transparent;
-  margin: 10px;
-  max-width: 800px;
+  margin: 5px;
+  max-width: 95%;
   color: #215732;
 }
 .defaultButton:hover, 
@@ -33,8 +33,8 @@
 .defaultColoredButton{
   background-color: #215732;
   border-color: #215732;
-  margin: 10px;
-  max-width: 800px;
+  margin: 5px;
+  max-width: 95%;
   color: #f5f8f6
 }
 
@@ -61,7 +61,7 @@
 
 #newAccHeader{
   text-align: center;
-  margin: 1%;
+  margin: 0.5%;
 }
 
 
@@ -118,8 +118,9 @@
 
 .loginCard {
   max-width: 600px;
+  max-height: 625px;
   margin: auto;
-  margin-top: 2%;
+  margin-top: 0.5%;
   margin-bottom: 10px;
   background-color: #ffffff !important;
 }
@@ -137,6 +138,8 @@ hr {
 .rightButtonDiv {
   text-align: right;
   display: inline;
+  float: right;
+  width: 180px;
 }
 
 #addButton {
