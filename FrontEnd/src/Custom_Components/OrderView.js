@@ -16,7 +16,7 @@ class OrderView extends Component {
   // Get the data about the meal which we want to order
   componentDidMount(){
     console.log(this.props.data)
-    axios.get("http://88.200.63.148:5020/meal/" + this.props.data)
+    axios.get("/meal/" + this.props.data)
     .then(res=>{
       console.log(res.data)
       this.setState({
@@ -46,7 +46,7 @@ class OrderView extends Component {
         console.log("Meal data is missing.")
         return
       }
-      const res = await axios.post("http://88.200.63.148:5020/order", {
+      const res = await axios.post("/order", {
         id_meal: mealId,
         portions: portions,
         id_cook: cookId

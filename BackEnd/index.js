@@ -9,6 +9,7 @@ const path = require("path")
 
 dotenv.config()
 
+app.use(express.static(path.join(__dirname, "build")))
 app.use(cors({
   origin:["http://88.200.63.148:3018"],
   methods:["GET", "POST", "DELETE"],
@@ -45,7 +46,7 @@ app.use('/order', order);
 
 
 app.get("/",(req,res)=>{
-res.send("hola")
+  res.sendFile(path.join(__dirname, "build", "index.html"))
 })
 
 

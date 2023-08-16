@@ -22,7 +22,7 @@ class SingleMealView extends Component {
   // API to get the iformation about one meal
   componentDidMount(){
     console.log(this.props.data)
-    axios.get("http://88.200.63.148:5020/meal/" + this.props.data)
+    axios.get("/meal/" + this.props.data)
     .then(res=>{
       console.log(res.data)
       this.setState({

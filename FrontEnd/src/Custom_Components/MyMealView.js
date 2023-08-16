@@ -22,7 +22,7 @@ class MyMealView extends Component {
   componentDidMount() {
     // API to get every post from the DB
     axios
-      .get("http://88.200.63.148:5020/meal/my", { withCredentials: true })
+      .get("/meal/my", { withCredentials: true })
       .then((res) => {
         this.setState({
           // Update meals array with posts
@@ -38,7 +38,7 @@ class MyMealView extends Component {
   };
 
   deleteMeal = (id) => {
-    axios.delete("http://88.200.63.148:5020/meal/"+id)
+    axios.delete("/meal/"+id)
     .then((response) => {
       // Handle the successful deletion here if needed
       console.log("Meal deleted successfully:", response.data);

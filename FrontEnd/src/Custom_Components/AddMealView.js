@@ -59,7 +59,7 @@ class AddMealView extends Component {
     try{
       const veganValue = this.state.meal.vegan ? 1 : 0;
       console.log("This is the vegan checkbox:", veganValue)
-      const res = await axios.post("http://88.200.63.148:5020/meal", {
+      const res = await axios.post("/meal", {
         
         name: this.state.meal.name,
         number_of_portions: this.state.meal.number_of_portions,
@@ -149,7 +149,7 @@ class AddMealView extends Component {
                     onChange={(event) => this.saveInputOnChange(index, event)}
                   />
                 ))}
-                <div className="rightButtonDiv">
+                <div className="rightButtonDivAdd">
                   <button
                     type="button"
                     className="btn"

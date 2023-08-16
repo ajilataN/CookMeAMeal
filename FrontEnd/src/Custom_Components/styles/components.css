@@ -34,7 +34,7 @@
   background-color: #215732;
   border-color: #215732;
   margin: 5px;
-  max-width: 95%;
+  max-width: 800px;
   color: #f5f8f6
 }
 
@@ -140,6 +140,10 @@ hr {
   display: inline;
   float: right;
   width: 180px;
+}
+.rightButtonDivAdd{
+  text-align: right;
+  display: inline;
 }
 
 #addButton {
@@ -249,4 +253,18 @@ a:active {
 
 .myMargin{
   margin-right:1%;
+}
+
+#signup-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 125vh;
+  background-image: url('./power.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat-y;
+  opacity: 0.4;
+  z-index: -1;
 }

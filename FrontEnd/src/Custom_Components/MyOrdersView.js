@@ -13,7 +13,7 @@ class MyOrdersView extends Component{
 
   componentDidMount(){
     // console.log(this.props.data)
-    axios.get("http://88.200.63.148:5020/order/my", { withCredentials: true })
+    axios.get("/order/my", { withCredentials: true })
     .then(res=>{
       console.log(res.data)
       this.setState({
@@ -33,8 +33,8 @@ class MyOrdersView extends Component{
   getOrders = (tableId) => {
     const endpoint =
       tableId === "myOrders"
-        ? "http://88.200.63.148:5020/order/my"
-        : "http://88.200.63.148:5020/order/pending"
+        ? "/order/my"
+        : "/order/pending"
     axios.get(endpoint, {withCredentials: true})
       .then((res) => {
         console.log("Data: ", res.data)
@@ -58,7 +58,7 @@ class MyOrdersView extends Component{
 
   // Post request to update the confirmation
   confirmOrder = (orderId) => {
-    axios.post(`http://88.200.63.148:5020/order/confirm/${orderId}`, {}, { withCredentials: true })
+    axios.post(`/order/confirm/${orderId}`, {}, { withCredentials: true })
       .then((res) => {
         // Refresh the orders after confirmation
         this.getOrders(this.state.activeTable)
@@ -126,7 +126,7 @@ class MyOrdersView extends Component{
                     <td>{ order.mealName }</td>
                     <td>{ order.portions }</td>
                     <td>{ order.confirmed ? <div style={{color:"green"}}>Confirmed!</div>: <div style={{color:"#FFCC00"}}>Pending...</div> }</td>
-                    <td>{ order.confirmed ? <div>{ order.cookTel }</div> : "" }</td>
+                    <td>{ order.confirmed ? <div>{ order.cookTel }</div> : "Available upon confirmation." }</td>
                   </tr>
                 ))}
               </tbody>

@@ -34,7 +34,7 @@ class LoginView extends Component {
   // Post request for login
   postLoginData = () =>{
     let user = this.state.user
-    axios.post("http://88.200.63.148:5020/users/login", {
+    axios.post("/users/login", {
         email: user.email,
         password: user.password
     },  { withCredentials: true })

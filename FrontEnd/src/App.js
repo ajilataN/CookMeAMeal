@@ -27,7 +27,7 @@ class App extends Component {
 
   // Function that makes a post request to logout a user and set the userStatus
   postLogout = () => {
-    axios.post("http://88.200.63.148:5020/users/logout").then(() => {
+    axios.post("/users/logout").then(() => {
       this.setState({
         userStatus: { logged: false, user: null },
         // Reset the page after logout
@@ -116,7 +116,7 @@ class App extends Component {
   // On component did mount sets the data for the user
   // Initially logged palse and undefined user
   componentDidMount() {
-    axios.get("http://88.200.63.148:5020/users/login").then((res) => {
+    axios.get("/users/login").then((res) => {
       this.setState({ userStatus:res.data })
       console.log(res);
     });

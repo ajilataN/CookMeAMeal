@@ -46,7 +46,7 @@ class SignupView extends Component {
   // Post request for sing up
   postSignupData = () => {
     let user = this.state.user
-    axios.post("http://88.200.63.148:5020/users/register", {
+    axios.post("/users/register", {
         name: user.name,
         surname: user.surname,
         email: user.email,
@@ -79,7 +79,7 @@ class SignupView extends Component {
   render() {
     return (
       <div>
-        <div id="home-background"></div>
+        <div id="signup-background"></div>
         <h3 id="newAccHeader">Create new account</h3>
         <div className="card loginCard">
           <form style={{ margin: "20px" }}>

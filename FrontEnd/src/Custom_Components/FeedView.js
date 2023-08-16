@@ -37,7 +37,7 @@ class FeedView extends Component {
 
   getAllMeals = () => {
     // API to get every post from the DB
-    axios.get("http://88.200.63.148:5020/meal", { withCredentials: true })
+    axios.get("/meal", { withCredentials: true })
    .then(res =>{
      this.setState({
       // Update meals array with posts
@@ -47,7 +47,7 @@ class FeedView extends Component {
   }
 
   getVeganMeals = () =>{
-    axios.get("http://88.200.63.148:5020/meal/vegan", {withCredentials: true})
+    axios.get("/meal/vegan", {withCredentials: true})
     .then(res =>{
       this.setState({
        // Update meals array with posts

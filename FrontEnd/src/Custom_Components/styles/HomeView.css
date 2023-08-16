@@ -14,7 +14,8 @@
     background-image: url('./power.png');
     background-size: cover;
     background-position: center;
-    opacity: 0.4    ;
+    background-repeat: repeat-y;
+    opacity: 0.4;
     z-index: -1;
   }
   
