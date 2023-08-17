@@ -58,4 +58,4 @@ To contribute to the Cook Me A Meal project, follow these steps:
 
 Cook Me A Meal is an innovative solution to the common challenge of finding nutritious and timely meals. By connecting those who need meals with skilled cooks, the platform aims to improve the dining experience for students, professionals, and others. Your contributions to this project are welcome and can make a positive impact on users' lives.
 
-For any questions or inquiries, please contact [your@email.com](mailto:your@email.com). We look forward to your involvement in the Cook Me A Meal community!
+For any questions or inquiries, please contact [natali.tashkova@gmail.com](mailto:natali.tashkova@gmail.com). We look forward to your involvement in the Cook Me A Meal community!
